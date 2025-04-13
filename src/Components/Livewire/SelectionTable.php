@@ -37,6 +37,22 @@ class SelectionTable extends TableWidget
     public ?string $tableLocation = null;
 
     /**
+     * @var ?Closure(HasTable $table): HasTable
+     */
+    protected ?Closure $configureSelectionTableUsing = null;
+
+    /**
+     * @param string $componentIdentifier
+     *
+     * @return void
+     * @throws BindingResolutionException
+     */
+    public function mount(string $componentIdentifier): void
+    {
+        $this->configureSelectionTableUsing = app()->make($componentIdentifier);
+    }
+
+    /**
      * @param  Table $table
      *
      * @return Table
@@ -48,6 +64,12 @@ class SelectionTable extends TableWidget
 
         if ($tableLocation !== null) {
             $table = $tableLocation::table($table)->heading($tableLocation::getNavigationLabel());
+        }
+
+        $configureSelectionTableUsing = $this->configureSelectionTableUsing;
+
+        if ($configureSelectionTableUsing !== null) {
+            $table = $configureSelectionTableUsing($table);
         }
 
         return $table;

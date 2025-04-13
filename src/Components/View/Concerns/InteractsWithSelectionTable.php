@@ -22,6 +22,11 @@ trait InteractsWithSelectionTable
     protected null | Closure | string $tableLocation = null;
 
     /**
+     * @var ?Closure(Table $table): Table
+     */
+    protected ?Closure $configureSelectionTableUsing = null;
+
+    /**
      * @param  Closure | class-string<Resource> $component
      *
      * @return $this
@@ -34,16 +39,41 @@ trait InteractsWithSelectionTable
     }
 
     /**
+     * @param  Closure(Table $table): Table $configureSelectionTableUsing
+     *
+     * @return $this
+     */
+    public function configureTableUsing(Closure $configureSelectionTableUsing): static
+    {
+        $this->configureSelectionTableUsing = $configureSelectionTableUsing;
+
+        return $this;
+    }
+
+    /**
      * @return View
      */
     protected function getSelectionTableView(): View
     {
+        $statePath = $this->getStatePath();
+        $this->persistConfigurationClosure($statePath);
+
         return view('filament-table-select::selection-table-modal', [
             'isMultiple' => $this->isMultiple(),
             'selectionLimit' => $this->getOptionsLimit(),
             'relatedModel' => $this->getRelationship()->getRelated()::class,
             'tableLocation' => $this->evaluate($this->tableLocation),
-            'statePath' => $this->getStatePath(),
+            'statePath' => $statePath,
         ]);
+    }
+
+    /**
+     * @param  string $key
+     *
+     * @return void
+     */
+    protected function persistConfigurationClosure(string $key): void
+    {
+        app()->bind($key, fn () => $this->configureSelectionTableUsing);
     }
 }

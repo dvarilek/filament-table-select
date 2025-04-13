@@ -23,5 +23,6 @@
         :selectionLimit="$selectionLimit"
         :relatedModel="$relatedModel"
         :tableLocation="$tableLocation"
+        :componentIdentifier="$statePath"
     />
 </div>
