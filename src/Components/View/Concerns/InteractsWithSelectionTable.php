@@ -129,8 +129,8 @@ trait InteractsWithSelectionTable
         ?ConfirmationActionPosition $confirmationActionPosition = null
     ): static
     {
-       $this->modifySelectionConfirmationActionUsing = $modifySelectionConfirmationActionUsing;
-       $this->confirmationActionPosition = $confirmationActionPosition ?? $this->confirmationActionPosition;
+        $this->modifySelectionConfirmationActionUsing = $modifySelectionConfirmationActionUsing;
+        $this->confirmationActionPosition = $confirmationActionPosition ?? $this->confirmationActionPosition;
 
         return $this;
     }
@@ -172,12 +172,12 @@ trait InteractsWithSelectionTable
      */
     protected function getSelectionConfirmationAction(): Action
     {
-        $action = Action::make('selectionConfirmationAction')->component($this);
+        $action = Action::make('selectionConfirmationAction');
 
         $action = $this->evaluate($this->modifySelectionConfirmationActionUsing, [
             'action' => $action,
         ], [
-            StaticAction::class => $action
+            Action::class => $action
         ]) ?? $action;
 
         return $action->alpineClickHandler('updateFormComponentState');
