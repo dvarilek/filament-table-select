@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Dvarilek\FilamentTableSelect;
 
 use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
+use Filament\Support\Facades\FilamentView;
+use Filament\Tables\View\TablesRenderHook;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -33,5 +35,11 @@ class FilamentTableSelectServiceProvider extends PackageServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'filament-table-select');
 
         Livewire::component('filament-table-select::selection-table-component', SelectionTable::class);
+
+        FilamentView::registerRenderHook(
+            TablesRenderHook::TOOLBAR_START,
+            fn () => view('filament-table-select::selection-table-watcher'),
+            SelectionTable::class
+        );
     }
 }
