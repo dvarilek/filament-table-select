@@ -39,7 +39,4 @@ class TableSelect extends Select
             ->modalSubmitAction(false)
             ->modalCancelAction(false);
     }
-
-
-    // TODO: Add all the fluent setter methods for all the different selection action configuration options
 }

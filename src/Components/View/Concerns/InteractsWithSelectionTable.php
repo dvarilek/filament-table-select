@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Components\View\Concerns;
 
+use Dvarilek\FilamentTableSelect\Enums\ConfirmationActionPosition;
+use Filament\Actions\StaticAction;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Resources\Resource;
 use Closure;
@@ -25,6 +28,26 @@ trait InteractsWithSelectionTable
      * @var ?Closure(Table $table): Table
      */
     protected ?Closure $configureSelectionTableUsing = null;
+
+    /**
+     * @var bool | Closure
+     */
+    protected bool | Closure $shouldConfirmSelection = false;
+
+    /**
+     * @var bool | Closure
+     */
+    protected bool | Closure $shouldCloseOnSelection = false;
+
+    /**
+     * @var ConfirmationActionPosition
+     */
+    protected ConfirmationActionPosition $confirmationActionPosition = ConfirmationActionPosition::BOTTOM_LEFT;
+
+    /**
+     * @var ?Closure
+     */
+    protected ?Closure $modifySelectionConfirmationActionUsing = null;
 
     /**
      * @param  Closure | class-string<Resource> $component
@@ -51,6 +74,68 @@ trait InteractsWithSelectionTable
     }
 
     /**
+     * @param  bool | Closure $shouldConfirmSelection
+     * @param  null | bool | Closure $shouldCloseOnSelection
+     * @param  ?ConfirmationActionPosition $confirmationActionPosition
+     *
+     * @return $this
+     */
+    public function shouldConfirmSelection(
+        bool | Closure $shouldConfirmSelection = true,
+        null | bool | Closure $shouldCloseOnSelection = null,
+        ?ConfirmationActionPosition $confirmationActionPosition = null
+    ): static
+    {
+        $this->shouldConfirmSelection = $shouldConfirmSelection;
+        $this->shouldCloseOnSelection = $shouldCloseOnSelection ?? $this->shouldCloseOnSelection;
+        $this->confirmationActionPosition = $confirmationActionPosition ?? $this->confirmationActionPosition;
+
+        return $this;
+    }
+
+    /**
+     * @param  bool | Closure $shouldCloseOnSelection
+     *
+     * @return $this
+     */
+    public function shouldCloseOnSelection(bool | Closure $shouldCloseOnSelection = true): static
+    {
+        $this->shouldCloseOnSelection = $shouldCloseOnSelection;
+        $this->shouldConfirmSelection = $this->shouldConfirmSelection ?: true;
+
+        return $this;
+    }
+
+    /**
+     * @param  ConfirmationActionPosition $confirmationActionPosition
+     *
+     * @return $this
+     */
+    public function confirmationActionPosition(ConfirmationActionPosition $confirmationActionPosition): static
+    {
+        $this->confirmationActionPosition = $confirmationActionPosition;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure $modifySelectionConfirmationActionUsing
+     * @param  ?ConfirmationActionPosition $confirmationActionPosition
+     *
+     * @return $this
+     */
+    public function modifySelectionConfirmationActionUsing(
+        Closure $modifySelectionConfirmationActionUsing,
+        ?ConfirmationActionPosition $confirmationActionPosition = null
+    ): static
+    {
+       $this->modifySelectionConfirmationActionUsing = $modifySelectionConfirmationActionUsing;
+       $this->confirmationActionPosition = $confirmationActionPosition ?? $this->confirmationActionPosition;
+
+        return $this;
+    }
+
+    /**
      * @return View
      */
     protected function getSelectionTableView(): View
@@ -64,6 +149,10 @@ trait InteractsWithSelectionTable
             'selectionLimit' => $this->getOptionsLimit(),
             'relatedModel' => $this->getRelationship()->getRelated()::class,
             'tableLocation' => $this->evaluate($this->tableLocation),
+            'shouldConfirmSelection' => $this->evaluate($this->shouldConfirmSelection),
+            'shouldCloseOnSelection' => $this->evaluate($this->shouldCloseOnSelection),
+            'confirmationActionPosition' => $this->confirmationActionPosition,
+            'selectionConfirmationAction' => $this->getSelectionConfirmationAction(),
             'statePath' => $statePath,
         ]);
     }
@@ -76,5 +165,21 @@ trait InteractsWithSelectionTable
     protected function persistConfigurationClosure(string $key): void
     {
         app()->bind($key, fn () => $this->configureSelectionTableUsing);
+    }
+
+    /**
+     * @return Action
+     */
+    protected function getSelectionConfirmationAction(): Action
+    {
+        $action = Action::make('selectionConfirmationAction')->component($this);
+
+        $action = $this->evaluate($this->modifySelectionConfirmationActionUsing, [
+            'action' => $action,
+        ], [
+            StaticAction::class => $action
+        ]) ?? $action;
+
+        return $action->alpineClickHandler('updateFormComponentState');
     }
 }
