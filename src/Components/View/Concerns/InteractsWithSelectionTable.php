@@ -37,7 +37,7 @@ trait InteractsWithSelectionTable
     /**
      * @var bool | Closure
      */
-    protected bool | Closure $shouldCloseOnSelection = false;
+    protected bool | Closure $shouldCloseOnSelection = true;
 
     /**
      * @var ConfirmationActionPosition
