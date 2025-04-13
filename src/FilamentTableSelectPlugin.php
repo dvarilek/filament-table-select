@@ -9,6 +9,8 @@ use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Filament\Tables\View\TablesRenderHook;
 
+// TODO: Consider removing this and putting render hook registration into package service provider
+
 class FilamentTableSelectPlugin implements Plugin
 {
 
@@ -35,7 +37,12 @@ class FilamentTableSelectPlugin implements Plugin
      */
     public function register(Panel $panel): void
     {
-
+        $panel
+            ->renderHook(
+                TablesRenderHook::TOOLBAR_START,
+                fn () => view('filament-table-select::selection-table-watcher'),
+                SelectionTable::class
+            );
     }
 
     /**
