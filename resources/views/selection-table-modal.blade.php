@@ -19,10 +19,11 @@
     }"
 >
     <livewire:filament-table-select::selection-table-component
-        :isMultiple="$isMultiple"
-        :selectionLimit="$selectionLimit"
-        :relatedModel="$relatedModel"
-        :tableLocation="$tableLocation"
-        :componentIdentifier="$statePath"
+            :initialState="$state"
+            :isMultiple="$isMultiple"
+            :selectionLimit="$selectionLimit"
+            :relatedModel="$relatedModel"
+            :tableLocation="$tableLocation"
+            :componentIdentifier="$statePath"
     />
 </div>

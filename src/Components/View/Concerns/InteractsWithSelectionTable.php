@@ -59,6 +59,7 @@ trait InteractsWithSelectionTable
         $this->persistConfigurationClosure($statePath);
 
         return view('filament-table-select::selection-table-modal', [
+            'state' => array_map(intval(...), is_array($state = $this->getState()) ? $state : [$state]),
             'isMultiple' => $this->isMultiple(),
             'selectionLimit' => $this->getOptionsLimit(),
             'relatedModel' => $this->getRelationship()->getRelated()::class,

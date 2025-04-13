@@ -42,14 +42,17 @@ class SelectionTable extends TableWidget
     protected ?Closure $configureSelectionTableUsing = null;
 
     /**
+     * @param list<int> $initialState
      * @param string $componentIdentifier
      *
      * @return void
      * @throws BindingResolutionException
      */
-    public function mount(string $componentIdentifier): void
+    public function mount(array $initialState, string $componentIdentifier): void
     {
         $this->configureSelectionTableUsing = app()->make($componentIdentifier);
+
+        $this->js('selectedRecords = ' . json_encode($initialState) . ';');
     }
 
     /**
