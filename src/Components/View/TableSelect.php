@@ -8,34 +8,55 @@ use Dvarilek\FilamentTableSelect\Components\View\Concerns\InteractsWithSelection
 use Filament\Actions\StaticAction;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Select;
+use Closure;
 
 class TableSelect extends Select
 {
     use InteractsWithSelectionTable;
 
+    /**
+     * @var ?Closure
+     */
+    protected ?Closure $modifySelectionActionUsing = null;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->initializeTableSelectionAction();
+        $this->suffixAction(fn () => $this->getSelectionAction());
     }
 
     /**
-     * @return void
+     * @param  Closure $modifySelectionActionUsing
+     *
+     * @return $this
      */
-    protected function initializeTableSelectionAction(): void
+    public function modifySelectionAction(Closure $modifySelectionActionUsing): static
     {
-        $tableSelectAction = $this->getSelectionAction();
+        $this->modifySelectionActionUsing = $modifySelectionActionUsing;
 
-        $this->suffixActions([$tableSelectAction]);
+        return $this;
     }
 
+    /**
+     * @return Action
+     */
     protected function getSelectionAction(): Action
     {
-        return Action::make('tableSelectionAction')
-            ->hidden(fn (Select $component, string $operation) => $component->isDisabled() || in_array($operation, ['view', 'viewOption']))
-            ->color('gray')
-            ->modalContent(fn (StaticAction $action) => $this->getSelectionTableView())
+        $action = Action::make('tableSelectionAction')
+            ->disabled(fn (Select $component, string $operation) => $component->isDisabled() || in_array($operation, ['view', 'viewOption']))
+            ->slideOver()
+            ->icon('heroicon-o-link')
+            ->color('gray');
+
+        $action = $this->evaluate($this->modifySelectionActionUsing, [
+            'action' => $action
+        ], [
+            Action::class => $action
+        ]) ?? $action;
+
+        return $action
+            ->modalContent($this->getSelectionTableView())
             ->modalSubmitAction(false)
             ->modalCancelAction(false);
     }
