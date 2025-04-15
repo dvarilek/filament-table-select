@@ -143,10 +143,11 @@ trait InteractsWithSelectionTable
         $statePath = $this->getStatePath();
         $this->persistConfigurationClosure($statePath);
 
+        $initialState = is_array($state = $this->getState()) ? $state : [$state];
+
         return view('filament-table-select::selection-table-modal', [
-            'state' => array_map(intval(...), is_array($state = $this->getState()) ? $state : [$state]),
-            'isMultiple' => $this->isMultiple(),
-            'selectionLimit' => $this->getOptionsLimit(),
+            'initialState' => array_map(intval(...), $initialState),
+            'selectionLimit' => $this->getSelectionLimit(),
             'relatedModel' => $this->getRelationship()->getRelated()::class,
             'tableLocation' => $this->evaluate($this->tableLocation),
             'shouldConfirmSelection' => $this->evaluate($this->shouldConfirmSelection),

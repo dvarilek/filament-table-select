@@ -3,15 +3,8 @@
         shouldConfirmSelection: @js($shouldConfirmSelection),
         statePath: @js($statePath),
         livewireId: @js($this->getId()),
-        tableSelectedRecords: [],
-
-        updateTableSelectedRecords(records) {
-            if (!this.statePath || !this.livewireId) {
-                return;
-            }
-
-            this.tableSelectedRecords = records;
-        },
+        selectionLimit: @js($selectionLimit),
+        cachedSelectedRecords: @js($initialState),
 
         updateFormComponentState() {
             const component = Livewire.find(this.livewireId);
@@ -20,7 +13,7 @@
                 return;
             }
 
-            component.set(this.statePath, this.tableSelectedRecords);
+            component.set(this.statePath, this.cachedSelectedRecords);
 
             if (this.shouldConfirmSelection && @js($shouldCloseOnSelection)) {
                 close();
@@ -41,9 +34,6 @@
     @endif
 
     <livewire:filament-table-select::selection-table-component
-            :initialState="$state"
-            :isMultiple="$isMultiple"
-            :selectionLimit="$selectionLimit"
             :relatedModel="$relatedModel"
             :tableLocation="$tableLocation"
             :componentIdentifier="$statePath"

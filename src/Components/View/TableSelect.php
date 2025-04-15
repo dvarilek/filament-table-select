@@ -60,4 +60,12 @@ class TableSelect extends Select
             ->modalSubmitAction(false)
             ->modalCancelAction(false);
     }
+
+    /**
+     * @return int
+     */
+    protected function getSelectionLimit(): int
+    {
+        return $this->isMultiple() ? $this->getOptionsLimit() : 1;
+    }
 }

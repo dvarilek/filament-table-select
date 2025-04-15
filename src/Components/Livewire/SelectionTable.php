@@ -14,18 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 class SelectionTable extends TableWidget
 {
 
-    // TODO: move isMultiple and selectionLimit properties to the js side
-
-    /**
-     * @var bool
-     */
-    public bool $isMultiple = false;
-
-    /**
-     * @var int
-     */
-    public int $selectionLimit = 0;
-
     /**
      * @var ?class-string<Model>
      */
@@ -42,17 +30,14 @@ class SelectionTable extends TableWidget
     protected ?Closure $configureSelectionTableUsing = null;
 
     /**
-     * @param list<int> $initialState
      * @param string $componentIdentifier
      *
      * @return void
      * @throws BindingResolutionException
      */
-    public function mount(array $initialState, string $componentIdentifier): void
+    public function mount(string $componentIdentifier): void
     {
         $this->configureSelectionTableUsing = app()->make($componentIdentifier);
-
-        $this->js('selectedRecords = ' . json_encode($initialState) . ';');
     }
 
     /**
