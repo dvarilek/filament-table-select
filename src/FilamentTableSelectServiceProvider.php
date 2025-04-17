@@ -38,7 +38,7 @@ class FilamentTableSelectServiceProvider extends PackageServiceProvider
 
         FilamentView::registerRenderHook(
             TablesRenderHook::TOOLBAR_START,
-            fn () => view('filament-table-select::selection-table-watcher'),
+            fn () => view('filament-table-select::selection-table-handler'),
             SelectionTable::class
         );
     }
