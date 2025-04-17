@@ -18,6 +18,17 @@
 
             cachedSelectedRecords = [...selectedRecords];
         });
+
+        Livewire.on('selectTableRecord', record => {
+            if (! Array.isArray(record) || record.length !== 1) {
+                return;
+            }
+
+            const value = record[0];
+            const index = selectedRecords.indexOf(value);
+
+            index !== -1 ? selectedRecords.splice(index, 1) : selectedRecords.push(value);
+        });
     "
 
     x-data="{
@@ -35,7 +46,7 @@
 
                 this.checkboxes.forEach(checkbox => checkbox.disabled = !(checkbox.checked || !selectionLimitReached));
             }
-        }
+        },
     }"
 >
 </div>

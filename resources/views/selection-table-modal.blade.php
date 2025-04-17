@@ -18,7 +18,7 @@
             if (this.shouldConfirmSelection && @js($shouldCloseOnSelection)) {
                 close();
             }
-        }
+        },
     }"
 >
     @if ($shouldConfirmSelection && $confirmationActionPosition->isTop())
@@ -34,6 +34,7 @@
     @endif
 
     <livewire:filament-table-select::selection-table-component
+            :isRecordSelectableOnRowClick="$isRecordSelectableOnRowClick"
             :relatedModel="$relatedModel"
             :tableLocation="$tableLocation"
             :configureSelectionTableUsing="$configureSelectionTableUsing"

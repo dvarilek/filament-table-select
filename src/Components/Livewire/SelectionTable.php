@@ -13,6 +13,11 @@ class SelectionTable extends TableWidget
 {
 
     /**
+     * @var bool
+     */
+    public bool $isRecordSelectableOnRowClick = true;
+
+    /**
      * @var ?class-string<Model>
      */
     public ?string $relatedModel = null;
@@ -41,6 +46,10 @@ class SelectionTable extends TableWidget
             $table = $tableLocation::table($table)->heading($tableLocation::getNavigationLabel());
         }
 
+        if ($this->isRecordSelectableOnRowClick) {
+            $table->recordAction('selectTableRecord');
+        }
+
         $configureSelectionTableUsing = $this->configureSelectionTableUsing;
 
         if ($configureSelectionTableUsing !== null) {
@@ -48,5 +57,15 @@ class SelectionTable extends TableWidget
         }
 
         return $table;
+    }
+
+    /**
+     * @param  int $record
+     *
+     * @return void
+     */
+    public function selectTableRecord(int $record): void
+    {
+        $this->dispatch('selectTableRecord', $record);
     }
 }

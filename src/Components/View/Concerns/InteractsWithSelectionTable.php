@@ -24,6 +24,11 @@ trait InteractsWithSelectionTable
     protected null | Closure | string $tableLocation = null;
 
     /**
+     * @var bool | Closure
+     */
+    protected bool | Closure $isRecordSelectableOnRowClick = true;
+
+    /**
      * @var ?Closure(Table $table): Table
      */
     protected ?Closure $configureSelectionTableUsing = null;
@@ -56,6 +61,18 @@ trait InteractsWithSelectionTable
     public function tableLocation(Closure | string $component): static
     {
         $this->tableLocation = $component;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure | bool $condition
+     *
+     * @return $this
+     */
+    public function selectRecordOnRowClick(Closure | bool $condition): static
+    {
+        $this->isRecordSelectableOnRowClick = $condition;
 
         return $this;
     }
@@ -144,6 +161,7 @@ trait InteractsWithSelectionTable
         return view('filament-table-select::selection-table-modal', [
             'initialState' => array_map(intval(...), $initialState),
             'selectionLimit' => $this->getSelectionLimit(),
+            'isRecordSelectableOnRowClick' => $this->evaluate($this->isRecordSelectableOnRowClick),
             'relatedModel' => $this->getRelationship()->getRelated()::class,
             'tableLocation' => $this->evaluate($this->tableLocation),
             'shouldConfirmSelection' => $this->evaluate($this->shouldConfirmSelection),
