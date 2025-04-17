@@ -156,10 +156,8 @@ trait InteractsWithSelectionTable
      */
     protected function getSelectionTableView(): View
     {
-        $initialState = is_array($state = $this->getState()) ? $state : [$state];
-
         return view('filament-table-select::selection-table-modal', [
-            'initialState' => array_map(intval(...), $initialState),
+            'initialState' => is_array($state = $this->getState()) ? $state : [$state],
             'selectionLimit' => $this->getSelectionLimit(),
             'isRecordSelectableOnRowClick' => $this->evaluate($this->isRecordSelectableOnRowClick),
             'relatedModel' => $this->getRelationship()->getRelated()::class,

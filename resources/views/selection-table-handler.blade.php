@@ -24,7 +24,7 @@
                 return;
             }
 
-            const value = record[0];
+            const value = record[0].toString();
             const index = selectedRecords.indexOf(value);
 
             index !== -1 ? selectedRecords.splice(index, 1) : selectedRecords.push(value);
