@@ -3,7 +3,6 @@
         selectedRecords = [...cachedSelectedRecords];
 
         $watch('selectedRecords', records => {
-            console.log(records, selectedRecords, cachedSelectedRecords);
             {{-- Prevent bulk select checkboxes from breaking stuff --}}
             if (records.length > (selectionLimit === 1 ? 2 : selectionLimit)) {
                 selectedRecords = [...cachedSelectedRecords];
