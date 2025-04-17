@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Components\Livewire;
 
-use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
 use Closure;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
 
 class SelectionTable extends TableWidget
@@ -25,20 +23,9 @@ class SelectionTable extends TableWidget
     public ?string $tableLocation = null;
 
     /**
-     * @var ?Closure(HasTable $table): HasTable
+     * @var ?Closure(Table $table): Table
      */
-    protected ?Closure $configureSelectionTableUsing = null;
-
-    /**
-     * @param string $componentIdentifier
-     *
-     * @return void
-     * @throws BindingResolutionException
-     */
-    public function mount(string $componentIdentifier): void
-    {
-        $this->configureSelectionTableUsing = app()->make($componentIdentifier);
-    }
+    public ?Closure $configureSelectionTableUsing = null;
 
     /**
      * @param  Table $table

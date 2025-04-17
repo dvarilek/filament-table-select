@@ -36,7 +36,7 @@
     <livewire:filament-table-select::selection-table-component
             :relatedModel="$relatedModel"
             :tableLocation="$tableLocation"
-            :componentIdentifier="$statePath"
+            :configureSelectionTableUsing="$configureSelectionTableUsing"
     />
 
     @if ($shouldConfirmSelection && $confirmationActionPosition->isBottom())

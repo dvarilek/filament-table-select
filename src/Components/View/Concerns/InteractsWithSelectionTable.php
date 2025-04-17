@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Dvarilek\FilamentTableSelect\Components\View\Concerns;
 
 use Dvarilek\FilamentTableSelect\Enums\ConfirmationActionPosition;
-use Filament\Actions\StaticAction;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Resources\Resource;
@@ -140,9 +139,6 @@ trait InteractsWithSelectionTable
      */
     protected function getSelectionTableView(): View
     {
-        $statePath = $this->getStatePath();
-        $this->persistConfigurationClosure($statePath);
-
         $initialState = is_array($state = $this->getState()) ? $state : [$state];
 
         return view('filament-table-select::selection-table-modal', [
@@ -154,18 +150,9 @@ trait InteractsWithSelectionTable
             'shouldCloseOnSelection' => $this->evaluate($this->shouldCloseOnSelection),
             'confirmationActionPosition' => $this->confirmationActionPosition,
             'selectionConfirmationAction' => $this->getSelectionConfirmationAction(),
-            'statePath' => $statePath,
+            'configureSelectionTableUsing' => $this->configureSelectionTableUsing,
+            'statePath' => $this->getStatePath(),
         ]);
-    }
-
-    /**
-     * @param  string $key
-     *
-     * @return void
-     */
-    protected function persistConfigurationClosure(string $key): void
-    {
-        app()->bind($key, fn () => $this->configureSelectionTableUsing);
     }
 
     /**

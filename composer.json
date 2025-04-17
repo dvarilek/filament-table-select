@@ -27,7 +27,8 @@
     "require": {
         "php": "^8.2|^8.3|^8.4",
         "spatie/laravel-package-tools": "^1.18",
-        "filament/filament": "^3.3"
+        "filament/filament": "^3.0",
+        "dvarilek/livewire-closure-synthesizer": "^1.0"
     },
     "require-dev": {
         "pestphp/pest": "^2.31|^3.0.0",
