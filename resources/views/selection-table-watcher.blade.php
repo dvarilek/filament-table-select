@@ -29,13 +29,13 @@
 
             index !== -1 ? selectedRecords.splice(index, 1) : selectedRecords.push(value);
         });
+
+        Livewire.on('refreshCheckboxes', event => requestAnimationFrame(() => resolveCheckboxesSelectability(selectedRecords)));
     "
 
     x-data="{
-        checkboxes: [],
-
         resolveCheckboxesSelectability(records) {
-            this.checkboxes = $wire.$el.querySelectorAll('.fi-ta-record-checkbox');
+            const checkboxes = $wire.$el.querySelectorAll('.fi-ta-record-checkbox');
 
             if (selectionLimit === 1) {
                 if (records.length > 1) {
@@ -44,7 +44,7 @@
             } else {
                 const selectionLimitReached = records.length >= selectionLimit;
 
-                this.checkboxes.forEach(checkbox => checkbox.disabled = !(checkbox.checked || !selectionLimitReached));
+                checkboxes.forEach(checkbox => checkbox.disabled = !(checkbox.checked || !selectionLimitReached));
             }
         },
     }"

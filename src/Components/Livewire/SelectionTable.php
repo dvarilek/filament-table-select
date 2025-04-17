@@ -7,6 +7,9 @@ namespace Dvarilek\FilamentTableSelect\Components\Livewire;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
 use Closure;
+use Illuminate\Contracts\Pagination\CursorPaginator;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class SelectionTable extends TableWidget
@@ -67,5 +70,18 @@ class SelectionTable extends TableWidget
     public function selectTableRecord(int $record): void
     {
         $this->dispatch('selectTableRecord', $record);
+    }
+
+
+    /**
+     * @param  Builder $query
+     *
+     * @return Paginator|CursorPaginator
+     */
+    protected function paginateTableQuery(Builder $query): Paginator | CursorPaginator
+    {
+        $this->dispatch('refreshCheckboxes');
+
+        return parent::paginateTableQuery($query);
     }
 }
