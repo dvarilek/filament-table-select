@@ -56,7 +56,7 @@ class TableSelect extends Select
         ]) ?? $action;
 
         return $action
-            ->modalContent($this->getSelectionTableView())
+            ->modalContent(fn () => $this->getSelectionTableView())
             ->modalSubmitAction(false)
             ->modalCancelAction(false);
     }
