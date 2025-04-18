@@ -2,18 +2,11 @@
     x-data="{
         shouldConfirmSelection: @js($shouldConfirmSelection),
         statePath: @js($statePath),
-        livewireId: @js($this->getId()),
         selectionLimit: @js($selectionLimit),
         cachedSelectedRecords: @js($initialState),
 
         updateFormComponentState() {
-            const component = Livewire.find(this.livewireId);
-
-            if (!component || !this.statePath || !this.livewireId) {
-                return;
-            }
-
-            component.set(this.statePath, this.cachedSelectedRecords);
+            $wire.set(this.statePath, this.cachedSelectedRecords);
 
             if (this.shouldConfirmSelection && @js($shouldCloseOnSelection)) {
                 close();
