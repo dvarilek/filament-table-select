@@ -55,7 +55,7 @@ class SelectionTable extends TableWidget
         }
 
         if ($this->isRecordSelectableOnRowClick) {
-            $table->recordAction('selectTableRecord');
+            $table->recordAction(fn(Model $record) => $table->isRecordSelectable($record) ? 'selectTableRecord' : null);
         }
 
         $configureSelectionTableUsing = $this->configureSelectionTableUsing;
