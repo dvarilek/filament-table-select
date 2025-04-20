@@ -19,7 +19,7 @@
             cachedSelectedRecords = [...selectedRecords];
         });
 
-        Livewire.on('selectTableRecord', record => {
+        $wire.on('selectTableRecord', record => {
             if (! Array.isArray(record) || record.length !== 1) {
                 return;
             }
@@ -30,7 +30,7 @@
             index !== -1 ? selectedRecords.splice(index, 1) : selectedRecords.push(value);
         });
 
-        Livewire.on('refreshCheckboxes', event => requestAnimationFrame(() => resolveCheckboxesSelectability(selectedRecords)));
+        $wire.on('refreshCheckboxes', () => requestAnimationFrame(() => resolveCheckboxesSelectability(selectedRecords)))
     "
 
     x-data="{
@@ -46,7 +46,7 @@
 
                 checkboxes.forEach(checkbox => checkbox.disabled = !(checkbox.checked || !selectionLimitReached));
             }
-        },
+        }
     }"
 >
 </div>
