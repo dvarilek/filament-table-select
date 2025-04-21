@@ -39,7 +39,7 @@
     @endif
 
     <livewire:filament-table-select::selection-table-component
-            :isRecordSelectableOnRowClick="$isRecordSelectableOnRowClick"
+            :shouldSelectRecordOnRowClick="$shouldSelectRecordOnRowClick"
             :relatedModel="$relatedModel"
             :tableLocation="$tableLocation"
             :configureSelectionTableUsing="$configureSelectionTableUsing"

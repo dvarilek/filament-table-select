@@ -26,7 +26,7 @@ trait InteractsWithSelectionTable
     /**
      * @var bool | Closure
      */
-    protected bool | Closure $isRecordSelectableOnRowClick = true;
+    protected bool | Closure $shouldSelectRecordOnRowClick = true;
 
     /**
      * @var ?Closure(Table $table): Table
@@ -66,13 +66,13 @@ trait InteractsWithSelectionTable
     }
 
     /**
-     * @param  Closure | bool $condition
+     * @param  bool | Closure $shouldSelectRecordOnRowClick
      *
      * @return $this
      */
-    public function selectRecordOnRowClick(Closure | bool $condition): static
+    public function shouldSelectRecordOnRowClick(bool | Closure $shouldSelectRecordOnRowClick): static
     {
-        $this->isRecordSelectableOnRowClick = $condition;
+        $this->shouldSelectRecordOnRowClick = $shouldSelectRecordOnRowClick;
 
         return $this;
     }
@@ -164,7 +164,7 @@ trait InteractsWithSelectionTable
         return view($this->selectionTableModalView, [
             'initialState' => is_array($state = $this->getState()) ? $state : [$state],
             'selectionLimit' => $this->getSelectionLimit(),
-            'isRecordSelectableOnRowClick' => $this->evaluate($this->isRecordSelectableOnRowClick),
+            'shouldSelectRecordOnRowClick' => $this->evaluate($this->shouldSelectRecordOnRowClick),
             'relatedModel' => $this->getRelationship()->getRelated()::class,
             'tableLocation' => $this->evaluate($this->tableLocation),
             'shouldConfirmSelection' => $this->evaluate($this->shouldConfirmSelection),

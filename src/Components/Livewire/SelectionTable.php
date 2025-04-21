@@ -15,7 +15,7 @@ class SelectionTable extends TableWidget
     /**
      * @var bool
      */
-    public bool $isRecordSelectableOnRowClick = true;
+    public bool $shouldSelectRecordOnRowClick = true;
 
     /**
      * @var ?class-string<Model>
@@ -54,7 +54,7 @@ class SelectionTable extends TableWidget
             $table = $tableLocation::table($table)->heading($tableLocation::getNavigationLabel());
         }
 
-        if ($this->isRecordSelectableOnRowClick) {
+        if ($this->shouldSelectRecordOnRowClick) {
             $table->recordAction(fn(Model $record) => $table->isRecordSelectable($record) ? 'selectTableRecord' : null);
         }
 
