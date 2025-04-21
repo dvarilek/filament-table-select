@@ -31,6 +31,11 @@ class TableSelect extends Select
     protected bool $hasCreateOptionActionInSelectionModal = true;
 
     /**
+     * @var bool | Closure
+     */
+    protected bool $createOptionActionOnlyVisibleInSelectionModal = true;
+
+    /**
      * @var SelectionModalActionPosition
      */
     protected SelectionModalActionPosition $selectionModalCreateOptionActionPosition = SelectionModalActionPosition::TOP_RIGHT;
@@ -44,7 +49,30 @@ class TableSelect extends Select
     {
         parent::setUp();
 
-        $this->suffixAction(fn () => $this->getSelectionAction());
+        $this->suffixActions([
+            fn () => $this->getSelectionAction(),
+            function () {
+                $action = $this->getAction($this->getCreateOptionActionName());
+
+                if (! $action) {
+                    return null;
+                }
+
+                if ($action->isDisabled()) {
+                    return $action;
+                }
+
+                if (! $this->evaluate($this->hasCreateOptionActionInSelectionModal)) {
+                    return $action;
+                }
+
+                if (! $this->evaluate($this->createOptionActionOnlyVisibleInSelectionModal)) {
+                    return $action;
+                }
+
+                return $action->hidden()->disabled();
+            },
+        ]);
 
         $this->registerActions([
             fn () => $this->evaluate($this->hasCreateOptionActionInSelectionModal) ? $this->getSelectionModalCreateOptionAction() : null,
@@ -64,17 +92,20 @@ class TableSelect extends Select
     }
 
     /**
-     * @param  bool | Closure $hasCreateOptionActionInSelectionModal
-     * @param  null | Closure | SelectionModalActionPosition $selectionModalCreateOptionActionPosition
+     * @param bool | Closure $hasCreateOptionActionInSelectionModal
+     * @param null | Closure  $createOptionActionOnlyVisibleInSelectionModal
+     * @param null | Closure | SelectionModalActionPosition $selectionModalCreateOptionActionPosition
      *
      * @return $this
      */
     public function hasCreateOptionActionInSelectionModal(
         bool | Closure $hasCreateOptionActionInSelectionModal,
-        null | Closure | SelectionModalActionPosition $selectionModalCreateOptionActionPosition
+        null | Closure $createOptionActionOnlyVisibleInSelectionModal = null,
+        null | Closure | SelectionModalActionPosition $selectionModalCreateOptionActionPosition = null
     ): static
     {
         $this->hasCreateOptionActionInSelectionModal = $hasCreateOptionActionInSelectionModal;
+        $this->createOptionActionOnlyVisibleInSelectionModal = $createOptionActionOnlyVisibleInSelectionModal ?? $this->createOptionActionOnlyVisibleInSelectionModal;
         $this->selectionModalCreateOptionActionPosition = $selectionModalCreateOptionActionPosition ?? $this->selectionModalCreateOptionActionPosition;
 
         return $this;
@@ -88,6 +119,18 @@ class TableSelect extends Select
     public function selectionModalCreateOptionActionPosition(SelectionModalActionPosition $selectionModalCreateOptionActionPosition): static
     {
         $this->selectionModalCreateOptionActionPosition = $selectionModalCreateOptionActionPosition;
+
+        return $this;
+    }
+
+    /**
+     * @param  bool | Closure $createOptionActionOnlyVisibleInSelectionModal
+     *
+     * @return $this
+     */
+    public function createOptionActionOnlyVisibleInSelectionModal(bool | Closure $createOptionActionOnlyVisibleInSelectionModal): static
+    {
+        $this->createOptionActionOnlyVisibleInSelectionModal = $createOptionActionOnlyVisibleInSelectionModal;
 
         return $this;
     }
@@ -158,20 +201,24 @@ class TableSelect extends Select
      */
     protected function getSelectionModalCreateOptionAction(): ?Action
     {
-        $originalAction = $this->getAction($this->getCreateOptionActionName());
+        $createOptionAction = $this->getAction($this->getCreateOptionActionName());
 
-        if (! $originalAction) {
+        if (! $createOptionAction) {
             throw TableSelectException::createOptionActionNotFound();
         }
 
-        $action = (clone $originalAction)
+        $selectionCreateOptionAction = (clone $createOptionAction)
             ->name($this->getSelectionModalCreateOptionActionName())
             ->button();
 
+        if ($this->evaluate($this->createOptionActionOnlyVisibleInSelectionModal)) {
+            $createOptionAction->hidden()->disabled();
+        }
+
         return $this->evaluate($this->modifySelectionModalCreateOptionActionUsing, [
-            'action' => $action
+            'action' => $selectionCreateOptionAction
         ], [
-            Action::class => $action
-        ]) ?? $action;
+            Action::class => $selectionCreateOptionAction
+        ]) ?? $selectionCreateOptionAction;
     }
 }
