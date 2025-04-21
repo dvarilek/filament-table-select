@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Components\View\Concerns;
 
-use Dvarilek\FilamentTableSelect\Enums\ConfirmationActionPosition;
+use Dvarilek\FilamentTableSelect\Enums\SelectionModalActionPosition;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Resources\Resource;
@@ -44,9 +44,9 @@ trait InteractsWithSelectionTable
     protected bool | Closure $shouldCloseOnSelection = true;
 
     /**
-     * @var ConfirmationActionPosition
+     * @var SelectionModalActionPosition
      */
-    protected ConfirmationActionPosition $confirmationActionPosition = ConfirmationActionPosition::BOTTOM_LEFT;
+    protected SelectionModalActionPosition $confirmationActionPosition = SelectionModalActionPosition::BOTTOM_LEFT;
 
     /**
      * @var ?Closure
@@ -92,14 +92,14 @@ trait InteractsWithSelectionTable
     /**
      * @param  bool | Closure $shouldConfirmSelection
      * @param  null | bool | Closure $shouldCloseOnSelection
-     * @param  ?ConfirmationActionPosition $confirmationActionPosition
+     * @param  null | Closure | SelectionModalActionPosition $confirmationActionPosition
      *
      * @return $this
      */
     public function shouldConfirmSelection(
         bool | Closure $shouldConfirmSelection = true,
         null | bool | Closure $shouldCloseOnSelection = null,
-        ?ConfirmationActionPosition $confirmationActionPosition = null
+        null | Closure | SelectionModalActionPosition $confirmationActionPosition = null
     ): static
     {
         $this->shouldConfirmSelection = $shouldConfirmSelection;
@@ -123,11 +123,11 @@ trait InteractsWithSelectionTable
     }
 
     /**
-     * @param  ConfirmationActionPosition $confirmationActionPosition
+     * @param  Closure | SelectionModalActionPosition $confirmationActionPosition
      *
      * @return $this
      */
-    public function confirmationActionPosition(ConfirmationActionPosition $confirmationActionPosition): static
+    public function confirmationActionPosition(Closure | SelectionModalActionPosition $confirmationActionPosition): static
     {
         $this->confirmationActionPosition = $confirmationActionPosition;
 
@@ -136,13 +136,13 @@ trait InteractsWithSelectionTable
 
     /**
      * @param  Closure $modifySelectionConfirmationActionUsing
-     * @param  ?ConfirmationActionPosition $confirmationActionPosition
+     * @param  null | Closure | SelectionModalActionPosition $confirmationActionPosition
      *
      * @return $this
      */
     public function modifySelectionConfirmationActionUsing(
         Closure $modifySelectionConfirmationActionUsing,
-        ?ConfirmationActionPosition $confirmationActionPosition = null
+        null | Closure | SelectionModalActionPosition $confirmationActionPosition = null
     ): static
     {
         $this->modifySelectionConfirmationActionUsing = $modifySelectionConfirmationActionUsing;
@@ -164,7 +164,7 @@ trait InteractsWithSelectionTable
             'tableLocation' => $this->evaluate($this->tableLocation),
             'shouldConfirmSelection' => $this->evaluate($this->shouldConfirmSelection),
             'shouldCloseOnSelection' => $this->evaluate($this->shouldCloseOnSelection),
-            'confirmationActionPosition' => $this->confirmationActionPosition,
+            'confirmationActionPosition' => $this->evaluate($this->confirmationActionPosition),
             'selectionConfirmationAction' => $this->getSelectionConfirmationAction(),
             'configureSelectionTableUsing' => $this->configureSelectionTableUsing,
             'statePath' => $this->getStatePath(),

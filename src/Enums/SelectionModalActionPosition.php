@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Enums;
 
-enum ConfirmationActionPosition
+enum SelectionModalActionPosition
 {
 
     case TOP_LEFT;
