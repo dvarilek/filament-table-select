@@ -152,6 +152,11 @@ trait InteractsWithSelectionTable
     }
 
     /**
+     * @return int
+     */
+    abstract public function getSelectionLimit(): int;
+
+    /**
      * @return View
      */
     protected function getSelectionTableView(): View
