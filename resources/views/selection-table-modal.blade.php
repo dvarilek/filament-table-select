@@ -11,9 +11,21 @@
             if (this.shouldConfirmSelection && @js($shouldCloseOnSelection)) {
                 close();
             }
-        },
+        }
     }"
 >
+    @if (($createAction ?? null) && $createActionPosition->isTop())
+        <div
+            @class([
+                'pb-6 flex',
+                'justify-end' => $createActionPosition->isRight(),
+                'justify-start' => $createActionPosition->isLeft()
+            ])
+        >
+            {{ $createAction }}
+        </div>
+    @endif
+
     @if ($shouldConfirmSelection && $confirmationActionPosition->isTop())
         <div
             @class([
@@ -32,6 +44,18 @@
             :tableLocation="$tableLocation"
             :configureSelectionTableUsing="$configureSelectionTableUsing"
     />
+
+    @if (($createAction ?? null) && $createActionPosition->isBottom())
+        <div
+            @class([
+                'pt-6 flex',
+                'justify-end' => $createActionPosition->isRight(),
+                'justify-start' => $createActionPosition->isLeft()
+            ])
+        >
+            {{ $createAction }}
+        </div>
+    @endif
 
     @if ($shouldConfirmSelection && $confirmationActionPosition->isBottom())
         <div
