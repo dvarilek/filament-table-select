@@ -14,7 +14,7 @@
         }
     }"
 >
-    @if (($createAction ?? null) && $createActionPosition->isTop())
+    @if (($createAction ?? null) && $createActionPosition->isTop() && ! $createAction->isDisabled())
         <div
             @class([
                 'pb-6 flex',
@@ -26,7 +26,7 @@
         </div>
     @endif
 
-    @if ($shouldConfirmSelection && $confirmationActionPosition->isTop())
+    @if ($shouldConfirmSelection && $confirmationActionPosition->isTop() && ! $selectionConfirmationAction->isDisabled())
         <div
             @class([
                 'pb-6 flex',
@@ -45,7 +45,7 @@
             :configureSelectionTableUsing="$configureSelectionTableUsing"
     />
 
-    @if (($createAction ?? null) && $createActionPosition->isBottom())
+    @if (($createAction ?? null) && $createActionPosition->isBottom() && ! $createAction->isDisabled())
         <div
             @class([
                 'pt-6 flex',
@@ -57,7 +57,7 @@
         </div>
     @endif
 
-    @if ($shouldConfirmSelection && $confirmationActionPosition->isBottom())
+    @if ($shouldConfirmSelection && $confirmationActionPosition->isBottom() && ! $selectionConfirmationAction->isDisabled())
         <div
             @class([
                 'pt-6 flex',
