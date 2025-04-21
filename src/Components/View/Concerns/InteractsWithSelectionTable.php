@@ -156,7 +156,7 @@ trait InteractsWithSelectionTable
      */
     protected function getSelectionTableView(): View
     {
-        return view('filament-table-select::selection-table-modal', [
+        return view($this->selectionTableModalView, [
             'initialState' => is_array($state = $this->getState()) ? $state : [$state],
             'selectionLimit' => $this->getSelectionLimit(),
             'isRecordSelectableOnRowClick' => $this->evaluate($this->isRecordSelectableOnRowClick),

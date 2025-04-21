@@ -16,6 +16,11 @@ class TableSelect extends Select
     use InteractsWithSelectionTable;
 
     /**
+     * @var view-string
+     */
+    protected string $selectionTableModalView = 'filament-table-select::selection-table-modal';
+
+    /**
      * @var ?Closure
      */
     protected ?Closure $modifySelectionActionUsing = null;
