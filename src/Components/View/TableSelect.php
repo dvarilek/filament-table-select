@@ -204,7 +204,7 @@ class TableSelect extends Select
         $createOptionAction = $this->getAction($this->getCreateOptionActionName());
 
         if (! $createOptionAction) {
-            throw TableSelectException::createOptionActionNotFound();
+            return null;
         }
 
         $selectionCreateOptionAction = (clone $createOptionAction)
