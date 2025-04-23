@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Dvarilek\FilamentTableSelect\Components\View\Concerns;
 
 use Dvarilek\FilamentTableSelect\Enums\SelectionModalActionPosition;
+use Dvarilek\FilamentTableSelect\Exceptions\TableSelectException;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Resources\Resource;
@@ -156,14 +157,18 @@ trait InteractsWithSelectionTable
      */
     abstract public function getSelectionLimit(): int;
 
-    /**
-     * @return View
-     */
     protected function getSelectionTableView(): View
     {
+        $state = is_array($state = $this->getState()) ? $state : [$state];
+        $selectionLimit = $this->getSelectionLimit();
+
+        if (count($state) > 1 && $selectionLimit === 1) {
+            throw TableSelectException::stateCountSurpassesSelectionLimit($state);
+        }
+
         return view($this->selectionTableModalView, [
-            'initialState' => is_array($state = $this->getState()) ? $state : [$state],
-            'selectionLimit' => $this->getSelectionLimit(),
+            'initialState' => $state,
+            'selectionLimit' => $selectionLimit,
             'shouldSelectRecordOnRowClick' => $this->evaluate($this->shouldSelectRecordOnRowClick),
             'relatedModel' => $this->getRelationship()->getRelated()::class,
             'tableLocation' => $this->evaluate($this->tableLocation),
