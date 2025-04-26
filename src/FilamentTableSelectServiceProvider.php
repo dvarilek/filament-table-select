@@ -46,6 +46,7 @@ class FilamentTableSelectServiceProvider extends PackageServiceProvider
 
         FilamentAsset::register([
             Js::make('selection-modal-cache', __DIR__ . '/../resources/js/selection-modal-cache.js'),
+            Js::make('table-select-state-handler', __DIR__ . '/../resources/js/table-select-state-handler.js'),
         ], 'dvarilek/filament-table-select');
     }
 }

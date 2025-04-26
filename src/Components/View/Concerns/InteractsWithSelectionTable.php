@@ -179,10 +179,31 @@ trait InteractsWithSelectionTable
             'requiresSelectionConfirmation' => $this->evaluate($this->requiresSelectionConfirmation),
             'shouldCloseOnSelection' => $this->evaluate($this->shouldCloseOnSelection),
             'confirmationActionPosition' => $this->evaluate($this->confirmationActionPosition),
-            'selectionConfirmationAction' => $this->getSelectionConfirmationAction(),
+            'selectionConfirmationAction' => $this->getAction($this->getSelectionConfirmationActionName()),
             'modifySelectionTableUsing' => $this->modifySelectionTableUsing,
             'statePath' => $this->getStatePath(),
         ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSelectionConfirmationActionName(): string
+    {
+        return 'selectionConfirmationAction';
+    }
+
+    /**
+     * @return void
+     */
+    public function updateTableSelectState(): void
+    {
+        $livewire = $this->getLivewire();
+
+        $livewire->dispatch('updateTableSelectState',
+            livewireId: $livewire->getId(),
+            statePath: $this->getStatePath()
+        );
     }
 
     /**
@@ -190,14 +211,17 @@ trait InteractsWithSelectionTable
      */
     protected function getSelectionConfirmationAction(): Action
     {
-        $action = Action::make('selectionConfirmationAction');
+        $action = Action::make($this->getSelectionConfirmationActionName())
+            ->action($this->updateTableSelectState(...));
 
-        $action = $this->evaluate($this->modifySelectionConfirmationActionUsing, [
+        if ($this->evaluate($this->shouldCloseOnSelection)) {
+            $action->cancelParentActions();
+        }
+
+        return $this->evaluate($this->modifySelectionConfirmationActionUsing, [
             'action' => $action,
         ], [
             Action::class => $action
         ]) ?? $action;
-
-        return $action->alpineClickHandler('updateFormComponentState');
     }
 }

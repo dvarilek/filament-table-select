@@ -76,6 +76,7 @@ class TableSelect extends Select
         ]);
 
         $this->registerActions([
+            fn () => $this->evaluate($this->requiresSelectionConfirmation) ? $this->getSelectionConfirmationAction() : null,
             fn () => $this->evaluate($this->hasCreateOptionActionInSelectionModal) ? $this->getSelectionModalCreateOptionAction() : null,
         ]);
     }
