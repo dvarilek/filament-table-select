@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Dvarilek\FilamentTableSelect;
 
 use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
+use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentView;
 use Filament\Tables\View\TablesRenderHook;
+use Filament\Support\Assets\Js;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -41,5 +43,9 @@ class FilamentTableSelectServiceProvider extends PackageServiceProvider
             fn () => view('filament-table-select::selection-table-handler'),
             SelectionTable::class
         );
+
+        FilamentAsset::register([
+            Js::make('selection-modal-cache', __DIR__ . '/../resources/js/selection-modal-cache.js'),
+        ], 'dvarilek/filament-table-select');
     }
 }

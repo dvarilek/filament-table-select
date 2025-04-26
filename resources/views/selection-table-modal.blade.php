@@ -1,9 +1,23 @@
 <div
     x-data="{
+        init() {
+            {{-- The selection modal cache is required for storing unstaged state between different modal openings, ensuring the selected records don't get wiped before commiting. --}}
+            if ($store.selectionModalCache.get(this.statePath) === null) {
+                this.cachedSelectedRecords = @js($initialState);
+            }
+        },
+
         requiresSelectionConfirmation: @js($requiresSelectionConfirmation),
         statePath: @js($statePath),
         selectionLimit: @js($selectionLimit),
-        cachedSelectedRecords: @js($initialState),
+
+        get cachedSelectedRecords() {
+            return $store.selectionModalCache.get(this.statePath) ?? [];
+        },
+
+        set cachedSelectedRecords(records) {
+            $store.selectionModalCache.set(this.statePath, records);
+        },
 
         updateFormComponentState() {
             $wire.set(this.statePath, this.cachedSelectedRecords);

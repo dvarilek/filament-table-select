@@ -6,10 +6,11 @@ namespace Dvarilek\FilamentTableSelect\Components\View;
 
 use Dvarilek\FilamentTableSelect\Components\View\Concerns\InteractsWithSelectionTable;
 use Dvarilek\FilamentTableSelect\Enums\SelectionModalActionPosition;
-use Dvarilek\FilamentTableSelect\Exceptions\TableSelectException;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Select;
 use Closure;
+use Illuminate\Support\Js;
+use Livewire\Component;
 
 class TableSelect extends Select
 {
@@ -181,7 +182,12 @@ class TableSelect extends Select
                 'createAction' => $this->getAction($this->getSelectionModalCreateOptionActionName()),
                 'createActionPosition' => $this->evaluate($this->selectionModalCreateOptionActionPosition),
             ]))
-            ->disabled(fn (Select $component) => $component->isDisabled())
+            ->mountUsing(function (Component $livewire, TableSelect $component) {
+                $statePath = Js::from($component->getStatePath());
+
+                $livewire->js("\$store.selectionModalCache.remove($statePath)");
+            })
+            ->disabled(fn (TableSelect $component) => $component->isDisabled())
             ->modalSubmitAction(false)
             ->modalCancelAction(false)
             ->icon('heroicon-o-link')
@@ -197,7 +203,6 @@ class TableSelect extends Select
 
     /**
      * @return ?Action
-     * @throws TableSelectException
      */
     protected function getSelectionModalCreateOptionAction(): ?Action
     {

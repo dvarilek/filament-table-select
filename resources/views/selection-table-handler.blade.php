@@ -9,14 +9,12 @@
                 return;
             }
 
-            cachedSelectedRecords = selectedRecords;
+            cachedSelectedRecords = [...records];
             resolveCheckboxesSelectability(records);
 
             if (requiresSelectionConfirmation === false) {
                 updateFormComponentState();
             }
-
-            cachedSelectedRecords = [...selectedRecords];
         });
 
         $wire.on('selectTableRecord', record => {
