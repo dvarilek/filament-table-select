@@ -30,7 +30,7 @@ class SelectionTable extends TableWidget
     /**
      * @var ?Closure(Table $table): Table
      */
-    public ?Closure $configureSelectionTableUsing = null;
+    public ?Closure $modifySelectionTableUsing = null;
 
     /**
      * @return void
@@ -58,10 +58,10 @@ class SelectionTable extends TableWidget
             $table->recordAction(fn(Model $record) => $table->isRecordSelectable($record) ? 'selectTableRecord' : null);
         }
 
-        $configureSelectionTableUsing = $this->configureSelectionTableUsing;
+        $modifySelectionTableUsing = $this->modifySelectionTableUsing;
 
-        if ($configureSelectionTableUsing !== null) {
-            $table = $configureSelectionTableUsing($table);
+        if ($modifySelectionTableUsing !== null) {
+            $table = $modifySelectionTableUsing($table);
         }
 
         return $table;

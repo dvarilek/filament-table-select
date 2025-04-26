@@ -1,6 +1,6 @@
 <div
     x-data="{
-        shouldConfirmSelection: @js($shouldConfirmSelection),
+        requiresSelectionConfirmation: @js($requiresSelectionConfirmation),
         statePath: @js($statePath),
         selectionLimit: @js($selectionLimit),
         cachedSelectedRecords: @js($initialState),
@@ -8,7 +8,7 @@
         updateFormComponentState() {
             $wire.set(this.statePath, this.cachedSelectedRecords);
 
-            if (this.shouldConfirmSelection && @js($shouldCloseOnSelection)) {
+            if (this.requiresSelectionConfirmation && @js($shouldCloseOnSelection)) {
                 close();
             }
         }
@@ -26,7 +26,7 @@
         </div>
     @endif
 
-    @if ($shouldConfirmSelection && $confirmationActionPosition->isTop() && ! $selectionConfirmationAction->isDisabled())
+    @if ($requiresSelectionConfirmation && $confirmationActionPosition->isTop() && ! $selectionConfirmationAction->isDisabled())
         <div
             @class([
                 'pb-6 flex',
@@ -42,7 +42,7 @@
             :shouldSelectRecordOnRowClick="$shouldSelectRecordOnRowClick"
             :relatedModel="$relatedModel"
             :tableLocation="$tableLocation"
-            :configureSelectionTableUsing="$configureSelectionTableUsing"
+            :modifySelectionTableUsing="$modifySelectionTableUsing"
     />
 
     @if (($createAction ?? null) && $createActionPosition->isBottom() && ! $createAction->isDisabled())
@@ -57,7 +57,7 @@
         </div>
     @endif
 
-    @if ($shouldConfirmSelection && $confirmationActionPosition->isBottom() && ! $selectionConfirmationAction->isDisabled())
+    @if ($requiresSelectionConfirmation && $confirmationActionPosition->isBottom() && ! $selectionConfirmationAction->isDisabled())
         <div
             @class([
                 'pt-6 flex',

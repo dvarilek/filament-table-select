@@ -12,7 +12,7 @@
             cachedSelectedRecords = selectedRecords;
             resolveCheckboxesSelectability(records);
 
-            if (shouldConfirmSelection === false) {
+            if (requiresSelectionConfirmation === false) {
                 updateFormComponentState();
             }
 

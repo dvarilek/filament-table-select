@@ -32,12 +32,12 @@ trait InteractsWithSelectionTable
     /**
      * @var ?Closure(Table $table): Table
      */
-    protected ?Closure $configureSelectionTableUsing = null;
+    protected ?Closure $modifySelectionTableUsing = null;
 
     /**
      * @var bool | Closure
      */
-    protected bool | Closure $shouldConfirmSelection = false;
+    protected bool | Closure $requiresSelectionConfirmation = false;
 
     /**
      * @var bool | Closure
@@ -55,13 +55,13 @@ trait InteractsWithSelectionTable
     protected ?Closure $modifySelectionConfirmationActionUsing = null;
 
     /**
-     * @param  Closure | class-string<Resource> $component
+     * @param  Closure | class-string<Resource> $resource
      *
      * @return $this
      */
-    public function tableLocation(Closure | string $component): static
+    public function tableLocation(Closure | string $resource): static
     {
-        $this->tableLocation = $component;
+        $this->tableLocation = $resource;
 
         return $this;
     }
@@ -79,31 +79,31 @@ trait InteractsWithSelectionTable
     }
 
     /**
-     * @param  Closure(Table $table): Table $configureSelectionTableUsing
+     * @param  Closure(Table $table): Table $modifySelectionTableUsing
      *
      * @return $this
      */
-    public function configureTableUsing(Closure $configureSelectionTableUsing): static
+    public function modifySelectionTable(Closure $modifySelectionTableUsing): static
     {
-        $this->configureSelectionTableUsing = $configureSelectionTableUsing;
+        $this->modifySelectionTableUsing = $modifySelectionTableUsing;
 
         return $this;
     }
 
     /**
-     * @param  bool | Closure $shouldConfirmSelection
+     * @param  bool | Closure $requiresSelectionConfirmation
      * @param  null | bool | Closure $shouldCloseOnSelection
      * @param  null | Closure | SelectionModalActionPosition $confirmationActionPosition
      *
      * @return $this
      */
-    public function shouldConfirmSelection(
-        bool | Closure $shouldConfirmSelection = true,
+    public function requiresSelectionConfirmation(
+        bool | Closure $requiresSelectionConfirmation = true,
         null | bool | Closure $shouldCloseOnSelection = null,
         null | Closure | SelectionModalActionPosition $confirmationActionPosition = null
     ): static
     {
-        $this->shouldConfirmSelection = $shouldConfirmSelection;
+        $this->requiresSelectionConfirmation = $requiresSelectionConfirmation;
         $this->shouldCloseOnSelection = $shouldCloseOnSelection ?? $this->shouldCloseOnSelection;
         $this->confirmationActionPosition = $confirmationActionPosition ?? $this->confirmationActionPosition;
 
@@ -118,7 +118,7 @@ trait InteractsWithSelectionTable
     public function shouldCloseOnSelection(bool | Closure $shouldCloseOnSelection = true): static
     {
         $this->shouldCloseOnSelection = $shouldCloseOnSelection;
-        $this->shouldConfirmSelection = $this->shouldConfirmSelection ?: true;
+        $this->requiresSelectionConfirmation = $this->requiresSelectionConfirmation ?: true;
 
         return $this;
     }
@@ -141,7 +141,7 @@ trait InteractsWithSelectionTable
      *
      * @return $this
      */
-    public function modifySelectionConfirmationActionUsing(
+    public function modifySelectionConfirmationAction(
         Closure $modifySelectionConfirmationActionUsing,
         null | Closure | SelectionModalActionPosition $confirmationActionPosition = null
     ): static
@@ -157,6 +157,10 @@ trait InteractsWithSelectionTable
      */
     abstract public function getSelectionLimit(): int;
 
+    /**
+     * @return View
+     * @throws TableSelectException
+     */
     protected function getSelectionTableView(): View
     {
         $state = is_array($state = $this->getState()) ? $state : [$state];
@@ -172,11 +176,11 @@ trait InteractsWithSelectionTable
             'shouldSelectRecordOnRowClick' => $this->evaluate($this->shouldSelectRecordOnRowClick),
             'relatedModel' => $this->getRelationship()->getRelated()::class,
             'tableLocation' => $this->evaluate($this->tableLocation),
-            'shouldConfirmSelection' => $this->evaluate($this->shouldConfirmSelection),
+            'requiresSelectionConfirmation' => $this->evaluate($this->requiresSelectionConfirmation),
             'shouldCloseOnSelection' => $this->evaluate($this->shouldCloseOnSelection),
             'confirmationActionPosition' => $this->evaluate($this->confirmationActionPosition),
             'selectionConfirmationAction' => $this->getSelectionConfirmationAction(),
-            'configureSelectionTableUsing' => $this->configureSelectionTableUsing,
+            'modifySelectionTableUsing' => $this->modifySelectionTableUsing,
             'statePath' => $this->getStatePath(),
         ]);
     }
