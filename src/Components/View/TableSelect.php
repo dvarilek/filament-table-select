@@ -179,6 +179,7 @@ class TableSelect extends Select
     protected function getSelectionAction(): Action
     {
         $action = Action::make($this->getSelectionActionName())
+            ->label(trans_choice('filament-table-select::table-select.actions.selection.label', $this->getSelectionLimit()))
             ->modalContent(fn () => $this->getSelectionTableView()->with([
                 'createAction' => $this->getAction($this->getSelectionModalCreateOptionActionName()),
                 'createActionPosition' => $this->evaluate($this->selectionModalCreateOptionActionPosition),
@@ -215,6 +216,8 @@ class TableSelect extends Select
 
         $selectionCreateOptionAction = (clone $createOptionAction)
             ->name($this->getSelectionModalCreateOptionActionName())
+            ->label(__('filament-table-select::table-select.actions.selection-create-option.label'))
+            ->modalHeading(__('filament-table-select::table-select.actions.selection-create-option.label'))
             ->button();
 
         if ($this->evaluate($this->createOptionActionOnlyVisibleInSelectionModal)) {

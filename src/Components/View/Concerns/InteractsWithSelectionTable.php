@@ -212,6 +212,7 @@ trait InteractsWithSelectionTable
     protected function getSelectionConfirmationAction(): Action
     {
         $action = Action::make($this->getSelectionConfirmationActionName())
+            ->label(__('filament-table-select::table-select.actions.selection-confirmation.label'))
             ->action($this->updateTableSelectState(...));
 
         if ($this->evaluate($this->shouldCloseOnSelection)) {
