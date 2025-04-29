@@ -118,7 +118,6 @@ trait InteractsWithSelectionTable
     public function shouldCloseOnSelection(bool | Closure $shouldCloseOnSelection = true): static
     {
         $this->shouldCloseOnSelection = $shouldCloseOnSelection;
-        $this->requiresSelectionConfirmation = $this->requiresSelectionConfirmation ?: true;
 
         return $this;
     }
