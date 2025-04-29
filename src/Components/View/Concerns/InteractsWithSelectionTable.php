@@ -196,11 +196,11 @@ trait InteractsWithSelectionTable
     /**
      * @return void
      */
-    public function updateTableSelectState(): void
+    public function updateTableSelectComponentState(): void
     {
         $livewire = $this->getLivewire();
 
-        $livewire->dispatch('updateTableSelectState',
+        $livewire->dispatch('filament-table-select::table-select.updateTableSelectComponentState',
             livewireId: $livewire->getId(),
             statePath: $this->getStatePath()
         );
@@ -213,7 +213,7 @@ trait InteractsWithSelectionTable
     {
         $action = Action::make($this->getSelectionConfirmationActionName())
             ->label(__('filament-table-select::table-select.actions.selection-confirmation.label'))
-            ->action($this->updateTableSelectState(...));
+            ->action($this->updateTableSelectComponentState(...));
 
         if ($this->evaluate($this->shouldCloseOnSelection)) {
             $action->cancelParentActions();

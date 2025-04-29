@@ -17,7 +17,7 @@
             }
         });
 
-        $wire.on('selectTableRecord', record => {
+        $wire.on('filament-table-select::selection-table.select-table-record', record => {
             if (! Array.isArray(record) || record.length !== 1) {
                 return;
             }
@@ -28,7 +28,7 @@
             index !== -1 ? selectedRecords.splice(index, 1) : selectedRecords.push(value);
         });
 
-        $wire.on('refreshCheckboxes', () => requestAnimationFrame(() => resolveCheckboxesSelectability(selectedRecords)))
+        $wire.on('filament-table-select::selection-table.refresh-checkboxes', () => requestAnimationFrame(() => resolveCheckboxesSelectability(selectedRecords)))
     "
 
     x-data="{

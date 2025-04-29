@@ -218,10 +218,15 @@ class TableSelect extends Select
             ->name($this->getSelectionModalCreateOptionActionName())
             ->label(__('filament-table-select::table-select.actions.selection-create-option.label'))
             ->modalHeading(__('filament-table-select::table-select.actions.selection-create-option.label'))
+            ->disabledForm(false)
             ->button();
 
         if ($this->evaluate($this->createOptionActionOnlyVisibleInSelectionModal)) {
             $createOptionAction->hidden()->disabled();
+        }
+
+        if ($this->evaluate($this->shouldSelectRecordAfterCreate)) {
+            $selectionCreateOptionAction->after($this->callAfterSelectionModalCreateOptionCreated(...));
         }
 
         return $this->evaluate($this->modifySelectionModalCreateOptionActionUsing, [
@@ -229,5 +234,46 @@ class TableSelect extends Select
         ], [
             Action::class => $selectionCreateOptionAction
         ]) ?? $selectionCreateOptionAction;
+    }
+
+    /**
+     * @return void
+     *
+     * @throws \JsonException
+     */
+    public function callAfterSelectionModalCreateOptionCreated(): void
+    {
+        $state = is_array($state = $this->getState()) ? $state : [$state];
+
+        if (count($state) > $this->getSelectionLimit() && $this->isMultiple()) {
+            $this->state(array_slice($state, 0, -1));
+
+            return;
+        }
+
+        $this->updateTableSelectCacheState();
+
+        // TODO: Fix
+        if ($this->evaluate($this->requiresSelectionConfirmation)) {
+            $this->state(array_slice($state, 0, -1));
+        }
+    }
+
+    /**
+     * @return void
+     *
+     * @throws \JsonException
+     */
+    public function updateTableSelectCacheState(): void
+    {
+        $livewire = $this->getLivewire();
+        $state = is_array($state = $this->getState()) ? $state : [$state];
+
+        $livewire->dispatch('filament-table-select::table-select.updateTableSelectCacheState',
+            statePath: $this->getStatePath(),
+            records: array_map(strval(...), $state),
+            limit: $this->getSelectionLimit(),
+            livewireId: $livewire->getId()
+        );
     }
 }

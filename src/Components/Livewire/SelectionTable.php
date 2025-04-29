@@ -37,7 +37,7 @@ class SelectionTable extends TableWidget
      */
     public function hydrate(): void
     {
-        $this->dispatch('refreshCheckboxes');
+        $this->dispatch('filament-table-select::selection-table.refresh-checkboxes');
     }
 
     /**
@@ -74,6 +74,6 @@ class SelectionTable extends TableWidget
      */
     public function selectTableRecord(int $record): void
     {
-        $this->dispatch('selectTableRecord', $record);
+        $this->dispatch('filament-table-select::selection-table.select-table-record', $record);
     }
 }
