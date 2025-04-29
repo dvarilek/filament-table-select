@@ -13,7 +13,7 @@
             resolveCheckboxesSelectability(records);
 
             if (requiresSelectionConfirmation === false) {
-                updateFormComponentState();
+                requestAnimationFrame(() => updateFormComponentState());
             }
         });
 

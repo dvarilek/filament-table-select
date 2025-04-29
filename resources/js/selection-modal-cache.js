@@ -10,8 +10,8 @@ document.addEventListener('livewire:initialized', () => {
             this.data[statePath] = state;
         },
 
-        remove(statePath) {
+        clear(statePath) {
             delete this.data[statePath];
-        }
+        },
     });
 });

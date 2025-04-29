@@ -187,7 +187,9 @@ class TableSelect extends Select
             ->mountUsing(function (Component $livewire, TableSelect $component) {
                 $statePath = Js::from($component->getStatePath());
 
-                $livewire->js("\$store.selectionModalCache.remove($statePath)");
+                $livewire->js(<<<JS
+                    Alpine.store('selectionModalCache').clear($statePath);
+                JS);
             })
             ->disabled(fn (TableSelect $component) => $component->isDisabled())
             ->modalSubmitAction(false)

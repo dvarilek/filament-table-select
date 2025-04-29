@@ -12,8 +12,7 @@ return [
 
         'selection-confirmation' => [
 
-            'label' => 'Confirm'
-            ,
+            'label' => 'Confirm',
         ],
 
         'selection-create-option' => [
