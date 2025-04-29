@@ -21,10 +21,6 @@
 
         updateFormComponentState() {
             $wire.set(this.statePath, this.cachedSelectedRecords);
-
-            if (this.requiresSelectionConfirmation && @js($shouldCloseOnSelection)) {
-                close();
-            }
         }
     }"
 >

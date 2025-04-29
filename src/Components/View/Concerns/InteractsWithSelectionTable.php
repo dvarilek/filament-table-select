@@ -177,7 +177,6 @@ trait InteractsWithSelectionTable
             'relatedModel' => $this->getRelationship()->getRelated()::class,
             'tableLocation' => $this->evaluate($this->tableLocation),
             'requiresSelectionConfirmation' => $this->evaluate($this->requiresSelectionConfirmation),
-            'shouldCloseOnSelection' => $this->evaluate($this->shouldCloseOnSelection),
             'confirmationActionPosition' => $this->evaluate($this->confirmationActionPosition),
             'selectionConfirmationAction' => $this->getAction($this->getSelectionConfirmationActionName()),
             'modifySelectionTableUsing' => $this->modifySelectionTableUsing,
