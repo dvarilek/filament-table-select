@@ -9,14 +9,14 @@ use Dvarilek\FilamentTableSelect\Exceptions\TableSelectException;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Resources\Resource;
-use Closure;
 use Filament\Tables\Table;
 use Illuminate\View\View;
+use Closure;
 
 /**
  * @mixin Field
  */
-trait InteractsWithSelectionTable
+trait HasSelectionTable
 {
 
     /**
@@ -45,9 +45,9 @@ trait InteractsWithSelectionTable
     protected bool | Closure $shouldCloseOnSelection = true;
 
     /**
-     * @var SelectionModalActionPosition
+     * @var SelectionModalActionPosition | Closure
      */
-    protected SelectionModalActionPosition $confirmationActionPosition = SelectionModalActionPosition::BOTTOM_LEFT;
+    protected SelectionModalActionPosition | Closure $confirmationActionPosition = SelectionModalActionPosition::BOTTOM_LEFT;
 
     /**
      * @var ?Closure
@@ -180,6 +180,8 @@ trait InteractsWithSelectionTable
             'selectionConfirmationAction' => $this->getAction($this->getSelectionConfirmationActionName()),
             'modifySelectionTableUsing' => $this->modifySelectionTableUsing,
             'statePath' => $this->getStatePath(),
+            'createAction' => $this->getAction($this->getSelectionModalCreateOptionActionName()),
+            'createActionPosition' => $this->evaluate($this->selectionModalCreateOptionActionPosition),
         ]);
     }
 
@@ -189,19 +191,6 @@ trait InteractsWithSelectionTable
     public function getSelectionConfirmationActionName(): string
     {
         return 'selectionConfirmationAction';
-    }
-
-    /**
-     * @return void
-     */
-    public function updateTableSelectComponentState(): void
-    {
-        $livewire = $this->getLivewire();
-
-        $livewire->dispatch('filament-table-select::table-select.updateTableSelectComponentState',
-            livewireId: $livewire->getId(),
-            statePath: $this->getStatePath()
-        );
     }
 
     /**
