@@ -6,6 +6,7 @@ namespace Dvarilek\FilamentTableSelect\Components\View;
 
 use Dvarilek\FilamentTableSelect\Components\View\Concerns\InteractsWithSelectionTable;
 use Dvarilek\FilamentTableSelect\Enums\SelectionModalActionPosition;
+use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Select;
 use Closure;
@@ -227,9 +228,7 @@ class TableSelect extends Select
             $createOptionAction->hidden()->disabled();
         }
 
-        if ($this->evaluate($this->shouldSelectRecordAfterCreate)) {
-            $selectionCreateOptionAction->after($this->callAfterSelectionModalCreateOptionCreated(...));
-        }
+        $selectionCreateOptionAction->action(static::overwriteSelectionCreateOptionAction(...));
 
         return $this->evaluate($this->modifySelectionModalCreateOptionActionUsing, [
             'action' => $selectionCreateOptionAction
@@ -238,38 +237,56 @@ class TableSelect extends Select
         ]) ?? $selectionCreateOptionAction;
     }
 
-    /**
-     * @return void
-     *
-     * @throws \JsonException
-     */
-    public function callAfterSelectionModalCreateOptionCreated(): void
+    protected static function overwriteSelectionCreateOptionAction(Action $action, array $arguments, TableSelect $component, array $data, ComponentContainer $form): void
     {
-        $state = is_array($state = $this->getState()) ? $state : [$state];
+        if (! $component->getCreateOptionUsing()) {
+            throw new \Exception("Select field [{$component->getStatePath()}] must have a [createOptionUsing()] closure set.");
+        }
 
-        if (count($state) > $this->getSelectionLimit() && $this->isMultiple()) {
-            $this->state(array_slice($state, 0, -1));
+        $createdOptionKey = $component->evaluate($component->getCreateOptionUsing(), [
+            'data' => $data,
+            'form' => $form,
+        ]);
 
+        $state = is_array($state = $component->getState()) ? $state : [$state];
+        $selectionLimit = $component->getSelectionLimit();
+
+        $newState = $component->isMultiple()
+            ? [
+                ...$state,
+                $createdOptionKey,
+            ]
+            : $createdOptionKey;
+
+        if ((count($state) < $selectionLimit || $selectionLimit === 1) && ! $component->evaluate($component->requiresSelectionConfirmation)) {
+            $component->state($newState);
+            $component->callAfterStateUpdated();
+
+        }
+
+        $component->updateTableSelectCacheState(is_array($newState) ? $newState : [$newState]);
+
+        if (! ($arguments['another'] ?? false)) {
             return;
         }
 
-        $this->updateTableSelectCacheState();
+        $action->callAfter();
 
-        // TODO: Fix
-        if ($this->evaluate($this->requiresSelectionConfirmation)) {
-            $this->state(array_slice($state, 0, -1));
-        }
+        $form->fill();
+
+        $action->halt();
     }
 
     /**
+     * @param  list<int | string>
+     *
      * @return void
      *
      * @throws \JsonException
      */
-    public function updateTableSelectCacheState(): void
+    public function updateTableSelectCacheState(array $state): void
     {
         $livewire = $this->getLivewire();
-        $state = is_array($state = $this->getState()) ? $state : [$state];
 
         $livewire->dispatch('filament-table-select::table-select.updateTableSelectCacheState',
             statePath: $this->getStatePath(),
