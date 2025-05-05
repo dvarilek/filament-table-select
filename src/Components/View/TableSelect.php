@@ -77,7 +77,7 @@ class TableSelect extends Select
     }
 
     /**
-     * @param  list<int | string>
+     * @param  list<int | string> $state
      *
      * @return void
      *

@@ -135,7 +135,7 @@ trait HasSelectionModalCreateOptionAction
     protected static function overwriteSelectionCreateOptionAction(Action $action, array $arguments, TableSelect $component, array $data, ComponentContainer $form): void
     {
         if (! $component->getCreateOptionUsing()) {
-            throw new Exception("Select field [{$component->getStatePath()}] must have a [createOptionUsing()] closure set.");
+            throw new \Exception("Select field [{$component->getStatePath()}] must have a [createOptionUsing()] closure set.");
         }
 
         $createdOptionKey = $component->evaluate($component->getCreateOptionUsing(), [
