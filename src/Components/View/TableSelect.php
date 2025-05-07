@@ -25,9 +25,9 @@ class TableSelect extends Select
         parent::setUp();
 
         $this->suffixActions([
-            fn () => $this->getSelectionAction(),
-            function () {
-                $action = $this->getAction($this->getCreateOptionActionName());
+            fn (TableSelect $component) => $component->getSelectionAction(),
+            function (TableSelect $component) {
+                $action = $component->getAction($component->getCreateOptionActionName());
 
                 if (! $action) {
                     return null;
@@ -37,11 +37,11 @@ class TableSelect extends Select
                     return $action;
                 }
 
-                if (! $this->evaluate($this->hasCreateOptionActionInSelectionModal)) {
+                if (! $component->evaluate($component->hasCreateOptionActionInSelectionModal)) {
                     return $action;
                 }
 
-                if (! $this->evaluate($this->createOptionActionOnlyVisibleInSelectionModal)) {
+                if (! $component->evaluate($component->createOptionActionOnlyVisibleInSelectionModal)) {
                     return $action;
                 }
 
@@ -50,8 +50,8 @@ class TableSelect extends Select
         ]);
 
         $this->registerActions([
-            fn () => $this->evaluate($this->requiresSelectionConfirmation) ? $this->getSelectionConfirmationAction() : null,
-            fn () => $this->evaluate($this->hasCreateOptionActionInSelectionModal) ? $this->getSelectionModalCreateOptionAction() : null
+            fn (TableSelect $component) => $component->evaluate($component->requiresSelectionConfirmation) ? $component->getSelectionConfirmationAction() : null,
+            fn (TableSelect $component) => $component->evaluate($component->hasCreateOptionActionInSelectionModal) ? $component->getSelectionModalCreateOptionAction() : null
         ]);
 
         $this->dehydrateStateUsing(function (TableSelect $component, array $state) {
