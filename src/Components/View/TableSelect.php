@@ -56,8 +56,12 @@ class TableSelect extends Select
             fn (TableSelect $component) => $component->evaluate($component->hasCreateOptionActionInSelectionModal) ? $component->getSelectionModalCreateOptionAction() : null
         ]);
 
-        $this->dehydrateStateUsing(function (TableSelect $component, array $state) {
-            return $component->isMultiple() ? $state : $state[0];
+        $this->dehydrateStateUsing(function (TableSelect $component, mixed $state) {
+            if (is_array($state) && count($state) === 1 && ! $component->isMultiple()) {
+                return $state[0];
+            }
+
+            return $state;
         });
     }
 
