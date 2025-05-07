@@ -212,4 +212,17 @@ trait HasSelectionTable
             Action::class => $action
         ]) ?? $action;
     }
+
+    /**
+     * @return void
+     */
+    public function updateTableSelectComponentState(): void
+    {
+        $livewire = $this->getLivewire();
+
+        $livewire->dispatch('filament-table-select::table-select.updateTableSelectComponentState',
+            livewireId: $livewire->getId(),
+            statePath: $this->getStatePath(),
+        );
+    }
 }
