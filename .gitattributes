@@ -1,5 +1,6 @@
 /.github        export-ignore
 /tests          export-ignore
+/art            export-ignore
 .gitignore      export-ignore
 .gitattributes  export-ignore
 phpunit.xml     export-ignore

@@ -1,14 +1,13 @@
 # Filament Table Select
 
-This package enhances the Filament Select Form component by adding an option to select related records
-from a full-fledged Filament table using a suffix action.
+![Filament Table Select Banner](art/images/filament-table-select-banner-cmp.png)
 
 > [!CAUTION]
 > This package is still under development.
 
 
-// TODO: Add Images
 
+![Filament Table Select Demo Video](https://raw.githubusercontent.com/dvarilek/filament-table-select/main/art/videos/filament-table-select-full-demo.mov)
 ***
 ## Installation
 
@@ -16,15 +15,13 @@ from a full-fledged Filament table using a suffix action.
 composer require dvarilek/filament-table-select
 ```
 
-Additionally, you can publish the translation files:
-```bash
-php artisan vendor:publish --tag=filament-table-select
-```
-
 ***
 ## Overview
 
-The Table Select component is an extension of Filament's Select component. All functionalities and methods of the 
+This package enhances the Filament Select Form component by adding an option to select related records
+from a full-fledged Filament table using a suffix action.
+
+This component — Table Select — is an extension of Filament's Select component. All functionalities and methods of the 
 original Select component are still available. Users can still choose to operate the component like a standard 
 select by selecting from a simple dropdown.
 
@@ -53,7 +50,8 @@ $form
 ***
 ## Configuring the Selection Table
 
-You can configure the selection table using 'modifySelectionTable' method:
+You can configure the Selection table by passing a closure into the 'modifySelectionTable' method, this is where 
+you can add columns, remove actions, modify the table's query etc.
 ```php
 use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
 use Filament\Tables\Table;
@@ -96,6 +94,17 @@ TableSelect::make('category_id')
     ->relationship('category', 'name')
     ->multiple(false)
 ```
+
+### Multiple Selection
+
+![Filament Table Select Single Selection Video](https://raw.githubusercontent.com/dvarilek/filament-table-select/main/art/videos/multi-selection-showcase.mov)
+
+<br>
+
+### Single Selection
+
+![Filament Table Select Single Selection Video](https://raw.githubusercontent.com/dvarilek/filament-table-select/main/art/videos/single-selection-showcase.mov)
+
 <br>
 
 To limit how many items the user can select in the Selection Table, use 'optionsLimit' method:
@@ -114,10 +123,6 @@ TableSelect::make('clients')
 
 <br>
 
-// TODO: add section for disabledWhen, options and enabledOptions when implemented.
-
-<br>
-
 ***
 ## Selection Action
 The selection action and its modal where the table is contained can be configured using the 'modifySelectionAction' method:
@@ -129,9 +134,9 @@ TableSelect::make('clients')
     ->relationship('clients', 'name')
     ->modifySelectionAction(function (Action $action) {
         return $action
-            ->icon('heroicon-o-user-plus') // Change the action icon
-            ->modalHeading('Select Clients') // Change the modal heading
-            ->slideOver(false) // Don't show the Selection table in slidOver
+            ->icon('heroicon-o-user-plus') 
+            ->modalHeading('Select Clients') 
+            ->slideOver(false);
     })
 ```
 
@@ -150,6 +155,9 @@ TableSelect::make('clients')
 
 This prevents automatic state updates and adds a confirmation action to the modal. Only when this action is clicked will 
 the form component's state get updated.
+
+
+![Filament Table Select Single Selection Video](https://raw.githubusercontent.com/dvarilek/filament-table-select/main/art/videos/multi-selection-confirmation-showcase.mov)
 
 <br>
 
@@ -221,6 +229,8 @@ TableSelect::make('clients')
     ->createOptionForm(fn (Form $form) => ClientResource::form($form))
     ->hasCreateOptionActionInSelectionModal()
 ```
+
+![Filament Table Select Single Selection Video](https://raw.githubusercontent.com/dvarilek/filament-table-select/main/art/videos/create-option-showcase.mov)
 
 > [!IMPORTANT]
 > When a new record is created, it's automatically selected in the table. If this newly created
