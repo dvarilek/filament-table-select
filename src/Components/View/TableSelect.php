@@ -27,8 +27,8 @@ class TableSelect extends Select
         parent::setUp();
 
         $this->suffixActions([
-            fn (TableSelect $component) => $component->getSelectionAction(),
-            function (TableSelect $component) {
+            static fn (TableSelect $component) => $component->getSelectionAction(),
+            static function (TableSelect $component) {
                 $action = $component->getAction($component->getCreateOptionActionName());
 
                 if (! $action) {
@@ -52,11 +52,11 @@ class TableSelect extends Select
         ]);
 
         $this->registerActions([
-            fn (TableSelect $component) => $component->evaluate($component->requiresSelectionConfirmation) ? $component->getSelectionConfirmationAction() : null,
-            fn (TableSelect $component) => $component->evaluate($component->hasCreateOptionActionInSelectionModal) ? $component->getSelectionModalCreateOptionAction() : null
+            static fn (TableSelect $component) => $component->evaluate($component->requiresSelectionConfirmation) ? $component->getSelectionConfirmationAction() : null,
+            static fn (TableSelect $component) => $component->evaluate($component->hasCreateOptionActionInSelectionModal) ? $component->getSelectionModalCreateOptionAction() : null
         ]);
 
-        $this->dehydrateStateUsing(function (TableSelect $component, mixed $state) {
+        $this->dehydrateStateUsing(static function (TableSelect $component, mixed $state) {
             if (is_array($state) && count($state) === 1 && ! $component->isMultiple()) {
                 return $state[0];
             }
