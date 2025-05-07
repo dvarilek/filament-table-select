@@ -5,9 +5,6 @@
 > [!CAUTION]
 > This package is still under development.
 
-
-
-![Filament Table Select Demo Video](https://raw.githubusercontent.com/dvarilek/filament-table-select/main/art/videos/filament-table-select-full-demo.mov)
 ***
 ## Installation
 
@@ -29,6 +26,9 @@ What makes this component stand out is its selection suffix action. When clicked
 a Selection Table. This table can be used to select related records with more context and clarity.
 Users can interact with this table like any other Filament table — they can search, filter, group, and more — whatever 
 it takes to select the record they are looking for.
+
+
+https://github.com/user-attachments/assets/bba43a19-0536-438a-a83c-6687c080f215
 
 ***
 ## Getting Started
@@ -97,13 +97,15 @@ TableSelect::make('category_id')
 
 ### Multiple Selection
 
-![Filament Table Select Single Selection Video](https://raw.githubusercontent.com/dvarilek/filament-table-select/main/art/videos/multi-selection-showcase.mov)
+https://github.com/user-attachments/assets/5c035dca-fb22-47fa-9211-f9b92e275422
+
 
 <br>
 
 ### Single Selection
 
-![Filament Table Select Single Selection Video](https://raw.githubusercontent.com/dvarilek/filament-table-select/main/art/videos/single-selection-showcase.mov)
+https://github.com/user-attachments/assets/ecd41cf5-1796-472d-9abf-92a0c07568fc
+
 
 <br>
 
@@ -156,8 +158,7 @@ TableSelect::make('clients')
 This prevents automatic state updates and adds a confirmation action to the modal. Only when this action is clicked will 
 the form component's state get updated.
 
-
-![Filament Table Select Single Selection Video](https://raw.githubusercontent.com/dvarilek/filament-table-select/main/art/videos/multi-selection-confirmation-showcase.mov)
+https://github.com/user-attachments/assets/18fa9ae4-9f54-4142-93d9-83cae9dee74f
 
 <br>
 
@@ -230,7 +231,8 @@ TableSelect::make('clients')
     ->hasCreateOptionActionInSelectionModal()
 ```
 
-![Filament Table Select Single Selection Video](https://raw.githubusercontent.com/dvarilek/filament-table-select/main/art/videos/create-option-showcase.mov)
+https://github.com/user-attachments/assets/1a2cdfde-828f-48d4-afc2-1b361fa98ea8
+
 
 > [!IMPORTANT]
 > When a new record is created, it's automatically selected in the table. If this newly created
