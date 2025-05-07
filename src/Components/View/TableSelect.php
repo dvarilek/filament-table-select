@@ -53,6 +53,10 @@ class TableSelect extends Select
             fn () => $this->evaluate($this->requiresSelectionConfirmation) ? $this->getSelectionConfirmationAction() : null,
             fn () => $this->evaluate($this->hasCreateOptionActionInSelectionModal) ? $this->getSelectionModalCreateOptionAction() : null
         ]);
+
+        $this->dehydrateStateUsing(function (TableSelect $component, array $state) {
+            return $component->isMultiple() ? $state : $state[0];
+        });
     }
 
     /**
