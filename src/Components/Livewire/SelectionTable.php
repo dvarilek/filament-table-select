@@ -54,7 +54,9 @@ class SelectionTable extends TableWidget
             $table = $tableLocation::table($table)->heading($tableLocation::getNavigationLabel());
         }
 
-        $table->deselectAllRecordsWhenFiltered(false);
+        $table
+            ->deselectAllRecordsWhenFiltered(false)
+            ->queryStringIdentifier(strtolower(class_basename($this->relatedModel)) . "-selection-table");
 
         if ($this->shouldSelectRecordOnRowClick) {
             $table->recordAction(fn(Model $record) => $table->isRecordSelectable($record) ? 'selectTableRecord' : null);
