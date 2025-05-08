@@ -62,8 +62,18 @@ TableSelect::make('clients')
         return $table
             ->heading('Select Active Clients') 
             ->actions([]) 
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'active')) 
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'active'));
     })
+```
+
+Additionally, If you wish to customize the Selection Table Livewire component, you can access it as the second argument:
+```php
+use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
+use Filament\Tables\Table;
+
+->modifySelectionTable(function (Table $table, SelectionTable $livewire) {
+    // ...
+})
 ```
 <br>
 
@@ -288,9 +298,6 @@ Or provide an optional parameter directly in the 'hasCreateOptionActionInSelecti
 ```
 
 <br>
-
-If create option action is displayed in Form and Selection modal and you want to configure just the Selection
-modal one, you can use 'modifySelectionModalCreateOptionAction' method:
 
 To customize only the modal's create action without affecting the original create option action, use 
 'modifySelectionModalCreateOptionAction' method:

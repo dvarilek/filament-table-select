@@ -54,21 +54,17 @@ class SelectionTable extends TableWidget
             $table = $tableLocation::table($table)->heading($tableLocation::getNavigationLabel());
         }
 
-        $table
+        return $table
             ->deselectAllRecordsWhenFiltered(false)
-            ->queryStringIdentifier(strtolower(class_basename($this->relatedModel)) . "-selection-table");
-
-        if ($this->shouldSelectRecordOnRowClick) {
-            $table->recordAction(fn(Model $record) => $table->isRecordSelectable($record) ? 'selectTableRecord' : null);
-        }
-
-        $modifySelectionTableUsing = $this->modifySelectionTableUsing;
-
-        if ($modifySelectionTableUsing !== null) {
-            $table = $modifySelectionTableUsing($table);
-        }
-
-        return $table;
+            ->queryStringIdentifier(strtolower(class_basename($this->relatedModel)) . "-selection-table")
+            ->when(
+                $this->shouldSelectRecordOnRowClick,
+                fn (Table $table) => $table->recordAction(fn(Model $record) => $table->isRecordSelectable($record) ? 'selectTableRecord' : null)
+            )
+            ->when(
+                $this->modifySelectionTableUsing instanceof Closure,
+                fn (Table $table) => ($this->modifySelectionTableUsing)($table, $this)
+            );
     }
 
     /**
