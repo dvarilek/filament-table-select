@@ -36,14 +36,14 @@ trait HasSelectionModalCreateOptionAction
 
     /**
      * @param bool | Closure $hasCreateOptionActionInSelectionModal
-     * @param null | Closure  $createOptionActionOnlyVisibleInSelectionModal
+     * @param null | bool | Closure  $createOptionActionOnlyVisibleInSelectionModal
      * @param null | Closure | SelectionModalActionPosition $selectionModalCreateOptionActionPosition
      *
      * @return $this
      */
     public function hasCreateOptionActionInSelectionModal(
-        bool | Closure $hasCreateOptionActionInSelectionModal,
-        null | Closure $createOptionActionOnlyVisibleInSelectionModal = null,
+        bool | Closure $hasCreateOptionActionInSelectionModal = true,
+        null | bool | Closure $createOptionActionOnlyVisibleInSelectionModal = null,
         null | Closure | SelectionModalActionPosition $selectionModalCreateOptionActionPosition = null
     ): static
     {
