@@ -15,7 +15,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Dvarilek\\FilamentTableSelect\\Tests\\": "tests/"
+            "Dvarilek\\FilamentTableSelect\\Tests\\": "tests"
         }
     },
     "authors": [
@@ -33,7 +33,8 @@
     "require-dev": {
         "pestphp/pest": "^2.31|^3.0.0",
         "orchestra/testbench": "^8.0|^9.0",
-        "phpstan/phpstan": "^2.1"
+        "phpstan/phpstan": "^2.1",
+        "pestphp/pest-plugin-livewire": "^3.0"
     },
     "extra": {
         "laravel": {
