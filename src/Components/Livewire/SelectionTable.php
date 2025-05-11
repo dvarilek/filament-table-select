@@ -68,11 +68,11 @@ class SelectionTable extends TableWidget
     }
 
     /**
-     * @param  int $record
+     * @param  mixed $record
      *
      * @return void
      */
-    public function selectTableRecord(int $record): void
+    public function selectTableRecord(mixed $record): void
     {
         $this->dispatch('filament-table-select::selection-table.select-table-record', $record);
     }
