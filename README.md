@@ -1,5 +1,10 @@
 # Filament Table Select
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/dvarilek/filament-table-select.svg?include_prereleases)](https://packagist.org/packages/dvarilek/filament-table-select)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dvarilek/filament-table-select/code-style.yml?branch=main&label=Code%20style&style=flat-square)
+[![Total Downloads](https://img.shields.io/packagist/dt/dvarilek/filament-table-select.svg)](https://packagist.org/packages/dvarilek/filament-table-select)
+
 ![Filament Table Select Banner](art/images/filament-table-select-banner-cmp.png)
 
 > [!CAUTION]
@@ -324,7 +329,6 @@ you can do so using the `configureUsing()` method from the `boot()` method of a 
 TableSelect components require selection confirmation by default.
 
 ```php
-
 use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
 
 public function boot(): void
@@ -340,7 +344,7 @@ public function boot(): void
 ## Testing
 
 ```bash
-composer test && composer stan
+composer test
 ```
 ***
 
