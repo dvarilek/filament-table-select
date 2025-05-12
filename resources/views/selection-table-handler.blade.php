@@ -3,9 +3,15 @@
         selectedRecords = [...cachedSelectedRecords];
 
         $watch('selectedRecords', records => {
+            const maxSelectable = selectionLimit === 1 ? 2 : selectionLimit;
+
+            const isOverLimit = records.length > maxSelectable;
+            const isSelectionMissmatched = records.length > cachedSelectedRecords.length;
+
             {{-- Prevent bulk select checkboxes from breaking stuff --}}
-            if (records.length > (selectionLimit === 1 ? 2 : selectionLimit)) {
+            if (isOverLimit && isSelectionMissmatched) {
                 selectedRecords = [...cachedSelectedRecords];
+
                 return;
             }
 
@@ -30,7 +36,6 @@
 
         $wire.on('filament-table-select::selection-table.refresh-checkboxes', () => requestAnimationFrame(() => resolveCheckboxesSelectability(selectedRecords)))
     "
-
     x-data="{
         resolveCheckboxesSelectability(records) {
             const checkboxes = $wire.$el.querySelectorAll('.fi-ta-record-checkbox');
@@ -39,11 +44,13 @@
                 if (records.length > 1) {
                     requestAnimationFrame(() => selectedRecords = [records.at(-1)]);
                 }
-            } else {
-                const selectionLimitReached = records.length >= selectionLimit;
 
-                checkboxes.forEach(checkbox => checkbox.disabled = !(checkbox.checked || !selectionLimitReached));
+                return;
             }
+
+            const limitReached = records.length >= selectionLimit;
+
+            checkboxes.forEach(checkbox => checkbox.disabled = !(checkbox.checked || !limitReached));
         }
     }"
 >

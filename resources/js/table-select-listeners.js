@@ -20,7 +20,7 @@ document.addEventListener('livewire:initialized', () => {
 
         let state = Alpine.store('selectionModalCache').get(statePath);
 
-        if (state.length >= limit && state !== null) {
+        if (state.length >= limit) {
             if (limit !== 1) {
                 return;
             }
