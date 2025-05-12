@@ -1,9 +1,9 @@
 <?php
 
-namespace Dvarilek\FilamentTableSelect\Tests\Database\Factories;
+namespace Dvarilek\FilamentTableSelect\Tests\database\factories;
 
-use Dvarilek\FilamentTableSelect\Tests\src\Models\Order;
-use Dvarilek\FilamentTableSelect\Tests\src\Models\Product;
+use Dvarilek\FilamentTableSelect\Tests\Models\Order;
+use Dvarilek\FilamentTableSelect\Tests\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory

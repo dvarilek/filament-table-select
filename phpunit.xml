@@ -6,7 +6,7 @@
 >
     <testsuites>
         <testsuite name="Feature">
-            <directory>tests/src/Tests</directory>
+            <directory>tests/Tests</directory>
         </testsuite>
     </testsuites>
     <source>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Dvarilek\FilamentTableSelect\Tests\src\Fixtures;
+namespace Dvarilek\FilamentTableSelect\Tests\Fixtures;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;

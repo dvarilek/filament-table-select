@@ -3,10 +3,9 @@
 declare(strict_types=1);
 
 use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
-use Dvarilek\FilamentTableSelect\Tests\src\Fixtures\ProductResource;
-use Dvarilek\FilamentTableSelect\Tests\src\Models\Product;
+use Dvarilek\FilamentTableSelect\Tests\Fixtures\ProductResource;
+use Dvarilek\FilamentTableSelect\Tests\Models\Product;
 use Filament\Tables\Table;
-
 use function Pest\Livewire\livewire;
 
 it('can render selection table with default configuration', function () {

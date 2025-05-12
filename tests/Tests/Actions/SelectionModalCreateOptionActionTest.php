@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-use Dvarilek\FilamentTableSelect\Tests\src\Fixtures\TestLivewireComponent;
-use Dvarilek\FilamentTableSelect\Tests\src\Models\Order;
-use Dvarilek\FilamentTableSelect\Tests\src\Fixtures\ProductResource;
 use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Tests\Fixtures\ProductResource;
+use Dvarilek\FilamentTableSelect\Tests\Fixtures\TestLivewireComponent;
+use Dvarilek\FilamentTableSelect\Tests\Models\Order;
 use Filament\Forms\Components\Actions\Action;
-
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {

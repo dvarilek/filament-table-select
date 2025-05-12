@@ -12,7 +12,7 @@ jobs:
         php: [ 8.2, 8.3, 8.4 ]
         stability: [ prefer-lowest, prefer-stable ]
 
-    name: tests P${{ matrix.php }} - ${{ matrix.os }} - ${{ matrix.dependency-version }} (Laravel ${{ matrix.laravel }})
+    name: tests P${{ matrix.php }} - ${{ matrix.os }}
 
     steps:
       - name: checkout
@@ -27,7 +27,6 @@ jobs:
       - name: install dependencies
         run: |
           composer install --no-interaction --prefer-dist
-          composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --no-interaction --prefer-dist --optimize-autoloader
 
       - name: execute tests

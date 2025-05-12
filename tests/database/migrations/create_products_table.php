@@ -1,9 +1,9 @@
 <?php
 
+use Dvarilek\FilamentTableSelect\Tests\Models\Order;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Dvarilek\FilamentTableSelect\Tests\src\Models\Order;
 
 return new class extends Migration
 {

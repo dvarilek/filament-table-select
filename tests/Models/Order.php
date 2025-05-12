@@ -1,8 +1,8 @@
 <?php
 
-namespace Dvarilek\FilamentTableSelect\Tests\src\Models;
+namespace Dvarilek\FilamentTableSelect\Tests\Models;
 
-use Dvarilek\FilamentTableSelect\Tests\Database\Factories\OrderFactory;
+use Dvarilek\FilamentTableSelect\Tests\database\factories\OrderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

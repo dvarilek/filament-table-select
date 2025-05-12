@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Dvarilek\FilamentTableSelect\Tests\src\Fixtures;
+namespace Dvarilek\FilamentTableSelect\Tests\Fixtures;
 
-use Dvarilek\FilamentTableSelect\Tests\src\Models\Order;
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
-use Filament\Forms\Components\Actions\Action;
 use Closure;
+use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Tests\Models\Order;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
