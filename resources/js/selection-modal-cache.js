@@ -6,6 +6,14 @@ document.addEventListener('livewire:initialized', () => {
             return this.data[statePath] ?? null;
         },
 
+        push(statePath, record) {
+            if (!Array.isArray(this.data[statePath])) {
+                this.data[statePath] = [];
+            }
+
+            this.data[statePath].push(record);
+        },
+
         set(statePath, state) {
             this.data[statePath] = state;
         },

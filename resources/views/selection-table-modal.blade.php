@@ -1,15 +1,15 @@
 <div
     x-data="{
+        requiresSelectionConfirmation: @js($requiresSelectionConfirmation),
+        statePath: @js($statePath),
+        selectionLimit: @js($selectionLimit),
+
         init() {
             {{-- The selection modal cache is required for storing unstaged state between different modal openings, ensuring the selected records don't get wiped before commiting. --}}
             if ($store.selectionModalCache.get(this.statePath) === null) {
                 this.cachedSelectedRecords = @js($initialState);
             }
         },
-
-        requiresSelectionConfirmation: @js($requiresSelectionConfirmation),
-        statePath: @js($statePath),
-        selectionLimit: @js($selectionLimit),
 
         get cachedSelectedRecords() {
             return $store.selectionModalCache.get(this.statePath) ?? [];

@@ -10,8 +10,10 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
+use Illuminate\Support\Js;
 use Illuminate\View\View;
 use Closure;
+use Livewire\Component;
 
 /**
  * @mixin Field
@@ -200,7 +202,13 @@ trait HasSelectionTable
     {
         $action = Action::make($this->getSelectionConfirmationActionName())
             ->label(__('filament-table-select::table-select.actions.selection-confirmation.label'))
-            ->action($this->updateTableSelectComponentState(...));
+            ->action(static function (Component $livewire, Field $component) {
+                $statePath = Js::from($component->getStatePath());
+
+                $livewire->js(<<<JS
+                    \$wire.set($statePath, Alpine.store('selectionModalCache').get($statePath));
+                JS);
+            });
 
         if ($this->evaluate($this->shouldCloseOnSelection)) {
             $action->cancelParentActions();
@@ -211,18 +219,5 @@ trait HasSelectionTable
         ], [
             Action::class => $action
         ]) ?? $action;
-    }
-
-    /**
-     * @return void
-     */
-    public function updateTableSelectComponentState(): void
-    {
-        $livewire = $this->getLivewire();
-
-        $livewire->dispatch('filament-table-select::table-select.updateTableSelectComponentState',
-            livewireId: $livewire->getId(),
-            statePath: $this->getStatePath(),
-        );
     }
 }

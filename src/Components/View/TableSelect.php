@@ -104,9 +104,9 @@ class TableSelect extends Select
         ]) ?? $selectionCreateOptionAction;
     }
 
-    protected static function overwriteSelectionCreateOptionAction(Action $action, array $arguments, TableSelect $component, array $data, ComponentContainer $form): void
+    public static function overwriteSelectionCreateOptionAction(Action $action, array $arguments, TableSelect $component, array $data, ComponentContainer $form): void
     {
-        if (! $component->getCreateOptionUsing()) {
+        if (!$component->getCreateOptionUsing()) {
             throw new \Exception("Select field [{$component->getStatePath()}] must have a [createOptionUsing()] closure set.");
         }
 
@@ -115,23 +115,44 @@ class TableSelect extends Select
             'form' => $form,
         ]);
 
-        $state = is_array($state = $component->getState()) ? $state : [$state];
-        $selectionLimit = $component->getSelectionLimit();
-
-        $newState = $component->isMultiple()
+        $state = $component->isMultiple()
             ? [
-                ...$state,
+                ...$component->getState(),
                 $createdOptionKey,
             ]
             : $createdOptionKey;
 
-        if ((count($state) < $selectionLimit || $selectionLimit === 1) && ! $component->evaluate($component->requiresSelectionConfirmation)) {
-            $component->state($newState);
+        $statePath = $component->getStatePath();
+
+        if ($component->evaluate($component->requiresSelectionConfirmation)) {
+            $selectionLimit = $component->getSelectionLimit();
+            $createdOptionKey = strval($createdOptionKey);
+
+            $component->getLivewire()->js(<<<JS
+                const statePath = '{$statePath}';
+
+                if ({$selectionLimit} === 1) {
+                    Alpine.store('selectionModalCache').set(statePath, [{$createdOptionKey}]);
+
+                    return;
+                }
+
+                if (Alpine.store('selectionModalCache').get(statePath)?.length >= {$selectionLimit}) {
+                    return;
+                }
+
+                Alpine.store('selectionModalCache').push(statePath, {$createdOptionKey});
+            JS);
+        } else {
+            $jsonState = json_encode(is_array($state) ? $state : [$state]);
+
+            $component->getLivewire()->js(<<<JS
+                Alpine.store('selectionModalCache').set('{$statePath}', {$jsonState});
+            JS);
+
+            $component->state($state);
             $component->callAfterStateUpdated();
-
         }
-
-        $component->updateTableSelectCacheState(is_array($newState) ? $newState : [$newState]);
 
         if (! ($arguments['another'] ?? false)) {
             return;
@@ -140,26 +161,6 @@ class TableSelect extends Select
         $action->callAfter();
 
         $form->fill();
-
         $action->halt();
-    }
-
-    /**
-     * @param  list<int | string> $state
-     *
-     * @return void
-     *
-     * @throws \JsonException
-     */
-    public function updateTableSelectCacheState(array $state): void
-    {
-        $livewire = $this->getLivewire();
-
-        $livewire->dispatch('filament-table-select::table-select.updateTableSelectCacheState',
-            statePath: $this->getStatePath(),
-            records: array_map(strval(...), $state),
-            limit: $this->getSelectionLimit(),
-            livewireId: $livewire->getId()
-        );
     }
 }
