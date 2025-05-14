@@ -5,17 +5,9 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dvarilek/filament-table-select/code-style.yml?branch=main&label=Code%20style&style=flat-square)
 [![Total Downloads](https://img.shields.io/packagist/dt/dvarilek/filament-table-select.svg)](https://packagist.org/packages/dvarilek/filament-table-select)
 
-![Filament Table Select Banner](art/images/filament-table-select-banner-cmp.png)
-
-> [!CAUTION]
-> This package is still under development.
-
-***
-## Installation
-
-```bash
-composer require dvarilek/filament-table-select
-```
+<div class='filament-hidden'>
+    <img src="https://github.com/user-attachments/assets/80bf584a-a7bc-4586-98aa-27c377e2b6d3" alt="Filament Table Select Banner">
+</div>
 
 ***
 ## Overview
@@ -32,8 +24,14 @@ a Selection Table. This table can be used to select related records with more co
 Users can interact with this table like any other Filament table — they can search, filter, group, and more — whatever 
 it takes to select the record they are looking for.
 
-
 https://github.com/user-attachments/assets/bba43a19-0536-438a-a83c-6687c080f215
+
+***
+## Installation
+
+```bash
+composer require dvarilek/filament-table-select
+```
 
 ***
 ## Getting Started
