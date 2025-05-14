@@ -7,6 +7,7 @@ namespace Dvarilek\FilamentTableSelect\Components\View;
 use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Select;
+use Illuminate\Support\Js;
 
 class TableSelect extends Select
 {
@@ -122,32 +123,31 @@ class TableSelect extends Select
             ]
             : $createdOptionKey;
 
-        $statePath = $component->getStatePath();
+        $selectionLimit = $component->getSelectionLimit();
 
         if ($component->evaluate($component->requiresSelectionConfirmation)) {
-            $selectionLimit = $component->getSelectionLimit();
             $createdOptionKey = strval($createdOptionKey);
+            $statePath = Js::from($component->getStatePath());
 
             $component->getLivewire()->js(<<<JS
-                const statePath = '{$statePath}';
-
                 if ({$selectionLimit} === 1) {
-                    Alpine.store('selectionModalCache').set(statePath, [{$createdOptionKey}]);
+                    Alpine.store('selectionModalCache').set($statePath, [$createdOptionKey]);
 
                     return;
                 }
 
-                if (Alpine.store('selectionModalCache').get(statePath)?.length >= {$selectionLimit}) {
+                if (Alpine.store('selectionModalCache').get($statePath)?.length >= $selectionLimit) {
                     return;
                 }
 
-                Alpine.store('selectionModalCache').push(statePath, {$createdOptionKey});
+                Alpine.store('selectionModalCache').push($statePath, $createdOptionKey);
             JS);
-        } else {
-            $jsonState = json_encode(is_array($state) ? $state : [$state]);
+        } elseif ($selectionLimit === 1 || $selectionLimit >= count($state)) {
+            $jsonState = Js::from(is_array($state) ? $state : [$state]);
+            $statePath = Js::from($component->getStatePath());
 
             $component->getLivewire()->js(<<<JS
-                Alpine.store('selectionModalCache').set('{$statePath}', {$jsonState});
+                Alpine.store('selectionModalCache').set($statePath, $jsonState);
             JS);
 
             $component->state($state);
