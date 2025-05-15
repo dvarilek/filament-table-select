@@ -337,6 +337,12 @@ public function boot(): void
 }
 ```
 
+<br>
+
+This package uses the `\Filament\Tables\View\TablesRenderHook::TOOLBAR_START` render hook to handle the selection table's 
+state. If you're already using this render hook, be sure to include the `filament-table-select::selection-table-handler`
+blade view inside your custom hook.
+
 ***
 
 ## Testing
