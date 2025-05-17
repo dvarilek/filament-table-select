@@ -1,30 +1,17 @@
 # Filament Table Select
 
+<div class='filament-hidden'>
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/dvarilek/filament-table-select.svg?include_prereleases)](https://packagist.org/packages/dvarilek/filament-table-select)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dvarilek/filament-table-select/code-style.yml?branch=main&label=Code%20style&style=flat-square)
 [![Total Downloads](https://img.shields.io/packagist/dt/dvarilek/filament-table-select.svg)](https://packagist.org/packages/dvarilek/filament-table-select)
 
-<div class='filament-hidden'>
-    <img src="https://github.com/user-attachments/assets/80bf584a-a7bc-4586-98aa-27c377e2b6d3" alt="Filament Table Select Banner">
 </div>
 
-***
-## Overview
-
-This package enhances the Filament Select Form component by adding an option to select related records
-from a full-fledged Filament table using a suffix action.
-
-This component — Table Select — is an extension of Filament's Select component. All functionalities and methods of the 
-original Select component are still available. Users can still choose to operate the component like a standard 
-select by selecting from a simple dropdown.
-
-What makes this component stand out is its selection suffix action. When clicked, this action opens a modal containing
-a Selection Table. This table can be used to select related records with more context and clarity.
-Users can interact with this table like any other Filament table — they can search, filter, group, and more — whatever 
-it takes to select the record they are looking for.
-
-https://github.com/user-attachments/assets/bba43a19-0536-438a-a83c-6687c080f215
+<div class="filament-hidden">
+    <img src="https://github.com/user-attachments/assets/80bf584a-a7bc-4586-98aa-27c377e2b6d3" alt="Filament Table Select Banner">
+</div>
 
 ***
 ## Installation
@@ -32,6 +19,24 @@ https://github.com/user-attachments/assets/bba43a19-0536-438a-a83c-6687c080f215
 ```bash
 composer require dvarilek/filament-table-select
 ```
+
+***
+## Overview
+
+This package enhances the Filament Select Form component by adding an option to select related records
+from a full-fledged Filament table using a suffix action.
+
+Table Select is an extension of Filament's Select component. All functionalities and methods of the
+original Select component are still available. Users can still choose to operate the component like a standard
+select by selecting from a simple dropdown.
+
+What makes this component stand out is its selection suffix action. When clicked, this action opens a modal containing
+a Selection Table. This table can be used to select related records with more context and clarity.
+Users can interact with this table like any other Filament Table — they can search, filter, group, and more — whatever
+it takes to select the record they are looking for.
+
+
+<video controls src="https://github.com/user-attachments/assets/bba43a19-0536-438a-a83c-6687c080f215" title="Filament Table Select Demo"></video>
 
 ***
 ## Getting Started
@@ -53,7 +58,7 @@ $form
 ***
 ## Configuring the Selection Table
 
-You can configure the Selection table by passing a closure into the `modifySelectionTable()` method, this is where 
+You can configure the Selection table by passing a closure into the `modifySelectionTable()` method, this is where
 you can add columns, remove actions, modify the table's query etc.
 ```php
 use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
@@ -91,9 +96,9 @@ TableSelect::make('clients')
 
 <br>
 
-The Selection Table supports both single selection and multiple selection mode. Multiple selection mode allows you to 
+The Selection Table supports both single selection and multiple selection mode. Multiple selection mode allows you to
 select multiple records. While Single selection mode acts similarly to a radio for better selection experience.
-This mode is determined by the result of `multiple()` method: 
+This mode is determined by the result of `multiple()` method:
 ```php
 use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
 
@@ -110,15 +115,14 @@ TableSelect::make('category_id')
 
 ### Multiple Selection
 
-https://github.com/user-attachments/assets/5c035dca-fb22-47fa-9211-f9b92e275422
+<video controls src="https://github.com/user-attachments/assets/5c035dca-fb22-47fa-9211-f9b92e275422" title="Filament Table Select Multiple Selection"></video>
 
 
 <br>
 
 ### Single Selection
 
-https://github.com/user-attachments/assets/ecd41cf5-1796-472d-9abf-92a0c07568fc
-
+<video controls src="https://github.com/user-attachments/assets/ecd41cf5-1796-472d-9abf-92a0c07568fc" title="Filament Table Select Single Selection"></video>
 
 <br>
 
@@ -168,10 +172,10 @@ TableSelect::make('clients')
     ->requiresSelectionConfirmation();
 ```
 
-This prevents automatic state updates and adds a confirmation action to the modal. Only when this action is clicked will 
+This prevents automatic state updates and adds a confirmation action to the modal. Only when this action is clicked will
 the form component's state get updated.
 
-https://github.com/user-attachments/assets/18fa9ae4-9f54-4142-93d9-83cae9dee74f
+<video controls src="https://github.com/user-attachments/assets/18fa9ae4-9f54-4142-93d9-83cae9dee74f" title="Filament Table Select Selection Confirmation"></video>
 
 <br>
 
@@ -212,7 +216,7 @@ Or provide an optional parameter directly in the `requiresSelectionConfirmation(
 ***
 ## Creating New Records
 
-In a standard Select component, if users can’t find the record they need, they can create and associate a 
+In a standard Select component, if users can’t find the record they need, they can create and associate a
 new one on using the `createOptionAction()`. - [Official Filament Documentation](https://filamentphp.com/docs/3.x/forms/fields/select#creating-a-new-option-in-a-modal)
 
 ```php
@@ -243,8 +247,7 @@ TableSelect::make('clients')
     ->createOptionForm(fn (Form $form) => ClientResource::form($form))
     ->hasCreateOptionActionInSelectionModal()
 ```
-
-https://github.com/user-attachments/assets/1a2cdfde-828f-48d4-afc2-1b361fa98ea8
+<video controls src="https://github.com/user-attachments/assets/1a2cdfde-828f-48d4-afc2-1b361fa98ea8" title="Filament Table Select Create Option Action"></video>
 
 
 > [!IMPORTANT]
@@ -319,13 +322,6 @@ TableSelect::make('clients')
     })
 ```
 
-***
-## Advanced
-
-If you wish to customize the default configuration for all instances of the TableSelect component throughout your application,
-you can do so using the `configureUsing()` method from the `boot()` method of a service provider. For example, you can enforce that all
-TableSelect components require selection confirmation by default.
-
 ```php
 use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
 
@@ -336,12 +332,6 @@ public function boot(): void
     });
 }
 ```
-
-<br>
-
-This package uses the `\Filament\Tables\View\TablesRenderHook::TOOLBAR_START` render hook to handle the selection table's 
-state. If you're already using this render hook, be sure to include the `filament-table-select::selection-table-handler`
-blade view inside your custom hook.
 
 ***
 
@@ -357,4 +347,4 @@ Please refer to [Package Releases](https://github.com/dvarilek/table-select/rele
 
 ***
 ## License
-This package is under the MIT License. Please refer to [License File](LICENSE.md) for more information
+This package is under the MIT License. Please refer to [License File](https://github.com/dvarilek/filament-table-select/blob/main/LICENSE.md) for more information
