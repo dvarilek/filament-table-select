@@ -1,11 +1,12 @@
 {
     "name": "dvarilek/filament-table-select",
-    "description": "Table Select component for selecting related records with a table",
+    "description": "Laravel Filament form component for selecting related records with a table.",
     "keywords": [
         "filament",
         "select",
         "table"
     ],
+    "version": "v1.0.0",
     "type": "library",
     "license": "MIT",
     "autoload": {
