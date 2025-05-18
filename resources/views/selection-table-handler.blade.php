@@ -2,23 +2,42 @@
     x-init="
         selectedRecords = [...cachedSelectedRecords];
 
-        $watch('selectedRecords', records => {
-            const maxSelectable = selectionLimit === 1 ? 2 : selectionLimit;
+        $nextTick(() => updateCheckboxSelectability(selectedRecords));
 
-            const isOverLimit = records.length > maxSelectable;
-            const isSelectionMissmatched = records.length > cachedSelectedRecords.length;
+        $watch('selectedRecords', (records, oldRecords) => {
+            {{-- Prevent duplicate execution of this watcher (Table Alpine Component also registers watcher on 'selectedRecords' --}}
+            if (shouldCheckUniqueSelection) {
+                return;
+            }
+
+            if (suppressWatcherForNextCycle) {
+                suppressWatcherForNextCycle = false;
+
+                return;
+            }
+
+            if (selectionLimit === 1 && records.length === 2) {
+                const previousRecord = records[records.length - 1];
+
+                if (previousRecord) {
+                    selectedRecords = [previousRecord];
+                }
+
+                return;
+            }
 
             {{-- Prevent bulk select checkboxes from breaking stuff --}}
-            if (isOverLimit && isSelectionMissmatched) {
+            if (records.length > selectionLimit) {
+                suppressWatcherForNextCycle = true;
                 selectedRecords = [...cachedSelectedRecords];
 
                 return;
             }
 
             cachedSelectedRecords = [...records];
-            resolveCheckboxesSelectability(records);
+            updateCheckboxSelectability(records);
 
-            if (requiresSelectionConfirmation === false) {
+            if (! requiresSelectionConfirmation) {
                 requestAnimationFrame(() => updateFormComponentState());
             }
         });
@@ -31,26 +50,30 @@
             const value = record[0].toString();
             const index = selectedRecords.indexOf(value);
 
-            index !== -1 ? selectedRecords.splice(index, 1) : selectedRecords.push(value);
+            if (index === -1) {
+                selectedRecords.push(value);
+            } else {
+                selectedRecords.splice(index, 1);
+            }
         });
 
-        $wire.on('filament-table-select::selection-table.refresh-checkboxes', () => requestAnimationFrame(() => resolveCheckboxesSelectability(selectedRecords)))
+        $wire.on('filament-table-select::selection-table.refresh-checkboxes', () =>
+            requestAnimationFrame(() => updateCheckboxSelectability(selectedRecords)
+        ));
     "
     x-data="{
-        resolveCheckboxesSelectability(records) {
+        suppressWatcherForNextCycle: true,
+
+        updateCheckboxSelectability(records) {
             const checkboxes = $wire.$el.querySelectorAll('.fi-ta-record-checkbox');
 
             if (selectionLimit === 1) {
-                if (records.length > 1) {
-                    requestAnimationFrame(() => selectedRecords = [records.at(-1)]);
-                }
-
                 return;
             }
 
             const limitReached = records.length >= selectionLimit;
 
-            checkboxes.forEach(checkbox => checkbox.disabled = !(checkbox.checked || !limitReached));
+            checkboxes.forEach(checkbox => checkbox.disabled = !checkbox.checked && limitReached);
         }
     }"
 >

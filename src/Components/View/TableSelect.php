@@ -111,10 +111,11 @@ class TableSelect extends Select
             throw new \Exception("Select field [{$component->getStatePath()}] must have a [createOptionUsing()] closure set.");
         }
 
-        $createdOptionKey = $component->evaluate($component->getCreateOptionUsing(), [
+        // If the key is not strvalled, 'selectedRecords' won't be treated properly by Filament Table.
+        $createdOptionKey = strval($component->evaluate($component->getCreateOptionUsing(), [
             'data' => $data,
             'form' => $form,
-        ]);
+        ]));
 
         $state = $component->isMultiple()
             ? [
@@ -126,8 +127,8 @@ class TableSelect extends Select
         $selectionLimit = $component->getSelectionLimit();
 
         if ($component->evaluate($component->requiresSelectionConfirmation)) {
-            $createdOptionKey = strval($createdOptionKey);
             $statePath = Js::from($component->getStatePath());
+            $createdOptionKey = Js::from($createdOptionKey);
 
             $component->getLivewire()->js(<<<JS
                 if ({$selectionLimit} === 1) {
@@ -146,12 +147,12 @@ class TableSelect extends Select
             $jsonState = Js::from(is_array($state) ? $state : [$state]);
             $statePath = Js::from($component->getStatePath());
 
+            // Setting the component's state normally doesn't work on single selection
             $component->getLivewire()->js(<<<JS
                 Alpine.store('selectionModalCache').set($statePath, $jsonState);
-            JS);
 
-            $component->state($state);
-            $component->callAfterStateUpdated();
+                \$nextTick(() => \$wire.set($statePath, $jsonState));
+            JS);
         }
 
         if (! ($arguments['another'] ?? false)) {

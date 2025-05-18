@@ -20,7 +20,13 @@
         },
 
         updateFormComponentState() {
-            $wire.set(this.statePath, this.cachedSelectedRecords);
+            let cachedRecords = this.cachedSelectedRecords;
+
+            if (!@js($isMultiple) && Array.isArray(cachedRecords) && cachedRecords.length === 0) {
+                cachedRecords = null;
+            }
+
+            $wire.set(this.statePath, cachedRecords);
         }
     }"
 >

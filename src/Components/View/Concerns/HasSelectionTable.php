@@ -164,16 +164,19 @@ trait HasSelectionTable
      */
     protected function getSelectionTableView(): View
     {
-        $state = is_array($state = $this->getState()) ? $state : [$state];
+        $state = $this->getState();
+        $state = is_array($state) || is_null($state) ? $state : [$state];
+
         $selectionLimit = $this->getSelectionLimit();
 
-        if (count($state) > 1 && $selectionLimit === 1) {
+        if (! is_null($state) && count($state) > 1 && $selectionLimit === 1) {
             throw TableSelectException::stateCountSurpassesSelectionLimit($state);
         }
 
         return view($this->selectionTableModalView, [
             'initialState' => $state,
             'selectionLimit' => $selectionLimit,
+            'isMultiple' => $this->isMultiple(),
             'shouldSelectRecordOnRowClick' => $this->evaluate($this->shouldSelectRecordOnRowClick),
             'relatedModel' => $this->getRelationship()->getRelated()::class,
             'tableLocation' => $this->evaluate($this->tableLocation),
@@ -204,9 +207,16 @@ trait HasSelectionTable
             ->label(__('filament-table-select::table-select.actions.selection-confirmation.label'))
             ->action(static function (Component $livewire, Field $component) {
                 $statePath = Js::from($component->getStatePath());
+                $isMultiple = Js::from($component->isMultiple());
 
                 $livewire->js(<<<JS
-                    \$wire.set($statePath, Alpine.store('selectionModalCache').get($statePath));
+                    let cachedRecords = Alpine.store('selectionModalCache').get($statePath);
+
+                    if (!$isMultiple && Array.isArray(cachedRecords) && cachedRecords.length === 0) {
+                        cachedRecords = null;
+                    }
+
+                    \$wire.set($statePath, cachedRecords);
                 JS);
             });
 
