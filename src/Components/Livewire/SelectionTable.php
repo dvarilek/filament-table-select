@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Components\Livewire;
 
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
 use Closure;
@@ -54,9 +55,11 @@ class SelectionTable extends TableWidget
             $table = $tableLocation::table($table)->heading($tableLocation::getNavigationLabel());
         }
 
+        $tableIdentifier = strtolower(class_basename($this->relatedModel)) . "-selection-table";
+
         return $table
             ->deselectAllRecordsWhenFiltered(false)
-            ->queryStringIdentifier(strtolower(class_basename($this->relatedModel)) . "-selection-table")
+            ->queryStringIdentifier($tableIdentifier)
             ->when(
                 $this->shouldSelectRecordOnRowClick,
                 fn (Table $table) => $table->recordAction(fn(Model $record) => $table->isRecordSelectable($record) ? 'selectTableRecord' : null)
@@ -64,6 +67,17 @@ class SelectionTable extends TableWidget
             ->when(
                 $this->modifySelectionTableUsing instanceof Closure,
                 fn (Table $table) => ($this->modifySelectionTableUsing)($table, $this)
+            )
+            ->when(
+                empty(array_filter($table->getFlatBulkActions(), fn (BulkAction $action) => $action->isVisible())),
+                // Ensure that checkboxes are visible even when there are no bulk actions
+                fn (Table $table) => $table->pushBulkActions([
+                    BulkAction::make($tableIdentifier)->extraAttributes([
+                        'x-show' => false,
+                        'wire:target' => null,
+                        'x-on:click' => null
+                    ])
+                ])
             );
     }
 
