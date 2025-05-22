@@ -6,7 +6,7 @@
         "select",
         "table"
     ],
-    "version": "v1.0.0",
+    "version": "v1.0.1",
     "type": "library",
     "license": "MIT",
     "autoload": {

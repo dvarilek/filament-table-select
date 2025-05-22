@@ -9,6 +9,7 @@ use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\Attributes\Locked;
 
 class SelectionTable extends TableWidget
 {
@@ -16,30 +17,26 @@ class SelectionTable extends TableWidget
     /**
      * @var bool
      */
+    #[Locked]
     public bool $shouldSelectRecordOnRowClick = true;
 
     /**
      * @var ?class-string<Model>
      */
+    #[Locked]
     public ?string $relatedModel = null;
 
     /**
      * @var ?class-string<Resource>
      */
+    #[Locked]
     public ?string $tableLocation = null;
 
     /**
      * @var ?Closure(Table $table): Table
      */
+    #[Locked]
     public ?Closure $modifySelectionTableUsing = null;
-
-    /**
-     * @return void
-     */
-    public function hydrate(): void
-    {
-        $this->dispatch('filament-table-select::selection-table.refresh-checkboxes');
-    }
 
     /**
      * @param  Table $table
@@ -79,6 +76,14 @@ class SelectionTable extends TableWidget
                     ])
                 ])
             );
+    }
+
+    /**
+     * @return void
+     */
+    public function hydrate(): void
+    {
+        $this->dispatch('filament-table-select::selection-table.refresh-checkboxes');
     }
 
     /**
