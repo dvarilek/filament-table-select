@@ -23,7 +23,9 @@ class TestsTableSelect
             /** @phpstan-ignore-next-line */
             $this->mountFormComponentAction($component, $name, $arguments, $formName);
 
+
             /* @var Action  $selectionAction */
+            /* @phpstan-ignore-next-line */
             $selectionAction = $this->instance()->getMountedFormComponentAction();
 
             foreach (Arr::wrap($content) as $needle) {
@@ -45,6 +47,7 @@ class TestsTableSelect
             $this->mountFormComponentAction($component, $name, $arguments, $formName);
 
             /* @var Action  $selectionAction */
+            /* @phpstan-ignore-next-line */
             $selectionAction = $this->instance()->getMountedFormComponentAction();
 
             foreach (Arr::wrap($content) as $needle) {

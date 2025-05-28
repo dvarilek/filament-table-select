@@ -105,6 +105,15 @@ class TableSelect extends Select
         ]) ?? $selectionCreateOptionAction;
     }
 
+    /**
+     * @param  Action $action
+     * @param  array<mixed> $arguments
+     * @param  TableSelect $component
+     * @param  list<string> $data
+     * @param  ComponentContainer $form
+     *
+     * @return void
+     */
     public static function overwriteSelectionCreateOptionAction(Action $action, array $arguments, TableSelect $component, array $data, ComponentContainer $form): void
     {
         if (!$component->getCreateOptionUsing()) {

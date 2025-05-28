@@ -18,7 +18,7 @@ trait HasSelectionAction
 {
 
     /**
-     * @var ?Closure
+     * @var  null | Closure
      */
     protected ?Closure $modifySelectionActionUsing = null;
 

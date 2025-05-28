@@ -17,15 +17,15 @@ trait HasSelectionModalCreateOptionAction
     /**
      * @var bool | Closure
      */
-    protected bool $hasCreateOptionActionInSelectionModal = true;
+    protected bool | Closure $hasCreateOptionActionInSelectionModal = true;
 
     /**
      * @var bool | Closure
      */
-    protected bool $createOptionActionOnlyVisibleInSelectionModal = true;
+    protected bool | Closure $createOptionActionOnlyVisibleInSelectionModal = true;
 
     /**
-     * @var ?Closure
+     * @var  null | Closure
      */
     protected ?Closure $modifySelectionModalCreateOptionActionUsing = null;
 

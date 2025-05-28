@@ -11,7 +11,7 @@ use Filament\Forms\Components\Field;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Illuminate\Support\Js;
-use Illuminate\View\View;
+use Illuminate\Contracts\View\View;
 use Closure;
 use Livewire\Component;
 
@@ -32,7 +32,7 @@ trait HasSelectionTable
     protected bool | Closure $shouldSelectRecordOnRowClick = true;
 
     /**
-     * @var ?Closure(Table $table): Table
+     * @var  null | Closure(Table $table): Table
      */
     protected ?Closure $modifySelectionTableUsing = null;
 
@@ -52,7 +52,7 @@ trait HasSelectionTable
     protected SelectionModalActionPosition | Closure $confirmationActionPosition = SelectionModalActionPosition::BOTTOM_LEFT;
 
     /**
-     * @var ?Closure
+     * @var  null | Closure
      */
     protected ?Closure $modifySelectionConfirmationActionUsing = null;
 
@@ -178,6 +178,7 @@ trait HasSelectionTable
             'selectionLimit' => $selectionLimit,
             'isMultiple' => $this->isMultiple(),
             'shouldSelectRecordOnRowClick' => $this->evaluate($this->shouldSelectRecordOnRowClick),
+            /* @phpstan-ignore-next-line class.notFound */
             'relatedModel' => $this->getRelationship()->getRelated()::class,
             'tableLocation' => $this->evaluate($this->tableLocation),
             'requiresSelectionConfirmation' => $this->evaluate($this->requiresSelectionConfirmation),
@@ -207,6 +208,7 @@ trait HasSelectionTable
             ->label(__('filament-table-select::table-select.actions.selection-confirmation.label'))
             ->action(static function (Component $livewire, Field $component) {
                 $statePath = Js::from($component->getStatePath());
+                /* @phpstan-ignore-next-line method.notFound */
                 $isMultiple = Js::from($component->isMultiple());
 
                 $livewire->js(<<<JS

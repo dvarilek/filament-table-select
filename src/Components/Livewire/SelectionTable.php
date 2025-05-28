@@ -7,6 +7,7 @@ namespace Dvarilek\FilamentTableSelect\Components\Livewire;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
+use Filament\Resources\Resource;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Attributes\Locked;
@@ -21,19 +22,19 @@ class SelectionTable extends TableWidget
     public bool $shouldSelectRecordOnRowClick = true;
 
     /**
-     * @var ?class-string<Model>
+     * @var  null | class-string<Model>
      */
     #[Locked]
     public ?string $relatedModel = null;
 
     /**
-     * @var ?class-string<Resource>
+     * @var  null | class-string<Resource>
      */
     #[Locked]
     public ?string $tableLocation = null;
 
     /**
-     * @var ?Closure(Table $table): Table
+     * @var  null | Closure(Table $table, self $selectionTable): Table
      */
     #[Locked]
     public ?Closure $modifySelectionTableUsing = null;
