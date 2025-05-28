@@ -18,6 +18,11 @@ class TableSelect extends Select
     /**
      * @var view-string
      */
+    protected string $badgeTableSelectView = 'filament-table-select::badge-table-select';
+
+    /**
+     * @var view-string
+     */
     protected string $selectionTableModalView = 'filament-table-select::selection-table-modal';
 
     /**
@@ -27,8 +32,18 @@ class TableSelect extends Select
     {
         parent::setUp();
 
+        if ($this->isBadgeTableSelect) {
+            $this->view($this->badgeTableSelectView);
+        }
+
         $this->suffixActions([
-            static fn (TableSelect $component) => $component->getSelectionAction(),
+            static function (TableSelect $component) {
+               if ($component->isBadgeTableSelect) {
+                   return null;
+               }
+
+               return $component->getSelectionAction();
+            },
             static function (TableSelect $component) {
                 $action = $component->getAction($component->getCreateOptionActionName());
 
@@ -53,8 +68,28 @@ class TableSelect extends Select
         ]);
 
         $this->registerActions([
-            static fn (TableSelect $component) => $component->evaluate($component->requiresSelectionConfirmation) ? $component->getSelectionConfirmationAction() : null,
-            static fn (TableSelect $component) => $component->evaluate($component->hasCreateOptionActionInSelectionModal) ? $component->getSelectionModalCreateOptionAction() : null
+            static function (TableSelect $component) {
+                if (! $component->evaluate($component->requiresSelectionConfirmation)) {
+                    return null;
+                }
+
+                return $component->getSelectionConfirmationAction();
+            },
+
+            static function (TableSelect $component) {
+                if (! $component->evaluate($component->hasCreateOptionActionInSelectionModal)) {
+                    return null;
+                }
+
+                return $component->getSelectionModalCreateOptionAction();
+            },
+            static function (TableSelect $component) {
+                if (! $component->isBadgeTableSelect) {
+                    return null;
+                }
+
+                return $component->getSelectionAction();
+            }
         ]);
 
         $this->dehydrateStateUsing(static function (TableSelect $component, mixed $state) {
