@@ -52,7 +52,7 @@ trait HasSelectionAction
                 ? trans_choice('filament-table-select::table-select.actions.selection.view-label', $component->getSelectionLimit())
                 : trans_choice('filament-table-select::table-select.actions.selection.edit-label', $component->getSelectionLimit())
             )
-            ->modalContent($this->getSelectionTableView(...))
+            ->modalContent(fn () => $this->getSelectionModalView())
             ->mountUsing(static function (Component $livewire, Field $component) {
                 $statePath = Js::from($component->getStatePath());
 
@@ -65,6 +65,14 @@ trait HasSelectionAction
             ->icon('heroicon-o-link')
             ->color('gray')
             ->slideOver();
+
+        if ($this->isBadgeTableSelect) {
+            $this->isMultiple() ? $action->link() : $action->iconButton();
+
+            $action->color('primary');
+        } else {
+            $action->color('gray');
+        }
 
         return $this->evaluate($this->modifySelectionActionUsing, [
             'action' => $action

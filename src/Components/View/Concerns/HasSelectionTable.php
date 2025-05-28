@@ -20,6 +20,10 @@ use Livewire\Component;
  */
 trait HasSelectionTable
 {
+    /**
+     * @var bool
+     */
+    protected bool $isBadgeTableSelect = true;
 
     /**
      * @var null | Closure | class-string<Resource>
@@ -159,10 +163,15 @@ trait HasSelectionTable
     abstract public function getSelectionLimit(): int;
 
     /**
+     * @return bool
+     */
+    abstract public function isMultiple(): bool;
+
+    /**
      * @return View
      * @throws TableSelectException
      */
-    protected function getSelectionTableView(): View
+    protected function getSelectionModalView(): View
     {
         $state = $this->getState();
         $state = is_array($state) || is_null($state) ? $state : [$state];
