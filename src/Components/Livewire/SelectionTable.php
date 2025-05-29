@@ -22,6 +22,13 @@ class SelectionTable extends TableWidget
     public bool $shouldSelectRecordOnRowClick = true;
 
     /**
+     * @var bool
+     */
+    #[Locked]
+    public bool $isDisabled = false;
+
+
+    /**
      * @var  null | class-string<Model>
      */
     #[Locked]
@@ -59,7 +66,11 @@ class SelectionTable extends TableWidget
             ->deselectAllRecordsWhenFiltered(false)
             ->queryStringIdentifier($tableIdentifier)
             ->when(
-                $this->shouldSelectRecordOnRowClick,
+                $this->isDisabled,
+                fn (Table $table) => $table->selectable(false)
+            )
+            ->when(
+                !$this->isDisabled && $this->shouldSelectRecordOnRowClick,
                 fn (Table $table) => $table->recordAction(fn(Model $record) => $table->isRecordSelectable($record) ? 'selectTableRecord' : null)
             )
             ->when(
@@ -67,7 +78,7 @@ class SelectionTable extends TableWidget
                 fn (Table $table) => ($this->modifySelectionTableUsing)($table, $this)
             )
             ->when(
-                empty(array_filter($table->getFlatBulkActions(), fn (BulkAction $action) => $action->isVisible())),
+                !$this->isDisabled && blank(array_filter($table->getFlatBulkActions(), fn (BulkAction $action) => $action->isVisible())),
                 // Ensure that checkboxes are visible even when there are no bulk actions
                 fn (Table $table) => $table->pushBulkActions([
                     BulkAction::make($tableIdentifier)->extraAttributes([

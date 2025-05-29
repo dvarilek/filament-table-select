@@ -1,3 +1,8 @@
+@php
+    $canRenderCreateAction = !$isDisabled && $createAction && !$createAction->isDisabled();
+    $canRenderSelectionConfirmationAction = !$isDisabled && $requiresSelectionConfirmation && !$selectionConfirmationAction->isDisabled();
+@endphp
+
 <div
     x-data="{
         requiresSelectionConfirmation: @js($requiresSelectionConfirmation),
@@ -30,25 +35,25 @@
         }
     }"
 >
-    @if (($createAction ?? null) && $createActionPosition->isTop() && ! $createAction->isDisabled())
+    @if ($canRenderCreateAction && $createActionPosition->isTop())
         <div
-            @class([
-                'pb-6 flex',
-                'justify-end' => $createActionPosition->isRight(),
-                'justify-start' => $createActionPosition->isLeft()
-            ])
+                @class([
+                    'pb-6 flex',
+                    'justify-end' => $createActionPosition->isRight(),
+                    'justify-start' => $createActionPosition->isLeft()
+                ])
         >
             {{ $createAction }}
         </div>
     @endif
 
-    @if ($requiresSelectionConfirmation && $confirmationActionPosition->isTop() && ! $selectionConfirmationAction->isDisabled())
+    @if ($canRenderSelectionConfirmationAction && $confirmationActionPosition->isTop())
         <div
-            @class([
-                'pb-6 flex',
-                'justify-end' => $confirmationActionPosition->isRight(),
-                'justify-start' => $confirmationActionPosition->isLeft()
-            ])
+                @class([
+                    'pb-6 flex',
+                    'justify-end' => $confirmationActionPosition->isRight(),
+                    'justify-start' => $confirmationActionPosition->isLeft()
+                ])
         >
             {{ $selectionConfirmationAction }}
         </div>
@@ -56,30 +61,31 @@
 
     <livewire:filament-table-select::selection-table-component
             :shouldSelectRecordOnRowClick="$shouldSelectRecordOnRowClick"
+            :isDisabled="$isDisabled"
             :relatedModel="$relatedModel"
             :tableLocation="$tableLocation"
             :modifySelectionTableUsing="$modifySelectionTableUsing"
     />
 
-    @if (($createAction ?? null) && $createActionPosition->isBottom() && ! $createAction->isDisabled())
+    @if ($canRenderCreateAction && $createActionPosition->isBottom())
         <div
-            @class([
-                'pt-6 flex',
-                'justify-end' => $createActionPosition->isRight(),
-                'justify-start' => $createActionPosition->isLeft()
-            ])
+                @class([
+                    'pt-6 flex',
+                    'justify-end' => $createActionPosition->isRight(),
+                    'justify-start' => $createActionPosition->isLeft()
+                ])
         >
             {{ $createAction }}
         </div>
     @endif
 
-    @if ($requiresSelectionConfirmation && $confirmationActionPosition->isBottom() && ! $selectionConfirmationAction->isDisabled())
+    @if ($canRenderSelectionConfirmationAction && $confirmationActionPosition->isBottom())
         <div
-            @class([
-                'pt-6 flex',
-                'justify-end' => $confirmationActionPosition->isRight(),
-                'justify-start' => $confirmationActionPosition->isLeft()
-            ])
+                @class([
+                    'pt-6 flex',
+                    'justify-end' => $confirmationActionPosition->isRight(),
+                    'justify-start' => $confirmationActionPosition->isLeft()
+                ])
         >
             {{ $selectionConfirmationAction }}
         </div>

@@ -177,6 +177,7 @@ trait HasSelectionTable
             'initialState' => $state,
             'selectionLimit' => $selectionLimit,
             'isMultiple' => $this->isMultiple(),
+            'isDisabled' => $this->isDisabled(),
             'shouldSelectRecordOnRowClick' => $this->evaluate($this->shouldSelectRecordOnRowClick),
             /* @phpstan-ignore-next-line class.notFound */
             'relatedModel' => $this->getRelationship()->getRelated()::class,

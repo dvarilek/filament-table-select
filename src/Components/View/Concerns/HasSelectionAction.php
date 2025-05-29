@@ -48,16 +48,18 @@ trait HasSelectionAction
     protected function getSelectionAction(): Action
     {
         $action = Action::make($this->getSelectionActionName())
-            ->label(trans_choice('filament-table-select::table-select.actions.selection.label', $this->getSelectionLimit()))
+            ->label(static fn (self $component) => $component->isDisabled()
+                ? trans_choice('filament-table-select::table-select.actions.selection.view-label', $component->getSelectionLimit())
+                : trans_choice('filament-table-select::table-select.actions.selection.edit-label', $component->getSelectionLimit())
+            )
             ->modalContent($this->getSelectionTableView(...))
-            ->mountUsing(function (Component $livewire, Field $component) {
+            ->mountUsing(static function (Component $livewire, Field $component) {
                 $statePath = Js::from($component->getStatePath());
 
                 $livewire->js(<<<JS
                     Alpine.store('selectionModalCache').clear($statePath);
                 JS);
             })
-            ->disabled(fn (Select $component) => $component->isDisabled())
             ->modalSubmitAction(false)
             ->modalCancelAction(false)
             ->icon('heroicon-o-link')
