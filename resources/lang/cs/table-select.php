@@ -2,6 +2,8 @@
 
 return [
 
+    'placeholder' => 'Zvolte záznam',
+
     'actions' => [
 
         'selection' => [

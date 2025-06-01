@@ -2,6 +2,8 @@
 
 return [
 
+    'placeholder' => 'Select a record',
+
     'actions' => [
 
         'selection' => [

@@ -58,6 +58,16 @@ class TableSelect extends Select
             },
         ]);
 
+        $this->dehydrateStateUsing(static function (TableSelect $component, mixed $state) {
+            if (is_array($state) && count($state) === 1 && ! $component->isMultiple()) {
+                return $state[0];
+            }
+
+            return $state;
+        });
+
+        $this->placeholder(static fn (TableSelect $component) => $component->isDisabled() ? null : __('filament-table-select::table-select.placeholder'));
+
         $this->registerActions([
             static fn (TableSelect $component) => $component->getSelectionAction(),
             static function (TableSelect $component) {
@@ -76,14 +86,6 @@ class TableSelect extends Select
                 return $component->getSelectionModalCreateOptionAction();
             }
         ]);
-
-        $this->dehydrateStateUsing(static function (TableSelect $component, mixed $state) {
-            if (is_array($state) && count($state) === 1 && ! $component->isMultiple()) {
-                return $state[0];
-            }
-
-            return $state;
-        });
     }
 
     /**
