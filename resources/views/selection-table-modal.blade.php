@@ -59,13 +59,15 @@
         </div>
     @endif
 
-    <livewire:filament-table-select::selection-table-component
-            :shouldSelectRecordOnRowClick="$shouldSelectRecordOnRowClick"
-            :isDisabled="$isDisabled"
-            :relatedModel="$relatedModel"
-            :tableLocation="$tableLocation"
-            :modifySelectionTableUsing="$modifySelectionTableUsing"
-    />
+        <livewire:filament-table-select::selection-table-component
+                :shouldSelectRecordOnRowClick="$shouldSelectRecordOnRowClick"
+                :isDisabled="$isDisabled"
+                :model="$model"
+                :record="$record"
+                :relationshipName="$relationshipName"
+                :tableLocation="$tableLocation"
+                :modifySelectionTableUsing="$modifySelectionTableUsing"
+        />
 
     @if ($canRenderCreateAction && $createActionPosition->isBottom())
         <div

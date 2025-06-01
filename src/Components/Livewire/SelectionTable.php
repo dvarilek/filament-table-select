@@ -9,12 +9,15 @@ use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
 use Filament\Resources\Resource;
 use Closure;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Filament\Support\Services\RelationshipJoiner;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Attributes\Locked;
 
 class SelectionTable extends TableWidget
 {
-
     /**
      * @var bool
      */
@@ -27,12 +30,23 @@ class SelectionTable extends TableWidget
     #[Locked]
     public bool $isDisabled = false;
 
-
     /**
      * @var  null | class-string<Model>
      */
     #[Locked]
-    public ?string $relatedModel = null;
+    public ?string $model = null;
+
+    /**
+     * @var  null | Model
+     */
+    #[Locked]
+    public ?Model $record = null;
+
+    /**
+     * @var null | string
+     */
+    #[Locked]
+    public ?string $relationshipName = null;
 
     /**
      * @var  null | class-string<Resource>
@@ -53,14 +67,37 @@ class SelectionTable extends TableWidget
      */
     public function table(Table $table): Table
     {
-        $table->query(fn () => $this->relatedModel::query());
         $tableLocation = $this->tableLocation;
 
         if ($tableLocation !== null) {
-            $table = $tableLocation::table($table)->heading($tableLocation::getNavigationLabel());
+            $table = $tableLocation::table($table);
+
+            if (is_subclass_of($tableLocation, Resource::class, true)) {
+                $table->heading($tableLocation::getNavigationLabel());
+            }
         }
 
-        $tableIdentifier = strtolower(class_basename($this->relatedModel)) . "-selection-table";
+        $table->query(function (): Builder {
+            $relationship = Relation::noConstraints(fn (): Relation => ($this->record ??= app($this->model))->{$this->relationshipName}());
+
+            $relationshipQuery = app(RelationshipJoiner::class)->prepareQueryForNoConstraints($relationship);
+
+            if (! ($relationship instanceof BelongsToMany)) {
+                return $relationshipQuery;
+            }
+
+            $relationshipBaseQuery = $relationshipQuery->getQuery();
+
+            if (blank($relationshipBaseQuery->joins ?? [])) {
+                return $relationshipQuery;
+            }
+
+            array_shift($relationshipBaseQuery->joins);
+
+            return $relationshipQuery;
+        });
+
+        $tableIdentifier = $this->relationshipName . "-selection-table";
 
         return $table
             ->deselectAllRecordsWhenFiltered(false)

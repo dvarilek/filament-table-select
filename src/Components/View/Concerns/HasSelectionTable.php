@@ -179,8 +179,9 @@ trait HasSelectionTable
             'isMultiple' => $this->isMultiple(),
             'isDisabled' => $this->isDisabled(),
             'shouldSelectRecordOnRowClick' => $this->evaluate($this->shouldSelectRecordOnRowClick),
-            /* @phpstan-ignore-next-line class.notFound */
-            'relatedModel' => $this->getRelationship()->getRelated()::class,
+            'model' => $this->getModel(),
+            'record' => $this->getRecord(),
+            'relationshipName' => $this->getRelationshipName(),
             'tableLocation' => $this->evaluate($this->tableLocation),
             'requiresSelectionConfirmation' => $this->evaluate($this->requiresSelectionConfirmation),
             'confirmationActionPosition' => $this->evaluate($this->confirmationActionPosition),
