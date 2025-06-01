@@ -5,8 +5,10 @@ declare(strict_types=1);
 use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
 use Dvarilek\FilamentTableSelect\Tests\Fixtures\ProductResource;
 use Dvarilek\FilamentTableSelect\Tests\Models\Product;
+use Dvarilek\FilamentTableSelect\Tests\Models\Order;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Table;
+
 use function Pest\Livewire\livewire;
 
 it('can render selection table with default configuration', function () {
@@ -14,7 +16,8 @@ it('can render selection table with default configuration', function () {
     $secondRecord = Product::factory()->create();
 
     $livewire = livewire(SelectionTable::class, [
-        'relatedModel' => Product::class,
+        'model' => Order::class,
+        'relationshipName' => 'products',
     ])
         ->assertCanSeeTableRecords([
             $firstRecord,
@@ -27,7 +30,7 @@ it('can render selection table with default configuration', function () {
     expect($table)
         ->toBeInstanceOf(Table::class)
         ->shouldDeselectAllRecordsWhenFiltered()->toBeFalse()
-        ->getQueryStringIdentifier()->toBe("product-selection-table")
+        ->getQueryStringIdentifier()->toBe("products-selection-table")
         ->getRecordAction($firstRecord)->toBe('selectTableRecord');
 
     $table->checkIfRecordIsSelectableUsing(fn (Product $record) => $record->getKey() !== $firstRecord->getKey());
@@ -38,7 +41,8 @@ it('can render selection table with default configuration', function () {
 
 it('can configure selection table using a closure', function () {
     $livewire = livewire(SelectionTable::class, [
-        'relatedModel' => Product::class,
+        'model' => Order::class,
+        'relationshipName' => 'products',
         'modifySelectionTableUsing' => fn (Table $table) => $table->heading('Custom Heading')
      ]);
 
@@ -52,7 +56,8 @@ it('can configure selection table using a closure', function () {
 
 it('can use table from another resource as a template for selection table', function () {
     $livewire = livewire(SelectionTable::class, [
-        'relatedModel' => Product::class,
+        'model' => Order::class,
+        'relationshipName' => 'products',
         'tableLocation' => ProductResource::class,
     ]);
 
@@ -67,19 +72,22 @@ it('can use table from another resource as a template for selection table', func
 
 it('adds a bulk action for showing checkboxes when no other bulk actions are available', function () {
     $emptyBulkActionsLivewire = livewire(SelectionTable::class, [
-        'relatedModel' => Product::class,
+        'model' => Order::class,
+        'relationshipName' => 'products',
         'modifySelectionTableUsing' => fn (Table $table) => $table->bulkActions([])
     ]);
 
     $hiddenBulkActionLivewire = livewire(SelectionTable::class, [
-        'relatedModel' => Product::class,
+        'model' => Order::class,
+        'relationshipName' => 'products',
         'modifySelectionTableUsing' => fn (Table $table) => $table->bulkActions([
             BulkAction::make('test bulk action')->hidden()
         ])
     ]);
 
     $visibleBulkActionLivewire = livewire(SelectionTable::class, [
-        'relatedModel' => Product::class,
+        'model' => Order::class,
+        'relationshipName' => 'products',
         'modifySelectionTableUsing' => fn (Table $table) => $table->bulkActions([
             BulkAction::make('test bulk action')
         ])
@@ -99,7 +107,7 @@ it('adds a bulk action for showing checkboxes when no other bulk actions are ava
 
     expect($emptyBulkActions)
         ->toHaveCount(1)
-        ->and($emptyBulkActions['product-selection-table'])
+        ->and($emptyBulkActions['products-selection-table'])
         ->getExtraAttributes()->toBe([
             'x-show' => false,
             'wire:target' => null,
@@ -107,7 +115,7 @@ it('adds a bulk action for showing checkboxes when no other bulk actions are ava
         ])
         ->and($hiddenBulkActions)
         ->toHaveCount(2)
-        ->and($hiddenBulkActions['product-selection-table'])
+        ->and($hiddenBulkActions['products-selection-table'])
         ->getExtraAttributes()->toBe([
             'x-show' => false,
             'wire:target' => null,
@@ -115,5 +123,5 @@ it('adds a bulk action for showing checkboxes when no other bulk actions are ava
         ])
         ->and($visibleBulkActions)
         ->toHaveCount(1)
-        ->and($visibleBulkActions['product-selection-table'] ?? null)->toBeNull();
+        ->and($visibleBulkActions['products-selection-table'] ?? null)->toBeNull();
 });

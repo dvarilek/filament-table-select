@@ -49,7 +49,7 @@ class SelectionTable extends TableWidget
     public ?string $relationshipName = null;
 
     /**
-     * @var  null | class-string<Resource>
+     * @var  null | class-string<mixed | Resource>
      */
     #[Locked]
     public ?string $tableLocation = null;
