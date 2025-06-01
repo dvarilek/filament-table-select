@@ -8,7 +8,6 @@ use Exception;
 
 final class TableSelectException extends Exception
 {
-
     /**
      * @param  list<string> $state
      *

@@ -11,24 +11,12 @@ use Illuminate\View\ComponentAttributeBag;
 
 trait HasSelectBadges
 {
-    /**
-     * @var string | ActionSize | Closure
-     */
     protected string | ActionSize | Closure $selectBadgeSize = ActionSize::Medium;
 
-    /**
-     * @var string | IconSize | Closure
-     */
     protected string | IconSize | Closure $selectBadgeIconSize = IconSize::Small;
 
-    /**
-     * @var null | Closure
-     */
     protected ?Closure $getSelectBadgeColorUsing = null;
 
-    /**
-     * @var null | Closure
-     */
     protected ?Closure $getSelectBadgeIconUsing = null;
 
     /**
@@ -36,11 +24,6 @@ trait HasSelectBadges
      */
     protected array $extraSelectBadgeAttributes = [];
 
-    /**
-     * @param string | ActionSize | Closure $size
-     *
-     * @return $this
-     */
     public function selectBadgeSize(string | ActionSize | Closure $size): static
     {
         $this->selectBadgeSize = $size;
@@ -48,11 +31,6 @@ trait HasSelectBadges
         return $this;
     }
 
-    /**
-     * @param  string | IconSize | Closure $size
-     *
-     * @return $this
-     */
     public function selectBadgeIconSize(string | IconSize | Closure $size): static
     {
         $this->selectBadgeIconSize = $size;
@@ -60,11 +38,6 @@ trait HasSelectBadges
         return $this;
     }
 
-    /**
-     * @param  null | Closure $callback
-     *
-     * @return $this
-     */
     public function getSelectBadgeColorUsing(?Closure $callback): static
     {
         $this->getSelectBadgeColorUsing = $callback;
@@ -72,11 +45,6 @@ trait HasSelectBadges
         return $this;
     }
 
-    /**
-     * @param  null | Closure $callback
-     *
-     * @return $this
-     */
     public function getSelectBadgeIconUsing(?Closure $callback): static
     {
         $this->getSelectBadgeIconUsing = $callback;
@@ -98,28 +66,16 @@ trait HasSelectBadges
         return $this;
     }
 
-    /**
-     * @return string | ActionSize
-     */
     public function getSelectBadgeSize(): string | ActionSize
     {
         return $this->evaluate($this->selectBadgeSize);
     }
 
-    /**
-     * @return string | IconSize
-     */
     public function getSelectBadgeIconSize(): string | IconSize
     {
         return $this->evaluate($this->selectBadgeIconSize);
     }
 
-    /**
-     * @param  mixed $optionKey
-     * @param  mixed $optionValue
-     *
-     * @return null | string
-     */
     public function getSelectBadgeColor(mixed $optionKey, mixed $optionValue): ?string
     {
         return $this->evaluate($this->getSelectBadgeColorUsing, [
@@ -128,12 +84,6 @@ trait HasSelectBadges
         ]);
     }
 
-    /**
-     * @param  mixed $optionKey
-     * @param  mixed $optionValue
-     *
-     * @return null | string
-     */
     public function getSelectBadgeIcon(mixed $optionKey, mixed $optionValue): ?string
     {
         return $this->evaluate($this->getSelectBadgeIconUsing, [

@@ -18,15 +18,9 @@ use Livewire\Attributes\Locked;
 
 class SelectionTable extends TableWidget
 {
-    /**
-     * @var bool
-     */
     #[Locked]
     public bool $shouldSelectRecordOnRowClick = true;
 
-    /**
-     * @var bool
-     */
     #[Locked]
     public bool $isDisabled = false;
 
@@ -42,11 +36,7 @@ class SelectionTable extends TableWidget
     #[Locked]
     public ?Model $record = null;
 
-    /**
-     * @var null | string
-     */
-    #[Locked]
-    public ?string $relationshipName = null;
+    public string $relationshipName;
 
     /**
      * @var  null | class-string<mixed | Resource>
@@ -60,11 +50,6 @@ class SelectionTable extends TableWidget
     #[Locked]
     public ?Closure $modifySelectionTableUsing = null;
 
-    /**
-     * @param  Table $table
-     *
-     * @return Table
-     */
     public function table(Table $table): Table
     {
         $tableLocation = $this->tableLocation;
@@ -72,7 +57,7 @@ class SelectionTable extends TableWidget
         if ($tableLocation !== null) {
             $table = $tableLocation::table($table);
 
-            if (is_subclass_of($tableLocation, Resource::class, true)) {
+            if (is_subclass_of($tableLocation, Resource::class)) {
                 $table->heading($tableLocation::getNavigationLabel());
             }
         }
@@ -127,19 +112,11 @@ class SelectionTable extends TableWidget
             );
     }
 
-    /**
-     * @return void
-     */
     public function hydrate(): void
     {
         $this->dispatch('filament-table-select::selection-table.refresh-checkboxes');
     }
 
-    /**
-     * @param  mixed $record
-     *
-     * @return void
-     */
     public function selectTableRecord(mixed $record): void
     {
         $this->dispatch('filament-table-select::selection-table.select-table-record', $record);

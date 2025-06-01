@@ -18,11 +18,6 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 class FilamentTableSelectServiceProvider extends PackageServiceProvider
 {
 
-    /**
-     * @param  Package $package
-     *
-     * @return void
-     */
     public function configurePackage(Package $package): void
     {
         $package
@@ -31,9 +26,6 @@ class FilamentTableSelectServiceProvider extends PackageServiceProvider
             ->hasTranslations();
     }
 
-    /**
-     * @return void
-     */
     public function packageBooted(): void
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'filament-table-select');

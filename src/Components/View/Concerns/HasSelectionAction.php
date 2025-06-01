@@ -17,35 +17,17 @@ use Closure;
  */
 trait HasSelectionAction
 {
-
-    /**
-     * @var string | Alignment | Closure
-     */
     protected string | Alignment | Closure $selectionActionAlignment = Alignment::Start;
 
-    /**
-     * @var bool | Closure
-     */
     protected bool | Closure $shouldTriggerSelectionActionOnInputClick = false;
 
-    /**
-     * @var  null | Closure
-     */
     protected ?Closure $modifySelectionActionUsing = null;
 
-    /**
-     * @return string
-     */
     public function getSelectionActionName(): string
     {
         return 'tableSelectionAction';
     }
 
-    /**
-     * @param  string | Alignment $alignment
-     *
-     * @return $this
-     */
     public function selectionActionAlignment(string | ALignment $alignment): static
     {
         $this->selectionActionAlignment = $alignment;
@@ -53,11 +35,6 @@ trait HasSelectionAction
         return $this;
     }
 
-    /**
-     * @param  bool | Closure $shouldTriggerSelectionActionOnInputClick
-     *
-     * @return $this
-     */
     public function triggerSelectionActionOnInputClick(bool | Closure $shouldTriggerSelectionActionOnInputClick = true): static
     {
         $this->shouldTriggerSelectionActionOnInputClick = $shouldTriggerSelectionActionOnInputClick;
@@ -65,11 +42,6 @@ trait HasSelectionAction
         return $this;
     }
 
-    /**
-     * @param  Closure $modifySelectionActionUsing
-     *
-     * @return $this
-     */
     public function modifySelectionAction(Closure $modifySelectionActionUsing): static
     {
         $this->modifySelectionActionUsing = $modifySelectionActionUsing;
@@ -77,25 +49,16 @@ trait HasSelectionAction
         return $this;
     }
 
-    /**
-     * @return string | Alignment
-     */
     public function getSelectionActionAlignment(): string | Alignment
     {
         return $this->evaluate($this->selectionActionAlignment);
     }
 
-    /**
-     * @return bool
-     */
     public function shouldTriggerSelectionActionOnInputClick(): bool
     {
         return (bool) $this->evaluate($this->shouldTriggerSelectionActionOnInputClick);
     }
 
-    /**
-     * @return Action
-     */
     protected function getSelectionAction(): Action
     {
         $action = Action::make($this->getSelectionActionName())

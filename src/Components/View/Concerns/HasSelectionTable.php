@@ -21,45 +21,22 @@ use Livewire\Component;
 trait HasSelectionTable
 {
     /**
-     * @var null | Closure | class-string<Resource>
+     * @var null | Closure | class-string<mixed | Resource>
      */
     protected null | Closure | string $tableLocation = null;
 
-    /**
-     * @var bool | Closure
-     */
     protected bool | Closure $shouldSelectRecordOnRowClick = true;
 
-    /**
-     * @var  null | Closure(Table $table): Table
-     */
     protected ?Closure $modifySelectionTableUsing = null;
 
-    /**
-     * @var bool | Closure
-     */
     protected bool | Closure $requiresSelectionConfirmation = false;
 
-    /**
-     * @var bool | Closure
-     */
     protected bool | Closure $shouldCloseOnSelection = true;
 
-    /**
-     * @var SelectionModalActionPosition | Closure
-     */
     protected SelectionModalActionPosition | Closure $confirmationActionPosition = SelectionModalActionPosition::BOTTOM_LEFT;
 
-    /**
-     * @var  null | Closure
-     */
     protected ?Closure $modifySelectionConfirmationActionUsing = null;
 
-    /**
-     * @param  Closure | class-string<Resource> $resource
-     *
-     * @return $this
-     */
     public function tableLocation(Closure | string $resource): static
     {
         $this->tableLocation = $resource;
@@ -67,11 +44,6 @@ trait HasSelectionTable
         return $this;
     }
 
-    /**
-     * @param  bool | Closure $shouldSelectRecordOnRowClick
-     *
-     * @return $this
-     */
     public function shouldSelectRecordOnRowClick(bool | Closure $shouldSelectRecordOnRowClick): static
     {
         $this->shouldSelectRecordOnRowClick = $shouldSelectRecordOnRowClick;
@@ -79,11 +51,6 @@ trait HasSelectionTable
         return $this;
     }
 
-    /**
-     * @param  Closure(Table $table): Table $modifySelectionTableUsing
-     *
-     * @return $this
-     */
     public function modifySelectionTable(Closure $modifySelectionTableUsing): static
     {
         $this->modifySelectionTableUsing = $modifySelectionTableUsing;
@@ -91,13 +58,6 @@ trait HasSelectionTable
         return $this;
     }
 
-    /**
-     * @param  bool | Closure $requiresSelectionConfirmation
-     * @param  null | bool | Closure $shouldCloseOnSelection
-     * @param  null | Closure | SelectionModalActionPosition $confirmationActionPosition
-     *
-     * @return $this
-     */
     public function requiresSelectionConfirmation(
         bool | Closure $requiresSelectionConfirmation = true,
         null | bool | Closure $shouldCloseOnSelection = null,
@@ -111,11 +71,6 @@ trait HasSelectionTable
         return $this;
     }
 
-    /**
-     * @param  bool | Closure $shouldCloseOnSelection
-     *
-     * @return $this
-     */
     public function shouldCloseOnSelection(bool | Closure $shouldCloseOnSelection = true): static
     {
         $this->shouldCloseOnSelection = $shouldCloseOnSelection;
@@ -123,11 +78,6 @@ trait HasSelectionTable
         return $this;
     }
 
-    /**
-     * @param  Closure | SelectionModalActionPosition $confirmationActionPosition
-     *
-     * @return $this
-     */
     public function confirmationActionPosition(Closure | SelectionModalActionPosition $confirmationActionPosition): static
     {
         $this->confirmationActionPosition = $confirmationActionPosition;
@@ -135,12 +85,6 @@ trait HasSelectionTable
         return $this;
     }
 
-    /**
-     * @param  Closure $modifySelectionConfirmationActionUsing
-     * @param  null | Closure | SelectionModalActionPosition $confirmationActionPosition
-     *
-     * @return $this
-     */
     public function modifySelectionConfirmationAction(
         Closure $modifySelectionConfirmationActionUsing,
         null | Closure | SelectionModalActionPosition $confirmationActionPosition = null
@@ -152,20 +96,10 @@ trait HasSelectionTable
         return $this;
     }
 
-    /**
-     * @return int
-     */
     abstract public function getSelectionLimit(): int;
 
-    /**
-     * @return bool
-     */
     abstract public function isMultiple(): bool;
 
-    /**
-     * @return View
-     * @throws TableSelectException
-     */
     protected function getSelectionModalView(): View
     {
         $state = $this->getState();
@@ -197,17 +131,11 @@ trait HasSelectionTable
         ]);
     }
 
-    /**
-     * @return string
-     */
     public function getSelectionConfirmationActionName(): string
     {
         return 'selectionConfirmationAction';
     }
 
-    /**
-     * @return Action
-     */
     protected function getSelectionConfirmationAction(): Action
     {
         $action = Action::make($this->getSelectionConfirmationActionName())

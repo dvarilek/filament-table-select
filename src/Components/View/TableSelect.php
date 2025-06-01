@@ -88,17 +88,11 @@ class TableSelect extends Select
         ]);
     }
 
-    /**
-     * @return int
-     */
     protected function getSelectionLimit(): int
     {
         return $this->isMultiple() ? $this->getOptionsLimit() : 1;
     }
 
-    /**
-     * @return ?Action
-     */
     protected function getSelectionModalCreateOptionAction(): ?Action
     {
         $createOptionAction = $this->getAction($this->getCreateOptionActionName());
