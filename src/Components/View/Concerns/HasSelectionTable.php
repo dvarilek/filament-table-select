@@ -21,11 +21,6 @@ use Livewire\Component;
 trait HasSelectionTable
 {
     /**
-     * @var bool
-     */
-    protected bool $isBadgeTableSelect = true;
-
-    /**
      * @var null | Closure | class-string<Resource>
      */
     protected null | Closure | string $tableLocation = null;

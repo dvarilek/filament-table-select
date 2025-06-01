@@ -7,6 +7,7 @@ namespace Dvarilek\FilamentTableSelect\Components\View\Concerns;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Field;
+use Filament\Support\Enums\Alignment;
 use Illuminate\Support\Js;
 use Livewire\Component;
 use Closure;
@@ -16,6 +17,16 @@ use Closure;
  */
 trait HasSelectionAction
 {
+
+    /**
+     * @var string | Alignment | Closure
+     */
+    protected string | Alignment | Closure $selectionActionAlignment = Alignment::Start;
+
+    /**
+     * @var bool | Closure
+     */
+    protected bool | Closure $shouldTriggerSelectionActionOnInputClick = false;
 
     /**
      * @var  null | Closure
@@ -31,6 +42,30 @@ trait HasSelectionAction
     }
 
     /**
+     * @param  string | Alignment $alignment
+     *
+     * @return $this
+     */
+    public function selectionActionAlignment(string | ALignment $alignment): static
+    {
+        $this->selectionActionAlignment = $alignment;
+
+        return $this;
+    }
+
+    /**
+     * @param  bool | Closure $shouldTriggerSelectionActionOnInputClick
+     *
+     * @return $this
+     */
+    public function triggerSelectionActionOnInputClick(bool | Closure $shouldTriggerSelectionActionOnInputClick = true): static
+    {
+        $this->shouldTriggerSelectionActionOnInputClick = $shouldTriggerSelectionActionOnInputClick;
+
+        return $this;
+    }
+
+    /**
      * @param  Closure $modifySelectionActionUsing
      *
      * @return $this
@@ -43,17 +78,35 @@ trait HasSelectionAction
     }
 
     /**
+     * @return string | Alignment
+     */
+    public function getSelectionActionAlignment(): string | Alignment
+    {
+        return $this->evaluate($this->selectionActionAlignment);
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldTriggerSelectionActionOnInputClick(): bool
+    {
+        return (bool) $this->evaluate($this->shouldTriggerSelectionActionOnInputClick);
+    }
+
+    /**
      * @return Action
      */
     protected function getSelectionAction(): Action
     {
         $action = Action::make($this->getSelectionActionName())
-            ->label(static fn (self $component) => $component->isDisabled()
-                ? trans_choice('filament-table-select::table-select.actions.selection.view-label', $component->getSelectionLimit())
-                : trans_choice('filament-table-select::table-select.actions.selection.edit-label', $component->getSelectionLimit())
-            )
+            ->label(static fn(Field $component) => trans_choice(
+                $component->isDisabled()
+                    ? 'filament-table-select::table-select.actions.selection.view-label'
+                    : 'filament-table-select::table-select.actions.selection.edit-label',
+                $component->getSelectionLimit()
+            ))
             ->modalContent(fn () => $this->getSelectionModalView())
-            ->mountUsing(static function (Component $livewire, Field $component) {
+            ->mountUsing(function (Component $livewire, Field $component) {
                 $statePath = Js::from($component->getStatePath());
 
                 $livewire->js(<<<JS
@@ -63,16 +116,9 @@ trait HasSelectionAction
             ->modalSubmitAction(false)
             ->modalCancelAction(false)
             ->icon('heroicon-o-link')
-            ->color('gray')
+            ->link()
+            ->color('primary')
             ->slideOver();
-
-        if ($this->isBadgeTableSelect) {
-            $this->isMultiple() ? $action->link() : $action->iconButton();
-
-            $action->color('primary');
-        } else {
-            $action->color('gray');
-        }
 
         return $this->evaluate($this->modifySelectionActionUsing, [
             'action' => $action

@@ -14,16 +14,18 @@ class TableSelect extends Select
     use Concerns\HasSelectionModalCreateOptionAction;
     use Concerns\HasSelectionAction;
     use Concerns\HasSelectionTable;
+    use Concerns\HasSelectBadges;
 
     /**
      * @var view-string
      */
-    protected string $badgeTableSelectView = 'filament-table-select::badge-table-select';
+    protected string $view = 'filament-table-select::table-select';
 
     /**
      * @var view-string
      */
     protected string $selectionTableModalView = 'filament-table-select::selection-table-modal';
+
 
     /**
      * @return void
@@ -32,18 +34,7 @@ class TableSelect extends Select
     {
         parent::setUp();
 
-        if ($this->isBadgeTableSelect) {
-            $this->view($this->badgeTableSelectView);
-        }
-
         $this->suffixActions([
-            static function (TableSelect $component) {
-               if ($component->isBadgeTableSelect) {
-                   return null;
-               }
-
-               return $component->getSelectionAction();
-            },
             static function (TableSelect $component) {
                 $action = $component->getAction($component->getCreateOptionActionName());
 
@@ -68,6 +59,7 @@ class TableSelect extends Select
         ]);
 
         $this->registerActions([
+            static fn (TableSelect $component) => $component->getSelectionAction(),
             static function (TableSelect $component) {
                 if (! $component->evaluate($component->requiresSelectionConfirmation)) {
                     return null;
@@ -82,13 +74,6 @@ class TableSelect extends Select
                 }
 
                 return $component->getSelectionModalCreateOptionAction();
-            },
-            static function (TableSelect $component) {
-                if (! $component->isBadgeTableSelect) {
-                    return null;
-                }
-
-                return $component->getSelectionAction();
             }
         ]);
 
