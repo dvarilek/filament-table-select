@@ -140,12 +140,14 @@
                     </div>
 
                     @unless($isDisabled)
-                        <x-filament::icon-button
-                            icon="heroicon-o-x-mark"
-                            color="gray"
-                            class="ml-auto z-10"
-                            x-on:click="deleteOption()"
-                        />
+                        <template x-if="state !== null">
+                            <x-filament::icon-button
+                                    icon="heroicon-o-x-mark"
+                                    color="gray"
+                                    class="ml-auto z-10"
+                                    x-on:click="deleteOption()"
+                            />
+                        </template>
                     @endunless
                 </div>
             @else
