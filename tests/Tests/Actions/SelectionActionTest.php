@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 use Dvarilek\FilamentTableSelect\Tests\Fixtures\TestLivewireComponent;
 use Dvarilek\FilamentTableSelect\Tests\Models\Order;
 use Filament\Forms\Components\Actions\Action;
@@ -34,7 +34,7 @@ test('table selection action exists', function () {
 it('can modify selection action', function () {
      livewire(TestLivewireComponent::class, [
         'configureTableSelectComponentUsing' => fn (TableSelect $tableSelect) => $tableSelect
-            ->modifySelectionAction(fn (Action $action) => $action
+            ->selectionAction(fn (Action $action) => $action
                 ->label('Custom Label')
                 ->icon('heroicon-o-user')
             )

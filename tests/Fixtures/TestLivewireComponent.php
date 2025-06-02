@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Dvarilek\FilamentTableSelect\Tests\Fixtures;
 
 use Closure;
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 use Dvarilek\FilamentTableSelect\Tests\Models\Order;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;

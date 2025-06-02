@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Dvarilek\FilamentTableSelect\Components\View\Concerns;
+namespace Dvarilek\FilamentTableSelect\Components\Form\Concerns;
 
 use Dvarilek\FilamentTableSelect\Enums\SelectionModalActionPosition;
 use Dvarilek\FilamentTableSelect\Exceptions\TableSelectException;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
 use Illuminate\Support\Js;
 use Illuminate\Contracts\View\View;
 use Closure;
@@ -37,6 +36,10 @@ trait HasSelectionTable
 
     protected ?Closure $modifySelectionConfirmationActionUsing = null;
 
+    abstract public function getSelectionLimit(): int;
+
+    abstract public function isMultiple(): bool;
+
     public function tableLocation(Closure | string $resource): static
     {
         $this->tableLocation = $resource;
@@ -51,7 +54,7 @@ trait HasSelectionTable
         return $this;
     }
 
-    public function modifySelectionTable(Closure $modifySelectionTableUsing): static
+    public function selectionTable(Closure $modifySelectionTableUsing): static
     {
         $this->modifySelectionTableUsing = $modifySelectionTableUsing;
 
@@ -85,7 +88,7 @@ trait HasSelectionTable
         return $this;
     }
 
-    public function modifySelectionConfirmationAction(
+    public function selectionConfirmationAction(
         Closure $modifySelectionConfirmationActionUsing,
         null | Closure | SelectionModalActionPosition $confirmationActionPosition = null
     ): static
@@ -95,10 +98,6 @@ trait HasSelectionTable
 
         return $this;
     }
-
-    abstract public function getSelectionLimit(): int;
-
-    abstract public function isMultiple(): bool;
 
     protected function getSelectionModalView(): View
     {
@@ -127,13 +126,8 @@ trait HasSelectionTable
             'modifySelectionTableUsing' => $this->modifySelectionTableUsing,
             'statePath' => $this->getStatePath(),
             'createAction' => $this->getAction($this->getSelectionModalCreateOptionActionName()),
-            'createActionPosition' => $this->evaluate($this->selectionModalCreateOptionActionPosition),
+            'createActionPosition' => $this->evaluate($this->createOptionActionPosition),
         ]);
-    }
-
-    public function getSelectionConfirmationActionName(): string
-    {
-        return 'selectionConfirmationAction';
     }
 
     protected function getSelectionConfirmationAction(): Action
@@ -160,10 +154,19 @@ trait HasSelectionTable
             $action->cancelParentActions();
         }
 
-        return $this->evaluate($this->modifySelectionConfirmationActionUsing, [
-            'action' => $action,
-        ], [
-            Action::class => $action
-        ]) ?? $action;
+        if ($this->modifySelectionConfirmationActionUsing) {
+            $action = $this->evaluate($this->modifySelectionConfirmationActionUsing, [
+                'action' => $action,
+            ], [
+                Action::class => $action
+            ]) ?? $action;
+        }
+
+        return $action;
+    }
+
+    public function getSelectionConfirmationActionName(): string
+    {
+        return 'selectionConfirmationAction';
     }
 }

@@ -44,7 +44,7 @@ it takes to select the record they are looking for.
 No configuration is required! Simply include the component in your form schema and define the relationship:
 
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 
 $form
     ->schema([
@@ -60,13 +60,14 @@ $form
 
 You can configure the Selection table by passing a closure into the `modifySelectionTable()` method, this is where
 you can add columns, remove actions, modify the table's query etc.
+
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 use Filament\Tables\Table;
 
 TableSelect::make('clients')
     ->relationship('clients', 'name')
-    ->modifySelectionTable(function (Table $table) {
+    ->selectionTable(function (Table $table) {
         return $table
             ->heading('Select Active Clients') 
             ->actions([]) 
@@ -79,15 +80,16 @@ Additionally, If you wish to customize the Selection Table Livewire component, y
 use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
 use Filament\Tables\Table;
 
-->modifySelectionTable(function (Table $table, SelectionTable $livewire) {
+->selectionTable(function (Table $table, SelectionTable $livewire) {
     // ...
 })
 ```
 <br>
 
 To use an already defined table from a Filament Resource, use the `tableLocation()` method:
+
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 
 TableSelect::make('clients')
     ->relationship('clients', 'name')
@@ -99,8 +101,9 @@ TableSelect::make('clients')
 The Selection Table supports both single selection and multiple selection mode. Multiple selection mode allows you to
 select multiple records. While Single selection mode acts similarly to a radio for better selection experience.
 This mode is determined by the result of `multiple()` method:
+
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 
 // multiple selection mode
 TableSelect::make('clients')
@@ -127,8 +130,9 @@ TableSelect::make('category_id')
 <br>
 
 To limit how many items the user can select in the Selection Table, use `optionsLimit()` method:
+
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 
 // Only three records can be selected in total - the rest gets disabled for selection
 TableSelect::make('clients')
@@ -145,13 +149,14 @@ TableSelect::make('clients')
 ***
 ## Selection Action
 The selection action and its modal where the table is contained can be configured using the `modifySelectionAction()` method:
+
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 use Filament\Forms\Components\Actions\Action;
 
 TableSelect::make('clients')
     ->relationship('clients', 'name')
-    ->modifySelectionAction(function (Action $action) {
+    ->selectionAction(function (Action $action) {
         return $action
             ->icon('heroicon-o-user-plus') 
             ->modalHeading('Select Clients') 
@@ -164,8 +169,9 @@ TableSelect::make('clients')
 
 By default, the component's state is automatically updated as records are selected.
 To require a confirmation of the selection, use the `requiresSelectionConfirmation()` method:
+
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 
 TableSelect::make('clients')
     ->relationship('clients', 'name')
@@ -180,8 +186,9 @@ the form component's state get updated.
 <br>
 
 After confirmation, the modal closes by default. To keep it open, use the `shouldCloseOnSelection()`:
+
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 
 TableSelect::make('clients')
     ->relationship('clients', 'name')
@@ -197,8 +204,9 @@ Or provide an optional parameter directly in the `requiresSelectionConfirmation(
 
 By default, the confirmation action is positioned in the bottom left corner of the modal. To change its position use the
 `confirmationActionPosition()` method:
+
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 use Dvarilek\FilamentTableSelect\Enums\SelectionModalActionPosition;
 
 TableSelect::make('clients')
@@ -220,7 +228,7 @@ In a standard Select component, if users can’t find the record they need, they
 new one on using the `createOptionAction()`. - [Official Filament Documentation](https://filamentphp.com/docs/3.x/forms/fields/select#creating-a-new-option-in-a-modal)
 
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 
 TableSelect::make('clients')
     ->relationship('clients', 'name')
@@ -239,7 +247,7 @@ If defined, this Create Option Action can be included inside the Selection modal
 `hasCreateOptionActionInSelectionModal()` method:
 
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 use Filament\Forms\Form;
 
 TableSelect::make('clients')
@@ -264,7 +272,7 @@ To avoid confusion, the original suffix create option action is hidden when usin
 To display both actions, use the `createOptionActionOnlyVisibleInSelectionModal()` method.
 
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 use Filament\Forms\Form;
 
 TableSelect::make('clients')
@@ -287,7 +295,7 @@ By default, the create option action is positioned in the top right corner of th
 `selectionModalCreateOptionActionPosition()` method:
 
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 use Dvarilek\FilamentTableSelect\Enums\SelectionModalActionPosition;
 use Filament\Forms\Form;
 
@@ -307,8 +315,9 @@ Or provide an optional parameter directly in the `hasCreateOptionActionInSelecti
 
 To customize only the modal's create action without affecting the original create option action, use
 `modifySelectionModalCreateOptionAction()` method:
+
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Actions\Action;
 
@@ -323,7 +332,7 @@ TableSelect::make('clients')
 ```
 
 ```php
-use Dvarilek\FilamentTableSelect\Components\View\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 
 public function boot(): void
 {

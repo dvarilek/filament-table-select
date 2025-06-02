@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Dvarilek\FilamentTableSelect\Components\View\Concerns;
+namespace Dvarilek\FilamentTableSelect\Components\Form\Concerns;
 
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\IconSize;

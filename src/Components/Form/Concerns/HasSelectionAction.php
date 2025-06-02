@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Dvarilek\FilamentTableSelect\Components\View\Concerns;
+namespace Dvarilek\FilamentTableSelect\Components\Form\Concerns;
 
 use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Field;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Support\Js;
@@ -23,11 +22,6 @@ trait HasSelectionAction
 
     protected ?Closure $modifySelectionActionUsing = null;
 
-    public function getSelectionActionName(): string
-    {
-        return 'tableSelectionAction';
-    }
-
     public function selectionActionAlignment(string | ALignment $alignment): static
     {
         $this->selectionActionAlignment = $alignment;
@@ -42,7 +36,7 @@ trait HasSelectionAction
         return $this;
     }
 
-    public function modifySelectionAction(Closure $modifySelectionActionUsing): static
+    public function selectionAction(Closure $modifySelectionActionUsing): static
     {
         $this->modifySelectionActionUsing = $modifySelectionActionUsing;
 
@@ -83,10 +77,19 @@ trait HasSelectionAction
             ->color('primary')
             ->slideOver();
 
-        return $this->evaluate($this->modifySelectionActionUsing, [
-            'action' => $action
-        ], [
-            Action::class => $action
-        ]) ?? $action;
+        if ($this->modifySelectionActionUsing) {
+            $action = $this->evaluate($this->modifySelectionActionUsing, [
+                'action' => $action
+            ], [
+                Action::class => $action
+            ]) ?? $action;
+        }
+
+        return $action;
+    }
+
+    public function getSelectionActionName(): string
+    {
+        return 'tableSelectionAction';
     }
 }
