@@ -36,9 +36,15 @@ trait HasSelectionAction
         return $this;
     }
 
-    public function selectionAction(Closure $modifySelectionActionUsing): static
+    public function selectionAction(
+        Closure $modifySelectionActionUsing,
+        null | string | ALignment $alignment,
+        null | bool | Closure $shouldTriggerSelectionActionOnInputClick = null
+    ): static
     {
         $this->modifySelectionActionUsing = $modifySelectionActionUsing;
+        $this->selectionActionAlignment = $alignment ?? $this->selectionActionAlignment;
+        $this->shouldTriggerSelectionActionOnInputClick = $shouldTriggerSelectionActionOnInputClick ?? $this->shouldTriggerSelectionActionOnInputClick;
 
         return $this;
     }
