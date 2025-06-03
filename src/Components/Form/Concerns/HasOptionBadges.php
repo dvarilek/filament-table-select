@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Components\Form\Concerns;
 
+use Filament\Forms\Components\Field;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\IconSize;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\ComponentAttributeBag;
 
+/**
+ * @mixin Field
+ */
 trait HasOptionBadges
 {
     protected string | ActionSize | Closure $optionSize = ActionSize::Medium;

@@ -54,9 +54,9 @@ trait HasSelectionTable
         return $this;
     }
 
-    public function selectionTable(Closure $modifySelectionTableUsing): static
+    public function selectionTable(?Closure $callback): static
     {
-        $this->modifySelectionTableUsing = $modifySelectionTableUsing;
+        $this->modifySelectionTableUsing = $callback;
 
         return $this;
     }

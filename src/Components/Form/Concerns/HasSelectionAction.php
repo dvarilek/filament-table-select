@@ -37,8 +37,8 @@ trait HasSelectionAction
     }
 
     public function selectionAction(
-        Closure $modifySelectionActionUsing,
-        null | string | ALignment $alignment,
+        ?Closure $modifySelectionActionUsing,
+        null | string | ALignment $alignment = null,
         null | bool | Closure $shouldTriggerSelectionActionOnInputClick = null
     ): static
     {

@@ -31,7 +31,7 @@ trait HasSelectionModalCreateOptionAction
 
     protected string | Closure | null $createOptionModalHeading = null;
 
-    protected SelectionModalActionPosition $createOptionActionPosition = SelectionModalActionPosition::TOP_RIGHT;
+    protected SelectionModalActionPosition | Closure $createOptionActionPosition = SelectionModalActionPosition::TOP_RIGHT;
 
     public function createOptionAction(?Closure $callback): static
     {
@@ -78,7 +78,7 @@ trait HasSelectionModalCreateOptionAction
         return (bool) $this->createOptionActionForm;
     }
 
-    public function createOptionActionPosition(SelectionModalActionPosition $createOptionActionPosition): static
+    public function createOptionActionPosition(SelectionModalActionPosition | Closure $createOptionActionPosition): static
     {
         $this->createOptionActionPosition = $createOptionActionPosition;
 
