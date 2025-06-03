@@ -33,7 +33,7 @@ class TableSelect extends Field
     use Concerns\HasSelectionModalCreateOptionAction;
     use Concerns\HasSelectionAction;
     use Concerns\HasSelectionTable;
-    use Concerns\HasSelectBadges;
+    use Concerns\HasOptionBadges;
 
     use HasAffixes;
     use CanLimitItemsLength;
@@ -321,13 +321,35 @@ class TableSelect extends Field
                 ]) ?? $relationshipQuery;
             }
 
-            if ($component->hasOptionLabelFromRecordUsingCallback()) {
-                return $relationshipQuery
-                    ->get()
-                    ->mapWithKeys(static fn (Model $record) => [
-                        $record->{Str::afterLast($qualifiedRelatedKeyName, '.')} => $component->getOptionLabelFromRecord($record),
-                    ])
-                    ->toArray();
+            $hasOptionLabelFromRecordUsingCallback = $component->hasOptionLabelFromRecordUsingCallback();
+            $hasOptionColorFromRecordUsingCallback = $component->hasOptionColorFromRecordUsingCallback();
+            $hasOptionIconFromRecordUsingCallback = $component->hasOptionIconFromRecordUsingCallback();
+
+            if (
+                $hasOptionLabelFromRecordUsingCallback ||
+                $hasOptionColorFromRecordUsingCallback ||
+                $hasOptionIconFromRecordUsingCallback
+            ) {
+                $optionLabels = [];
+                $optionKeyName = Str::afterLast($qualifiedRelatedKeyName, '.');
+
+                foreach ($relationshipQuery->get() as $record) {
+                    if ($hasOptionColorFromRecordUsingCallback) {
+                        $component->cacheOptionColorForRecord($record);
+                    }
+
+                    if ($hasOptionIconFromRecordUsingCallback) {
+                        $component->cacheOptionIconForRecord($record);
+                    }
+
+                    if ($hasOptionLabelFromRecordUsingCallback) {
+                        $optionLabels[$record->$optionKeyName] = $component->getOptionLabelFromRecord($record);
+                    }
+                }
+
+                if ($hasOptionLabelFromRecordUsingCallback) {
+                    return $optionLabels;
+                }
             }
 
             $relationshipTitleAttribute = $component->getRelationshipTitleAttribute();

@@ -7,13 +7,13 @@
     $statePath = $getStatePath();
     $placeholder = $getPlaceholder();
 
-    $selectBadgeSize = $getSelectBadgeSize();
-    $selectBadgeIconSize = $getSelectBadgeIconSize();
+    $optionSize = $getOptionSize();
+    $optionIconSize = $getOptionIconSize();
 
     $selectionActionName = $getSelectionActionName();
     $selectionAction = $getAction($selectionActionName);
     $selectionActionAlignment = $getSelectionActionAlignment();
-    $extraSelectBadgeAttributes = \Filament\Support\prepare_inherited_attributes($getExtraSelectBadgeAttributeBag());
+    $optionExtraAttributes = \Filament\Support\prepare_inherited_attributes($getOptionExtraAttributesBag());
 
     if (! $selectionActionAlignment instanceof Alignment) {
         $selectionActionAlignment = Alignment::tryFrom($selectionActionAlignment) ?? $selectionActionAlignment;
@@ -103,11 +103,11 @@
                             <x-filament::badge
                                 x-ref="table-select-badge-{{ $id }}-{{ $optionKey }}"
                                 class="z-10"
-                                :size="$selectBadgeSize"
-                                :iconSize="$selectBadgeIconSize"
-                                :color="$getSelectBadgeColor($optionKey, $optionLabel) ?? null"
-                                :icon="$getSelectBadgeIcon($optionKey, $optionLabel) ?? null"
-                                :attributes="$extraSelectBadgeAttributes"
+                                :size="$optionIconSize"
+                                :iconSize="$optionIconSize"
+                                :color="$getOptionColor($optionKey) ?? null"
+                                :icon="$getOptionIcon($optionKey) ?? null"
+                                :attributes="$optionExtraAttributes"
                             >
                                 {{ $optionLabel }}
 
