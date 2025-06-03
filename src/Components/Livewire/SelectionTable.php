@@ -25,7 +25,7 @@ class SelectionTable extends TableWidget
     public bool $isDisabled = false;
 
     /**
-     * @var  null | class-string<Model>
+     * @var  class-string<Model> | null
      */
     #[Locked]
     public ?string $model = null;
@@ -39,7 +39,7 @@ class SelectionTable extends TableWidget
     public string $relationshipName;
 
     /**
-     * @var  null | class-string<mixed | Resource>
+     * @var  class-string<mixed | Resource> | null
      */
     #[Locked]
     public ?string $tableLocation = null;

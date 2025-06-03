@@ -20,9 +20,9 @@ use Livewire\Component;
 trait HasSelectionTable
 {
     /**
-     * @var null | Closure | class-string<mixed | Resource>
+     * @var class-string<mixed | Resource> | Closure | null
      */
-    protected null | Closure | string $tableLocation = null;
+    protected  string | Closure | null $tableLocation = null;
 
     protected bool | Closure $shouldSelectRecordOnRowClick = true;
 
@@ -63,8 +63,8 @@ trait HasSelectionTable
 
     public function requiresSelectionConfirmation(
         bool | Closure $requiresSelectionConfirmation = true,
-        null | bool | Closure $shouldCloseOnSelection = null,
-        null | Closure | SelectionModalActionPosition $confirmationActionPosition = null
+        bool | Closure | null $shouldCloseOnSelection = null,
+        SelectionModalActionPosition | Closure | null $confirmationActionPosition = null
     ): static
     {
         $this->requiresSelectionConfirmation = $requiresSelectionConfirmation;
@@ -89,8 +89,8 @@ trait HasSelectionTable
     }
 
     public function selectionConfirmationAction(
-        Closure $modifySelectionConfirmationActionUsing,
-        null | Closure | SelectionModalActionPosition $confirmationActionPosition = null
+        ?Closure $modifySelectionConfirmationActionUsing,
+        SelectionModalActionPosition | Closure | null $confirmationActionPosition = null
     ): static
     {
         $this->modifySelectionConfirmationActionUsing = $modifySelectionConfirmationActionUsing;

@@ -22,7 +22,7 @@ trait HasSelectionAction
 
     protected ?Closure $modifySelectionActionUsing = null;
 
-    public function selectionActionAlignment(string | ALignment $alignment): static
+    public function selectionActionAlignment(string | ALignment | Closure $alignment): static
     {
         $this->selectionActionAlignment = $alignment;
 
@@ -38,8 +38,8 @@ trait HasSelectionAction
 
     public function selectionAction(
         ?Closure $modifySelectionActionUsing,
-        null | string | ALignment $alignment = null,
-        null | bool | Closure $shouldTriggerSelectionActionOnInputClick = null
+        string | ALignment | null $alignment = null,
+        bool | Closure | null $shouldTriggerSelectionActionOnInputClick = null
     ): static
     {
         $this->modifySelectionActionUsing = $modifySelectionActionUsing;
