@@ -45,7 +45,7 @@
                 ->class(['py-1.5', 'px-3', 'relative', 'min-h-9'])
         "
     >
-        @if($triggerSelectionActionOnInputClick)
+        @if ($triggerSelectionActionOnInputClick)
             <x-filament::input
                 :autofocus="$isAutofocused()"
                 :id="$id"
@@ -103,7 +103,7 @@
                             <x-filament::badge
                                 x-ref="table-select-badge-{{ $id }}-{{ $optionKey }}"
                                 class="z-10"
-                                :size="$optionIconSize"
+                                :size="$optionSize"
                                 :iconSize="$optionIconSize"
                                 :color="$getOptionColor($optionKey) ?? null"
                                 :icon="$getOptionIcon($optionKey) ?? null"
