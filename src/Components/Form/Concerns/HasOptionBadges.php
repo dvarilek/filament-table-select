@@ -16,13 +16,16 @@ use Illuminate\View\ComponentAttributeBag;
  */
 trait HasOptionBadges
 {
+    /**
+     * @var string | array{50: string, 100: string, 200: string, 300: string, 400: string, 500: string, 600: string, 700: string, 800: string, 900: string, 950: string} | bool | Closure | null
+     */
+    protected string | array | bool | Closure | null $optionColor = null;
+
+    protected ?string $optionIcon = null;
+
     protected string | ActionSize | Closure $optionSize = ActionSize::Medium;
 
     protected string | IconSize | Closure $optionIconSize = IconSize::Small;
-
-    protected ?Closure $getOptionColorUsing = null;
-
-    protected ?Closure $getOptionIconUsing = null;
 
     protected ?Closure $getOptionColorFromRecordUsing = null;
 
@@ -43,6 +46,25 @@ trait HasOptionBadges
      */
     protected array $cachedOptionIcons = [];
 
+    /**
+     * @param  string | array{50: string, 100: string, 200: string, 300: string, 400: string, 500: string, 600: string, 700: string, 800: string, 900: string, 950: string} | bool | Closure | null $optionColor
+     *
+     * @return static
+     */
+    public function optionColor(string | array | bool | Closure | null $optionColor): static
+    {
+        $this->optionColor = $optionColor;
+
+        return $this;
+    }
+
+    public function optionIcon(?string $optionIcon): static
+    {
+        $this->optionIcon = $optionIcon;
+
+        return $this;
+    }
+
     public function optionSize(string | ActionSize | Closure $size): static
     {
         $this->optionSize = $size;
@@ -53,20 +75,6 @@ trait HasOptionBadges
     public function optionIconSize(string | IconSize | Closure $size): static
     {
         $this->optionIconSize = $size;
-
-        return $this;
-    }
-
-    public function getOptionColorUsing(?Closure $callback): static
-    {
-        $this->getOptionColorUsing = $callback;
-
-        return $this;
-    }
-
-    public function getOptionIconUsing(?Closure $callback): static
-    {
-        $this->getOptionIconUsing = $callback;
 
         return $this;
     }
@@ -110,54 +118,11 @@ trait HasOptionBadges
     }
 
     /**
-     * @return array<mixed>
+     * @param  mixed $optionKey
+     *
+     * @return string | array{50: string, 100: string, 200: string, 300: string, 400: string, 500: string, 600: string, 700: string, 800: string, 900: string, 950: string} | bool | Closure | null
      */
-    public function getOptionExtraAttributes(): array
-    {
-        $temporaryAttributeBag = new ComponentAttributeBag;
-
-        foreach ($this->optionExtraAttributes as $extraAttributes) {
-            $temporaryAttributeBag = $temporaryAttributeBag->merge($this->evaluate($extraAttributes));
-        }
-
-        return $temporaryAttributeBag->getAttributes();
-    }
-
-    /**
-     * @return ComponentAttributeBag
-     */
-    public function getOptionExtraAttributesBag(): ComponentAttributeBag
-    {
-        return new ComponentAttributeBag($this->getOptionExtraAttributes());
-    }
-
-    public function getOptionColorFromRecord(Model $record): ?string
-    {
-        return $this->evaluate($this->getOptionColorFromRecordUsing,
-            namedInjections: [
-                'record' => $record,
-            ],
-            typedInjections: [
-                Model::class => $record,
-                $record::class => $record,
-            ]
-        );
-    }
-
-    public function getOptionIconFromRecord(Model $record): ?string
-    {
-        return $this->evaluate($this->getOptionIconFromRecordUsing,
-            namedInjections: [
-                'record' => $record,
-            ],
-            typedInjections: [
-                Model::class => $record,
-                $record::class => $record,
-            ]
-        );
-    }
-
-    public function getOptionColor(mixed $optionKey): ?string
+    public function getOptionColor(mixed $optionKey): string | array | bool | Closure | null
     {
         $optionKey = (string) $optionKey;
 
@@ -183,6 +148,37 @@ trait HasOptionBadges
         ]);
     }
 
+    /**
+     * @param  Model $record
+     *
+     * @return string | array{50: string, 100: string, 200: string, 300: string, 400: string, 500: string, 600: string, 700: string, 800: string, 900: string, 950: string} | bool | Closure | null
+     */
+    public function getOptionColorFromRecord(Model $record): string | array | bool | Closure | null
+    {
+        return $this->evaluate($this->getOptionColorFromRecordUsing,
+            namedInjections: [
+                'record' => $record,
+            ],
+            typedInjections: [
+                Model::class => $record,
+                $record::class => $record,
+            ]
+        );
+    }
+
+    public function getOptionIconFromRecord(Model $record): ?string
+    {
+        return $this->evaluate($this->getOptionIconFromRecordUsing,
+            namedInjections: [
+                'record' => $record,
+            ],
+            typedInjections: [
+                Model::class => $record,
+                $record::class => $record,
+            ]
+        );
+    }
+
     public function hasOptionColorFromRecordUsingCallback(): bool
     {
         return $this->getOptionColorFromRecordUsing !== null;
@@ -201,5 +197,27 @@ trait HasOptionBadges
     public function cacheOptionIconForRecord(Model $record): void
     {
         $this->cachedOptionIcons[(string) $record->getKey()] = $this->getOptionIconFromRecord($record);
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function getOptionExtraAttributes(): array
+    {
+        $temporaryAttributeBag = new ComponentAttributeBag;
+
+        foreach ($this->optionExtraAttributes as $extraAttributes) {
+            $temporaryAttributeBag = $temporaryAttributeBag->merge($this->evaluate($extraAttributes));
+        }
+
+        return $temporaryAttributeBag->getAttributes();
+    }
+
+    /**
+     * @return ComponentAttributeBag
+     */
+    public function getOptionExtraAttributesBag(): ComponentAttributeBag
+    {
+        return new ComponentAttributeBag($this->getOptionExtraAttributes());
     }
 }
