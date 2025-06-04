@@ -30,7 +30,7 @@ trait HasSelectionTable
 
     protected bool | Closure $requiresSelectionConfirmation = false;
 
-    protected bool | Closure $shuoldCloseAfterSelection = true;
+    protected bool | Closure $shouldCloseAfterSelection = true;
 
     protected SelectionModalActionPosition | Closure $confirmationActionPosition = SelectionModalActionPosition::BOTTOM_LEFT;
 
@@ -63,20 +63,20 @@ trait HasSelectionTable
 
     public function requiresSelectionConfirmation(
         bool | Closure $requiresSelectionConfirmation = true,
-        bool | Closure | null $shuoldCloseAfterSelection = null,
+        bool | Closure | null $shouldCloseAfterSelection = null,
         SelectionModalActionPosition | Closure | null $confirmationActionPosition = null
     ): static
     {
         $this->requiresSelectionConfirmation = $requiresSelectionConfirmation;
-        $this->shuoldCloseAfterSelection = $shuoldCloseAfterSelection ?? $this->shuoldCloseAfterSelection;
+        $this->shouldCloseAfterSelection = $shouldCloseAfterSelection ?? $this->shouldCloseAfterSelection;
         $this->confirmationActionPosition = $confirmationActionPosition ?? $this->confirmationActionPosition;
 
         return $this;
     }
 
-    public function shuoldCloseAfterSelection(bool | Closure $shuoldCloseAfterSelection = true): static
+    public function shouldCloseAfterSelection(bool | Closure $shouldCloseAfterSelection = true): static
     {
-        $this->shuoldCloseAfterSelection = $shuoldCloseAfterSelection;
+        $this->shouldCloseAfterSelection = $shouldCloseAfterSelection;
 
         return $this;
     }
@@ -150,7 +150,7 @@ trait HasSelectionTable
                 JS);
             });
 
-        if ($this->evaluate($this->shuoldCloseAfterSelection)) {
+        if ($this->evaluate($this->shouldCloseAfterSelection)) {
             $action->cancelParentActions();
         }
 
