@@ -130,7 +130,7 @@ trait HasOptionBadges
             return $this->cachedOptionColors[$optionKey] ?? null;
         }
 
-        return $this->evaluate($this->getOptionColorUsing, [
+        return $this->evaluate($this->optionColor, [
             'optionKey' => $optionKey
         ]);
     }
@@ -143,7 +143,7 @@ trait HasOptionBadges
             return $this->cachedOptionIcons[$optionKey] ?? null;
         }
 
-        return $this->evaluate($this->getOptionIconUsing, [
+        return $this->evaluate($this->optionIcon, [
             'optionKey' => $optionKey,
         ]);
     }
