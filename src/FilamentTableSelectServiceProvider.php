@@ -6,6 +6,7 @@ namespace Dvarilek\FilamentTableSelect;
 
 use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
 use Dvarilek\FilamentTableSelect\Testing\TestsTableSelect;
+use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentView;
 use Filament\Tables\View\TablesRenderHook;
@@ -40,6 +41,10 @@ class FilamentTableSelectServiceProvider extends PackageServiceProvider
 
         FilamentAsset::register([
             Js::make('selection-modal-cache', __DIR__ . '/../resources/js/selection-modal-cache.js'),
+        ], 'dvarilek/filament-table-select');
+
+        FilamentAsset::register([
+             AlpineComponent::make('table-select', __DIR__ . '/../resources/dist/js/table-select.js')
         ], 'dvarilek/filament-table-select');
 
         Testable::mixin(new TestsTableSelect());
