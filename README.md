@@ -211,7 +211,7 @@ $form
             ->relationship('clients', 'name')
             ->multiple()
             ->getOptionLabelFromRecordUsing(function (Client $record) {
-                 return "{$record->first_name} {$record->last_name} - {$record->status}"
+                 return "{$record->first_name} {$record->last_name} - {$record->status}";
             })
     ])
 ```
