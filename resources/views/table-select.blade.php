@@ -92,10 +92,11 @@
             @if ($isMultiple && filled($optionLabels = $getOptionLabels()))
                 <div
                     x-show="hasSelectedOptions()"
-                    class="flex w-full flex-wrap gap-1.5 py-0.5"
+                    class="flex w-full flex-wrap gap-1.5"
                 >
                     @foreach ($optionLabels as $optionKey => $optionLabel)
                         <x-filament::badge
+                            wire:key="table-select-option-{{ $statePath }}-{{ $optionKey }}"
                             x-show="isOptionSelected('{{ $optionKey }}')"
                             class="z-10"
                             :size="$optionSize"
