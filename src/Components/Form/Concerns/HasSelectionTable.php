@@ -36,7 +36,7 @@ trait HasSelectionTable
 
     protected ?Closure $modifySelectionConfirmationActionUsing = null;
 
-    abstract public function getSelectionLimit(): int;
+    abstract public function getSelectionLimit(): ?int;
 
     abstract public function isMultiple(): bool;
 

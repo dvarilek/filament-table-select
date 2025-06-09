@@ -27,7 +27,7 @@
             }
 
             {{-- Prevent bulk select checkboxes from breaking stuff --}}
-            if (records.length > selectionLimit) {
+            if (selectionLimit !== null && records.length > selectionLimit) {
                 suppressWatcherForNextCycle = true;
                 selectedRecords = [...cachedSelectedRecords];
 
@@ -65,12 +65,11 @@
         suppressWatcherForNextCycle: true,
 
         updateCheckboxSelectability(records) {
-            const checkboxes = $wire.$el.querySelectorAll('.fi-ta-record-checkbox');
-
-            if (selectionLimit === 1) {
+            if (selectionLimit === 1 || selectionLimit === null) {
                 return;
             }
 
+            const checkboxes = $wire.$el.querySelectorAll('.fi-ta-record-checkbox');
             const limitReached = records.length >= selectionLimit;
 
             checkboxes.forEach(checkbox => checkbox.disabled = !checkbox.checked && limitReached);

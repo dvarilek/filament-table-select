@@ -127,18 +127,19 @@ trait HasSelectionModalCreateOptionAction
                 if ($component->evaluate($component->requiresSelectionConfirmation)) {
                     $statePath = Js::from($component->getStatePath());
                     $createdOptionKey = Js::from($createdOptionKey);
+                    $selectionLimit = Js::from($selectionLimit);
 
                     $component->getLivewire()->js(<<<JS
-                        if ({$selectionLimit} === 1) {
+                        if ($selectionLimit === 1) {
                             Alpine.store('selectionModalCache').set($statePath, [$createdOptionKey]);
-        
+
                             return;
                         }
-        
-                        if (Alpine.store('selectionModalCache').get($statePath)?.length >= $selectionLimit) {
+
+                        if ($selectionLimit !== null && Alpine.store('selectionModalCache').get($statePath)?.length >= $selectionLimit) {
                             return;
                         }
-        
+
                         Alpine.store('selectionModalCache').push($statePath, $createdOptionKey);
                     JS);
                 } elseif ($selectionLimit === 1 || $selectionLimit >= count($state)) {
