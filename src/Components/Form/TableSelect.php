@@ -120,7 +120,7 @@ class TableSelect extends Field
         ]);
     }
 
-    protected function getSelectionLimit(): int
+    protected function getSelectionLimit(): ?int
     {
         return $this->isMultiple() ? $this->getMaxItems() : 1;
     }
