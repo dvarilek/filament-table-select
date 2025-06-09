@@ -211,7 +211,7 @@ $form
             ->relationship('clients', 'name')
             ->multiple()
             ->getOptionLabelFromRecordUsing(function (Client $record) {
-                 return "{$record->first_name} {$record->last_name} - {$record->status}"
+                 return "{$record->first_name} {$record->last_name} - {$record->status}";
             })
     ])
 ```
@@ -408,7 +408,7 @@ This prevents automatic state updates and adds a confirmation action to the moda
 <br>
 
 ### Closing After Selection
-After confirmation, the modal closes by default. To keep it open, use the `shuoldCloseAfterSelection()`:
+After confirmation, the modal closes by default. To keep it open, use the `shouldCloseAfterSelection()`:
 
 ```php
 use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
@@ -416,12 +416,12 @@ use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 TableSelect::make('clients')
     ->relationship('clients', 'name')
     ->requiresSelectionConfirmation()
-    ->shuoldCloseAfterSelection(false);
+    ->shouldCloseAfterSelection(false);
 ```
 
 Or provide an optional parameter directly in the `requiresSelectionConfirmation()` method:
 ```php
-->requiresSelectionConfirmation(shuoldCloseAfterSelection: false)
+->requiresSelectionConfirmation(shouldCloseAfterSelection: false)
 ```
 
 > [!NOTE]\
