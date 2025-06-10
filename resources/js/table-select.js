@@ -19,7 +19,7 @@ export default function tableSelect({
             return false;
         },
 
-        hasSelectedOptions() {
+        hasSelectedOptions: function () {
             if (! this.isMultiple) {
                 return this.state !== null;
             }
