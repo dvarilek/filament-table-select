@@ -83,6 +83,7 @@
             }}
         >
             <div
+                x-cloak
                 x-show="! hasSelectedOptions()"
                 class="text-gray-400 dark:text-gray-500 w-full h-6"
             >
@@ -110,7 +111,7 @@
                             @unless($isDisabled)
                                 <x-slot
                                     name="deleteButton"
-                                    x-on:click.stop="deselectOption('{{ $optionKey }}')"
+                                    x-on:click.stop.prevent="deselectOption('{{ $optionKey }}')"
                                 ></x-slot>
                             @endunless
                         </x-filament::badge>
@@ -133,6 +134,14 @@
                             x-on:mousedown.stop.prevent="deselectOption()"
                         />
                     @endunless
+                </div>
+            @else
+                {{-- In between updates, when the state is empty, the upper placeholder doesn't show briefly which causes UI problems--}}
+                <div
+                        x-show="hasSelectedOptions()"
+                        class="text-gray-400 dark:text-gray-500 w-full h-6"
+                >
+                    {{ $placeholder }}
                 </div>
             @endif
         </div>
