@@ -142,7 +142,7 @@ trait HasSelectionModalCreateOptionAction
 
                         Alpine.store('selectionModalCache').push($statePath, $createdOptionKey);
                     JS);
-                } elseif ($selectionLimit === 1 || $selectionLimit >= count($state)) {
+                } elseif ($selectionLimit === 1 || $selectionLimit === null || $selectionLimit >= count($state)) {
                     $jsonState = Js::from(is_array($state) ? $state : [$state]);
                     $statePath = Js::from($component->getStatePath());
 
