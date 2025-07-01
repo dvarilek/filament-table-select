@@ -109,7 +109,7 @@ it('adds a bulk action for showing checkboxes when no other bulk actions are ava
         ->toHaveCount(1)
         ->and($emptyBulkActions['products-selection-table'])
         ->getExtraAttributes()->toBe([
-            'x-show' => false,
+            'x-show' => 'false',
             'wire:target' => null,
             'x-on:click' => null
         ])
@@ -117,7 +117,7 @@ it('adds a bulk action for showing checkboxes when no other bulk actions are ava
         ->toHaveCount(2)
         ->and($hiddenBulkActions['products-selection-table'])
         ->getExtraAttributes()->toBe([
-            'x-show' => false,
+            'x-show' => 'false',
             'wire:target' => null,
             'x-on:click' => null
         ])

@@ -104,7 +104,7 @@ class SelectionTable extends TableWidget
                 // Ensure that checkboxes are visible even when there are no bulk actions
                 fn (Table $table) => $table->pushBulkActions([
                     BulkAction::make($tableIdentifier)->extraAttributes([
-                        'x-show' => false,
+                        'x-show' => 'false',
                         'wire:target' => null,
                         'x-on:click' => null
                     ])

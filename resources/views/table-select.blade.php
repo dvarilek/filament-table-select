@@ -61,11 +61,11 @@
 
         <div
             @if (\Filament\Support\Facades\FilamentView::hasSpaMode())
-                {{-- format-ignore-start --}}x-load="visible || event (ax-modal-opened)"{{-- format-ignore-end --}}
+                {{-- format-ignore-start --}}ax-load="visible || event (ax-modal-opened)"{{-- format-ignore-end --}}
             @else
-                x-load
+                ax-load
             @endif
-            x-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('table-select', 'dvarilek/filament-table-select') }}"
+            ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('table-select', 'dvarilek/filament-table-select') }}"
             x-data="tableSelect({
                 state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')") }},
                 isMultiple: @js($isMultiple)
