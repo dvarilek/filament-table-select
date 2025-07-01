@@ -16,7 +16,7 @@
 ## Installation
 
 ```bash
-composer require dvarilek/filament-table-select:^2.0
+composer require dvarilek/filament-table-select:^2.0.3
 ```
 
 ***
@@ -259,8 +259,12 @@ $form
 You can configure the Selection table by passing a closure into the `selectionTable()` method, this is where
 you can add columns, remove actions, modify the table's query etc.
 
+Configuring the table is really important, especially defining the table columns. Without explicitly defining 
+table columns, you would be presented with an empty table.
+
 ```php
 use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 TableSelect::make('clients')
@@ -268,7 +272,9 @@ TableSelect::make('clients')
     ->selectionTable(function (Table $table) {
         return $table
             ->heading('Active Clients') 
-            ->actions([]) 
+            ->columns([
+                TextColumn::make('name')
+            ])
             ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'active'));
     })
 ```
