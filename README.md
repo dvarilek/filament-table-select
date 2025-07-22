@@ -16,7 +16,7 @@
 ## Installation
 
 ```bash
-composer require dvarilek/filament-table-select:^2.0.3
+composer require dvarilek/filament-table-select:^2.0.4
 ```
 
 ***
