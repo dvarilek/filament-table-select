@@ -29,8 +29,6 @@ abstract class TestCase extends OrchestraTestCase
     }
 
     /**
-     * @param  $app
-     *
      * @return list<class-string<ServiceProvider>>
      */
     protected function getPackageProviders($app): array
@@ -43,15 +41,10 @@ abstract class TestCase extends OrchestraTestCase
             FormsServiceProvider::class,
             TablesServiceProvider::class,
             WidgetsServiceProvider::class,
-            ActionsServiceProvider::class
+            ActionsServiceProvider::class,
         ];
     }
 
-    /**
-     * @param  $app
-     *
-     * @return void
-     */
     public function getEnvironmentSetUp($app): void
     {
         config()->set('database.default', 'testing');

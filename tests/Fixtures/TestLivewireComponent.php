@@ -44,15 +44,10 @@ class TestLivewireComponent extends Component implements HasForms
             ->model(Order::query()->first())
             ->statePath('data')
             ->schema([
-                $tableSelect
+                $tableSelect,
             ]);
     }
 
-    /**
-     * @param  string $actionName
-     *
-     * @return ?Action
-     */
     public function getFormComponentAction(string $actionName): ?Action
     {
         foreach ($this->getCachedForms() as $form) {

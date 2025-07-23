@@ -1,5 +1,6 @@
 <?php
 
 declare(strict_types=1);
+use Dvarilek\FilamentTableSelect\Tests\TestCase;
 
-uses(\Dvarilek\FilamentTableSelect\Tests\TestCase::class)->in(__DIR__);
+uses(TestCase::class)->in(__DIR__);

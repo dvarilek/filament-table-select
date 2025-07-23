@@ -7,6 +7,7 @@ use Dvarilek\FilamentTableSelect\Tests\Fixtures\TestLivewireComponent;
 use Dvarilek\FilamentTableSelect\Tests\Models\Order;
 use Filament\Forms\Components\Actions\Action;
 use Illuminate\Support\Facades\Lang;
+
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
@@ -23,21 +24,22 @@ test('table selection action exists', function () {
         ->assertFormComponentActionExists('products', 'tableSelectionAction')
         ->assertFormComponentActionDoesNotExist('products', [
             'selectionConfirmationAction',
-            'selectionModalCreateOptionAction'
+            'selectionModalCreateOptionAction',
         ])
         ->assertSelectionModalDoesNotContains([
             'Test Confirm Label',
-            'Test Create Option Label'
+            'Test Create Option Label',
         ]);
 });
 
 it('can modify selection action', function () {
-     livewire(TestLivewireComponent::class, [
+    livewire(TestLivewireComponent::class, [
         'configureTableSelectComponentUsing' => fn (TableSelect $tableSelect) => $tableSelect
-            ->selectionAction(fn (Action $action) => $action
-                ->label('Custom Label')
-                ->icon('heroicon-o-user')
-            )
+            ->selectionAction(
+                fn (Action $action) => $action
+                    ->label('Custom Label')
+                    ->icon('heroicon-o-user')
+            ),
     ])
         ->assertFormComponentActionHasLabel('products', 'tableSelectionAction', 'Custom Label')
         ->assertFormComponentActionHasIcon('products', 'tableSelectionAction', 'heroicon-o-user');

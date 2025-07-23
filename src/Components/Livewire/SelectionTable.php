@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Components\Livewire;
 
+use Closure;
+use Filament\Resources\Resource;
+use Filament\Support\Services\RelationshipJoiner;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
-use Filament\Resources\Resource;
-use Closure;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Filament\Support\Services\RelationshipJoiner;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Livewire\Attributes\Locked;
 
 class SelectionTable extends TableWidget
@@ -25,27 +25,24 @@ class SelectionTable extends TableWidget
     public bool $isDisabled = false;
 
     /**
-     * @var  class-string<Model> | null
+     * @var class-string<Model> | null
      */
     #[Locked]
     public ?string $model = null;
 
-    /**
-     * @var  null | Model
-     */
     #[Locked]
     public ?Model $record = null;
 
     public string $relationshipName;
 
     /**
-     * @var  class-string<mixed | Resource> | null
+     * @var class-string<mixed | resource> | null
      */
     #[Locked]
     public ?string $tableLocation = null;
 
     /**
-     * @var  null | Closure(Table $table, self $selectionTable): Table
+     * @var null | Closure(Table $table, self $selectionTable): Table
      */
     #[Locked]
     public ?Closure $modifySelectionTableUsing = null;
@@ -55,7 +52,7 @@ class SelectionTable extends TableWidget
      */
     #[Locked]
     public ?array $arguments = [];
-    
+
     public function table(Table $table): Table
     {
         $tableLocation = $this->tableLocation;
@@ -88,7 +85,7 @@ class SelectionTable extends TableWidget
             return $relationshipQuery;
         });
 
-        $tableIdentifier = $this->relationshipName . "-selection-table";
+        $tableIdentifier = $this->relationshipName . '-selection-table';
 
         return $table
             ->deselectAllRecordsWhenFiltered(false)
@@ -98,22 +95,22 @@ class SelectionTable extends TableWidget
                 fn (Table $table) => $table->selectable(false)
             )
             ->when(
-                !$this->isDisabled && $this->shouldSelectRecordOnRowClick,
-                fn (Table $table) => $table->recordAction(fn(Model $record) => $table->isRecordSelectable($record) ? 'selectTableRecord' : null)
+                ! $this->isDisabled && $this->shouldSelectRecordOnRowClick,
+                fn (Table $table) => $table->recordAction(fn (Model $record) => $table->isRecordSelectable($record) ? 'selectTableRecord' : null)
             )
             ->when(
                 $this->modifySelectionTableUsing instanceof Closure,
                 fn (Table $table) => ($this->modifySelectionTableUsing)($table, $this)
             )
             ->when(
-                !$this->isDisabled && blank(array_filter($table->getFlatBulkActions(), fn (BulkAction $action) => $action->isVisible())),
+                ! $this->isDisabled && blank(array_filter($table->getFlatBulkActions(), fn (BulkAction $action) => $action->isVisible())),
                 // Ensure that checkboxes are visible even when there are no bulk actions
                 fn (Table $table) => $table->pushBulkActions([
                     BulkAction::make($tableIdentifier)->extraAttributes([
                         'x-show' => 'false',
                         'wire:target' => null,
-                        'x-on:click' => null
-                    ])
+                        'x-on:click' => null,
+                    ]),
                 ])
             );
     }

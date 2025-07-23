@@ -1,0 +1,4 @@
+*.md
+/vendor
+composer.lock
+tests/

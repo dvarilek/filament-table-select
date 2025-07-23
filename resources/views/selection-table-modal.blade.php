@@ -1,6 +1,27 @@
+@props([
+    'initialState',
+    'selectionLimit',
+    'isMultiple',
+    'isDisabled',
+    'shouldSelectRecordOnRowClick',
+    'model',
+    'record',
+    'relationshipName',
+    'tableLocation',
+    'requiresSelectionConfirmation',
+    'confirmationActionPosition',
+    'selectionConfirmationAction',
+    'modifySelectionTableUsing',
+    'selectionTableArguments',
+    'selectionTableLivewire',
+    'statePath',
+    'createAction',
+    'createActionPosition',
+])
+
 @php
-    $canRenderCreateAction = !$isDisabled && $createAction && !$createAction->isDisabled();
-    $canRenderSelectionConfirmationAction = !$isDisabled && $requiresSelectionConfirmation && !$selectionConfirmationAction->isDisabled();
+    $canRenderCreateAction = ! $isDisabled && $createAction && ! $createAction->isDisabled();
+    $canRenderSelectionConfirmationAction = ! $isDisabled && $requiresSelectionConfirmation && ! $selectionConfirmationAction->isDisabled();
 @endphp
 
 <div
@@ -10,38 +31,42 @@
         selectionLimit: @js($selectionLimit),
 
         init() {
-            {{-- The selection modal cache is required for storing unstaged state between different modal openings, ensuring the selected records don't get wiped before commiting. --}}
+            ;{{-- The selection modal cache is required for storing unstaged state between different modal openings, ensuring the selected records don't get wiped before commiting. --}}
             if ($store.selectionModalCache.get(this.statePath) === null) {
-                this.cachedSelectedRecords = @js($initialState);
+                this.cachedSelectedRecords = @js($initialState)
             }
         },
 
         get cachedSelectedRecords() {
-            return $store.selectionModalCache.get(this.statePath) ?? [];
+            return $store.selectionModalCache.get(this.statePath) ?? []
         },
 
         set cachedSelectedRecords(records) {
-            $store.selectionModalCache.set(this.statePath, records);
+            $store.selectionModalCache.set(this.statePath, records)
         },
 
         updateFormComponentState() {
-            let cachedRecords = this.cachedSelectedRecords;
+            let cachedRecords = this.cachedSelectedRecords
 
-            if (!@js($isMultiple) && Array.isArray(cachedRecords) && cachedRecords.length === 0) {
-                cachedRecords = null;
+            if (
+                !@js($isMultiple) &&
+                Array.isArray(cachedRecords) &&
+                cachedRecords.length === 0
+            ) {
+                cachedRecords = null
             }
 
-            $wire.set(this.statePath, cachedRecords);
-        }
-    }"
+            $wire.set(this.statePath, cachedRecords)
+        },
+    }'"
 >
     @if ($canRenderCreateAction && $createActionPosition->isTop())
         <div
-                @class([
-                    'pb-6 flex',
-                    'justify-end' => $createActionPosition->isRight(),
-                    'justify-start' => $createActionPosition->isLeft()
-                ])
+            @class([
+                'flex pb-6',
+                'justify-end' => $createActionPosition->isRight(),
+                'justify-start' => $createActionPosition->isLeft(),
+            ])
         >
             {{ $createAction }}
         </div>
@@ -49,11 +74,11 @@
 
     @if ($canRenderSelectionConfirmationAction && $confirmationActionPosition->isTop())
         <div
-                @class([
-                    'pb-6 flex',
-                    'justify-end' => $confirmationActionPosition->isRight(),
-                    'justify-start' => $confirmationActionPosition->isLeft()
-                ])
+            @class([
+                'flex pb-6',
+                'justify-end' => $confirmationActionPosition->isRight(),
+                'justify-start' => $confirmationActionPosition->isLeft(),
+            ])
         >
             {{ $selectionConfirmationAction }}
         </div>
@@ -72,11 +97,11 @@
 
     @if ($canRenderCreateAction && $createActionPosition->isBottom())
         <div
-                @class([
-                    'pt-6 flex',
-                    'justify-end' => $createActionPosition->isRight(),
-                    'justify-start' => $createActionPosition->isLeft()
-                ])
+            @class([
+                'flex pt-6',
+                'justify-end' => $createActionPosition->isRight(),
+                'justify-start' => $createActionPosition->isLeft(),
+            ])
         >
             {{ $createAction }}
         </div>
@@ -84,11 +109,11 @@
 
     @if ($canRenderSelectionConfirmationAction && $confirmationActionPosition->isBottom())
         <div
-                @class([
-                    'pt-6 flex',
-                    'justify-end' => $confirmationActionPosition->isRight(),
-                    'justify-start' => $confirmationActionPosition->isLeft()
-                ])
+            @class([
+                'flex pt-6',
+                'justify-end' => $confirmationActionPosition->isRight(),
+                'justify-start' => $confirmationActionPosition->isLeft(),
+            ])
         >
             {{ $selectionConfirmationAction }}
         </div>

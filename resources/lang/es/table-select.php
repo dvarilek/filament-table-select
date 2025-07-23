@@ -21,10 +21,10 @@ return [
 
         'selection-create-option' => [
 
-            'label' => 'Crear'
+            'label' => 'Crear',
 
-        ]
+        ],
 
-    ]
+    ],
 
 ];

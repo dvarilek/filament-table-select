@@ -16,13 +16,11 @@ use Livewire\Features\SupportTesting\Testable;
  */
 class TestsTableSelect
 {
-
     public function assertSelectionModalContains(): Closure
     {
         return function (string | array $content, string | array $component = 'products', string | array $name = 'tableSelectionAction', array $data = [], array $arguments = [], string $formName = 'form'): static {
             /** @phpstan-ignore-next-line */
             $this->mountFormComponentAction($component, $name, $arguments, $formName);
-
 
             /* @var Action  $selectionAction */
             /* @phpstan-ignore-next-line */

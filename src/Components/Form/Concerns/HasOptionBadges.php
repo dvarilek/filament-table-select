@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Components\Form\Concerns;
 
+use Closure;
 use Filament\Forms\Components\Field;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\IconSize;
-use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\ComponentAttributeBag;
 
@@ -47,9 +47,7 @@ trait HasOptionBadges
     protected array $cachedOptionIcons = [];
 
     /**
-     * @param  string | array{50: string, 100: string, 200: string, 300: string, 400: string, 500: string, 600: string, 700: string, 800: string, 900: string, 950: string} | bool | Closure | null $optionColor
-     *
-     * @return static
+     * @param  string | array{50: string, 100: string, 200: string, 300: string, 400: string, 500: string, 600: string, 700: string, 800: string, 900: string, 950: string} | bool | Closure | null  $optionColor
      */
     public function optionColor(string | array | bool | Closure | null $optionColor): static
     {
@@ -118,8 +116,6 @@ trait HasOptionBadges
     }
 
     /**
-     * @param  mixed $optionKey
-     *
      * @return string | array{50: string, 100: string, 200: string, 300: string, 400: string, 500: string, 600: string, 700: string, 800: string, 900: string, 950: string} | bool | Closure | null
      */
     public function getOptionColor(mixed $optionKey): string | array | bool | Closure | null
@@ -131,7 +127,7 @@ trait HasOptionBadges
         }
 
         return $this->evaluate($this->optionColor, [
-            'optionKey' => $optionKey
+            'optionKey' => $optionKey,
         ]);
     }
 
@@ -149,13 +145,12 @@ trait HasOptionBadges
     }
 
     /**
-     * @param  Model $record
-     *
      * @return string | array{50: string, 100: string, 200: string, 300: string, 400: string, 500: string, 600: string, 700: string, 800: string, 900: string, 950: string} | bool | Closure | null
      */
     public function getOptionColorFromRecord(Model $record): string | array | bool | Closure | null
     {
-        return $this->evaluate($this->getOptionColorFromRecordUsing,
+        return $this->evaluate(
+            $this->getOptionColorFromRecordUsing,
             namedInjections: [
                 'record' => $record,
             ],
@@ -168,7 +163,8 @@ trait HasOptionBadges
 
     public function getOptionIconFromRecord(Model $record): ?string
     {
-        return $this->evaluate($this->getOptionIconFromRecordUsing,
+        return $this->evaluate(
+            $this->getOptionIconFromRecordUsing,
             namedInjections: [
                 'record' => $record,
             ],
@@ -213,9 +209,6 @@ trait HasOptionBadges
         return $temporaryAttributeBag->getAttributes();
     }
 
-    /**
-     * @return ComponentAttributeBag
-     */
     public function getOptionExtraAttributesBag(): ComponentAttributeBag
     {
         return new ComponentAttributeBag($this->getOptionExtraAttributes());

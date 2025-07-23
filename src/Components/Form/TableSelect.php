@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Components\Form;
 
+use Closure;
+use Exception;
 use Filament\Forms\Components\Concerns\CanLimitItemsLength;
 use Filament\Forms\Components\Concerns\HasAffixes;
 use Filament\Forms\Components\Concerns\HasPivotData;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Form;
+use Filament\Support\Concerns\HasPlaceholder;
 use Filament\Support\Services\RelationshipJoiner;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Collection;
-use Filament\Support\Concerns\HasPlaceholder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -24,21 +26,18 @@ use Illuminate\Database\Eloquent\Relations\HasOneOrManyThrough;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Closure;
-use Exception;
 use Znck\Eloquent\Relations\BelongsToThrough;
 
 class TableSelect extends Field
 {
-    use Concerns\HasSelectionModalCreateOptionAction;
-    use Concerns\HasSelectionAction;
-    use Concerns\HasSelectionTable;
-    use Concerns\HasOptionBadges;
-
-    use HasAffixes;
     use CanLimitItemsLength;
-    use HasPlaceholder;
+    use Concerns\HasOptionBadges;
+    use Concerns\HasSelectionAction;
+    use Concerns\HasSelectionModalCreateOptionAction;
+    use Concerns\HasSelectionTable;
+    use HasAffixes;
     use HasPivotData;
+    use HasPlaceholder;
 
     /**
      * @var view-string
@@ -66,9 +65,6 @@ class TableSelect extends Field
 
     protected string | Closure | null $relationship = null;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -106,7 +102,7 @@ class TableSelect extends Field
 
             return $record->getKey();
         });
-        
+
         $this->registerActions([
             static fn (TableSelect $component) => $component->getSelectionAction(),
             static fn (TableSelect $component) => $component->getCreateOptionAction(),
@@ -207,10 +203,10 @@ class TableSelect extends Field
                 $relatedRecords = $relationship->getResults();
 
                 $component->state(
-                // Cast the related keys to a string, otherwise JavaScript does not
-                // know how to handle deselection.
-                //
-                // https://github.com/filamentphp/filament/issues/1111
+                    // Cast the related keys to a string, otherwise JavaScript does not
+                    // know how to handle deselection.
+                    //
+                    // https://github.com/filamentphp/filament/issues/1111
                     $relatedRecords
                         ->pluck(($relationship instanceof BelongsToMany) ? $relationship->getRelatedKeyName() : $relationship->getRelated()->getKeyName())
                         ->map(static fn ($key): string => strval($key))
@@ -591,5 +587,4 @@ class TableSelect extends Field
 
         return $relationship->getQualifiedOwnerKeyName();
     }
-
 }

@@ -1,42 +1,39 @@
-export default function tableSelect({
+export default function tableSelect({ state, isMultiple }) {
+  return {
     state,
+
     isMultiple,
-}) {
-    return {
-        state,
 
-        isMultiple,
+    isOptionSelected: function (optionKey = null) {
+      if (!this.isMultiple && optionKey === null) {
+        return this.state !== null
+      }
 
-        isOptionSelected: function (optionKey = null) {
-            if (! this.isMultiple && optionKey === null) {
-                return this.state !== null;
-            }
+      if (Array.isArray(this.state)) {
+        return this.state.includes(optionKey)
+      }
 
-            if (Array.isArray(this.state)) {
-                return this.state.includes(optionKey);
-            }
+      return false
+    },
 
-            return false;
-        },
+    hasSelectedOptions: function () {
+      if (!this.isMultiple) {
+        return this.state !== null
+      }
 
-        hasSelectedOptions: function () {
-            if (! this.isMultiple) {
-                return this.state !== null;
-            }
+      return Array.isArray(this.state) && this.state.length > 0
+    },
 
-            return Array.isArray(this.state) && this.state.length > 0;
-        },
+    deselectOption: function (optionToDelete = null) {
+      if (!this.isMultiple && optionToDelete === null) {
+        this.state = null
 
-        deselectOption: function (optionToDelete = null) {
-            if (! this.isMultiple && optionToDelete === null) {
-                this.state = null;
+        return
+      }
 
-                return;
-            }
-
-            if (Array.isArray(this.state)) {
-                this.state = this.state.filter(key => key !== optionToDelete);
-            }
-        },
-    }
+      if (Array.isArray(this.state)) {
+        this.state = this.state.filter((key) => key !== optionToDelete)
+      }
+    },
+  }
 }

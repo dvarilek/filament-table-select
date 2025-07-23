@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
 use Dvarilek\FilamentTableSelect\Tests\Fixtures\ProductResource;
-use Dvarilek\FilamentTableSelect\Tests\Models\Product;
 use Dvarilek\FilamentTableSelect\Tests\Models\Order;
+use Dvarilek\FilamentTableSelect\Tests\Models\Product;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Table;
 
@@ -30,7 +30,7 @@ it('can render selection table with default configuration', function () {
     expect($table)
         ->toBeInstanceOf(Table::class)
         ->shouldDeselectAllRecordsWhenFiltered()->toBeFalse()
-        ->getQueryStringIdentifier()->toBe("products-selection-table")
+        ->getQueryStringIdentifier()->toBe('products-selection-table')
         ->getRecordAction($firstRecord)->toBe('selectTableRecord');
 
     $table->checkIfRecordIsSelectableUsing(fn (Product $record) => $record->getKey() !== $firstRecord->getKey());
@@ -43,8 +43,8 @@ it('can configure selection table using a closure', function () {
     $livewire = livewire(SelectionTable::class, [
         'model' => Order::class,
         'relationshipName' => 'products',
-        'modifySelectionTableUsing' => fn (Table $table) => $table->heading('Custom Heading')
-     ]);
+        'modifySelectionTableUsing' => fn (Table $table) => $table->heading('Custom Heading'),
+    ]);
 
     /* @var Table $table */
     $table = $livewire->instance()->getTable();
@@ -74,23 +74,23 @@ it('adds a bulk action for showing checkboxes when no other bulk actions are ava
     $emptyBulkActionsLivewire = livewire(SelectionTable::class, [
         'model' => Order::class,
         'relationshipName' => 'products',
-        'modifySelectionTableUsing' => fn (Table $table) => $table->bulkActions([])
+        'modifySelectionTableUsing' => fn (Table $table) => $table->bulkActions([]),
     ]);
 
     $hiddenBulkActionLivewire = livewire(SelectionTable::class, [
         'model' => Order::class,
         'relationshipName' => 'products',
         'modifySelectionTableUsing' => fn (Table $table) => $table->bulkActions([
-            BulkAction::make('test bulk action')->hidden()
-        ])
+            BulkAction::make('test bulk action')->hidden(),
+        ]),
     ]);
 
     $visibleBulkActionLivewire = livewire(SelectionTable::class, [
         'model' => Order::class,
         'relationshipName' => 'products',
         'modifySelectionTableUsing' => fn (Table $table) => $table->bulkActions([
-            BulkAction::make('test bulk action')
-        ])
+            BulkAction::make('test bulk action'),
+        ]),
     ]);
 
     /* @var Table $emptyBulkActionsTable */
@@ -111,7 +111,7 @@ it('adds a bulk action for showing checkboxes when no other bulk actions are ava
         ->getExtraAttributes()->toBe([
             'x-show' => 'false',
             'wire:target' => null,
-            'x-on:click' => null
+            'x-on:click' => null,
         ])
         ->and($hiddenBulkActions)
         ->toHaveCount(2)
@@ -119,7 +119,7 @@ it('adds a bulk action for showing checkboxes when no other bulk actions are ava
         ->getExtraAttributes()->toBe([
             'x-show' => 'false',
             'wire:target' => null,
-            'x-on:click' => null
+            'x-on:click' => null,
         ])
         ->and($visibleBulkActions)
         ->toHaveCount(1)

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Components\Form\Concerns;
 
+use Closure;
 use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
 use Dvarilek\FilamentTableSelect\Enums\SelectionModalActionPosition;
 use Dvarilek\FilamentTableSelect\Exceptions\TableSelectException;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Resources\Resource;
-use Illuminate\Support\Js;
 use Illuminate\Contracts\View\View;
-use Closure;
+use Illuminate\Support\Js;
 use Livewire\Component;
 
 /**
@@ -21,9 +21,9 @@ use Livewire\Component;
 trait HasSelectionTable
 {
     /**
-     * @var class-string<mixed | Resource> | Closure | null
+     * @var class-string<mixed | resource> | Closure | null
      */
-    protected  string | Closure | null $tableLocation = null;
+    protected string | Closure | null $tableLocation = null;
 
     protected bool | Closure $shouldSelectRecordOnRowClick = true;
 
@@ -73,8 +73,7 @@ trait HasSelectionTable
         bool | Closure $requiresSelectionConfirmation = true,
         bool | Closure | null $shouldCloseAfterSelection = null,
         SelectionModalActionPosition | Closure | null $confirmationActionPosition = null
-    ): static
-    {
+    ): static {
         $this->requiresSelectionConfirmation = $requiresSelectionConfirmation;
         $this->shouldCloseAfterSelection = $shouldCloseAfterSelection ?? $this->shouldCloseAfterSelection;
         $this->confirmationActionPosition = $confirmationActionPosition ?? $this->confirmationActionPosition;
@@ -90,7 +89,7 @@ trait HasSelectionTable
     }
 
     /**
-     * @param  string<SelectionTable>|Closure|null $livewire
+     * @param  string<SelectionTable>|Closure|null  $livewire
      * @return $this
      */
     public function selectionTableLivewire(string | Closure | null $livewire): static
@@ -117,8 +116,7 @@ trait HasSelectionTable
     public function selectionConfirmationAction(
         ?Closure $modifySelectionConfirmationActionUsing,
         SelectionModalActionPosition | Closure | null $confirmationActionPosition = null
-    ): static
-    {
+    ): static {
         $this->modifySelectionConfirmationActionUsing = $modifySelectionConfirmationActionUsing;
         $this->confirmationActionPosition = $confirmationActionPosition ?? $this->confirmationActionPosition;
 
@@ -194,7 +192,7 @@ trait HasSelectionTable
             $action = $this->evaluate($this->modifySelectionConfirmationActionUsing, [
                 'action' => $action,
             ], [
-                Action::class => $action
+                Action::class => $action,
             ]) ?? $action;
         }
 

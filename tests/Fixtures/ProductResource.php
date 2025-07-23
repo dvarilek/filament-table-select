@@ -9,12 +9,11 @@ use Filament\Tables\Table;
 
 class ProductResource extends Resource
 {
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')
+                TextInput::make('name'),
             ]);
     }
 

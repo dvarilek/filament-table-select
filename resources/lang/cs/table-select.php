@@ -18,13 +18,13 @@ return [
 
             'label' => 'Potvrdit',
         ],
-        
-        'selection-create-option' => [
-            
-            'label' => 'Vytvořit'
-            
-        ]
 
-    ]
+        'selection-create-option' => [
+
+            'label' => 'Vytvořit',
+
+        ],
+
+    ],
 
 ];

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Components\Form\Concerns;
 
+use Closure;
 use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
 use Dvarilek\FilamentTableSelect\Enums\SelectionModalActionPosition;
+use Exception;
 use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Field;
-use Closure;
 use Filament\Forms\Form;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Support\Js;
@@ -61,6 +62,7 @@ trait HasSelectionModalCreateOptionAction
     {
         return $this->createOptionUsing;
     }
+
     public function createOptionModalHeading(string | Closure | null $heading): static
     {
         $this->createOptionModalHeading = $heading;
@@ -105,8 +107,8 @@ trait HasSelectionModalCreateOptionAction
                 ));
             })
             ->action(static function (Action $action, array $arguments, TableSelect $component, array $data, ComponentContainer $form) {
-                if (!$component->getCreateOptionUsing()) {
-                    throw new \Exception("Select field [{$component->getStatePath()}] must have a [createOptionUsing()] closure set.");
+                if (! $component->getCreateOptionUsing()) {
+                    throw new Exception("Select field [{$component->getStatePath()}] must have a [createOptionUsing()] closure set.");
                 }
 
                 // If the key is not strvalled, 'selectedRecords' won't be treated properly by Filament Table.

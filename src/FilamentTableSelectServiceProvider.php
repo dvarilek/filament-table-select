@@ -7,10 +7,10 @@ namespace Dvarilek\FilamentTableSelect;
 use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
 use Dvarilek\FilamentTableSelect\Testing\TestsTableSelect;
 use Filament\Support\Assets\AlpineComponent;
+use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentView;
 use Filament\Tables\View\TablesRenderHook;
-use Filament\Support\Assets\Js;
 use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
@@ -18,7 +18,6 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class FilamentTableSelectServiceProvider extends PackageServiceProvider
 {
-
     public function configurePackage(Package $package): void
     {
         $package
@@ -44,9 +43,9 @@ class FilamentTableSelectServiceProvider extends PackageServiceProvider
         ], 'dvarilek/filament-table-select');
 
         FilamentAsset::register([
-             AlpineComponent::make('table-select', __DIR__ . '/../resources/dist/js/table-select.js')
+            AlpineComponent::make('table-select', __DIR__ . '/../resources/dist/js/table-select.js'),
         ], 'dvarilek/filament-table-select');
 
-        Testable::mixin(new TestsTableSelect());
+        Testable::mixin(new TestsTableSelect);
     }
 }

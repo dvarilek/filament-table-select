@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Components\Form\Concerns;
 
+use Closure;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Support\Js;
 use Livewire\Component;
-use Closure;
 
 /**
  * @mixin Field
@@ -22,7 +22,7 @@ trait HasSelectionAction
 
     protected ?Closure $modifySelectionActionUsing = null;
 
-    public function selectionActionAlignment(string | ALignment | Closure $alignment): static
+    public function selectionActionAlignment(string | Alignment | Closure $alignment): static
     {
         $this->selectionActionAlignment = $alignment;
 
@@ -38,10 +38,9 @@ trait HasSelectionAction
 
     public function selectionAction(
         ?Closure $modifySelectionActionUsing,
-        string | ALignment | null $alignment = null,
+        string | Alignment | null $alignment = null,
         bool | Closure | null $shouldTriggerSelectionActionOnInputClick = null
-    ): static
-    {
+    ): static {
         $this->modifySelectionActionUsing = $modifySelectionActionUsing;
         $this->selectionActionAlignment = $alignment ?? $this->selectionActionAlignment;
         $this->shouldTriggerSelectionActionOnInputClick = $shouldTriggerSelectionActionOnInputClick ?? $this->shouldTriggerSelectionActionOnInputClick;
@@ -62,7 +61,7 @@ trait HasSelectionAction
     protected function getSelectionAction(): Action
     {
         $action = Action::make($this->getSelectionActionName())
-            ->label(static fn(Field $component) => trans_choice(
+            ->label(static fn (Field $component) => trans_choice(
                 $component->isDisabled()
                     ? 'filament-table-select::table-select.actions.selection.view-label'
                     : 'filament-table-select::table-select.actions.selection.edit-label',
@@ -85,9 +84,9 @@ trait HasSelectionAction
 
         if ($this->modifySelectionActionUsing) {
             $action = $this->evaluate($this->modifySelectionActionUsing, [
-                'action' => $action
+                'action' => $action,
             ], [
-                Action::class => $action
+                Action::class => $action,
             ]) ?? $action;
         }
 

@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
 {
-
     protected $model = Product::class;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function definition(): array
     {
@@ -25,7 +24,7 @@ class ProductFactory extends Factory
     public function withOrder(Order $order): self
     {
         return $this->state([
-            'order_id' => $order->getKey()
+            'order_id' => $order->getKey(),
         ]);
     }
 }

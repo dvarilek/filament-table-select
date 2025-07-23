@@ -10,9 +10,7 @@ use Exception;
 final class TableSelectException extends Exception
 {
     /**
-     * @param  list<string> $state
-     *
-     * @return self
+     * @param  list<string>  $state
      */
     public static function stateCountSurpassesSelectionLimit(array $state): self
     {
