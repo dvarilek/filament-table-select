@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Exceptions;
 
+use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
 use Exception;
 
 final class TableSelectException extends Exception
@@ -15,9 +16,15 @@ final class TableSelectException extends Exception
      */
     public static function stateCountSurpassesSelectionLimit(array $state): self
     {
-        return new self(sprintf(
-            "Selection table component cannot accept multiple records (%s) when only single selection is allowed.",
-            implode(',', $state)
-        ));
+        $state = implode(',', $state);
+
+        return new self("Selection table component cannot accept multiple records [{$state}] when only single selection is allowed.");
+    }
+
+    public static function incorrectSelectionTableLivewireComponent(): self
+    {
+        $component = SelectionTable::class;
+
+        return new self("Selection table component must be sublcass of [{$component}]");
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Dvarilek\FilamentTableSelect\Components\Form\Concerns;
 
+use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
 use Dvarilek\FilamentTableSelect\Enums\SelectionModalActionPosition;
 use Dvarilek\FilamentTableSelect\Exceptions\TableSelectException;
 use Filament\Forms\Components\Actions\Action;
@@ -37,6 +38,11 @@ trait HasSelectionTable
     protected ?Closure $modifySelectionConfirmationActionUsing = null;
 
     protected ?Closure $selectionTableArguments = null;
+
+    /**
+     * @var string<SelectionTable> | Closure | null
+     */
+    protected string | Closure | null $selectionTableLivewire = null;
 
     abstract public function getSelectionLimit(): ?int;
 
@@ -83,6 +89,17 @@ trait HasSelectionTable
         return $this;
     }
 
+    /**
+     * @param  string<SelectionTable>|Closure|null $livewire
+     * @return $this
+     */
+    public function selectionTableLivewire(string | Closure | null $livewire): static
+    {
+        $this->selectionTableLivewire = $livewire;
+
+        return $this;
+    }
+
     public function shouldCloseAfterSelection(bool | Closure $shouldCloseAfterSelection = true): static
     {
         $this->shouldCloseAfterSelection = $shouldCloseAfterSelection;
@@ -119,6 +136,14 @@ trait HasSelectionTable
             throw TableSelectException::stateCountSurpassesSelectionLimit($state);
         }
 
+        $selectionTableLivewire = $this->evaluate($this->selectionTableLivewire);
+
+        if ($selectionTableLivewire === null) {
+            $selectionTableLivewire = SelectionTable::class;
+        } elseif (! is_subclass_of($selectionTableLivewire, SelectionTable::class)) {
+            throw TableSelectException::incorrectSelectionTableLivewireComponent();
+        }
+
         return view($this->selectionTableModalView, [
             'initialState' => $state,
             'selectionLimit' => $selectionLimit,
@@ -133,10 +158,11 @@ trait HasSelectionTable
             'confirmationActionPosition' => $this->evaluate($this->confirmationActionPosition),
             'selectionConfirmationAction' => $this->getAction($this->getSelectionConfirmationActionName()),
             'modifySelectionTableUsing' => $this->modifySelectionTableUsing,
+            'selectionTableArguments' => $this->evaluate($this->selectionTableArguments),
+            'selectionTableLivewire' => $selectionTableLivewire,
             'statePath' => $this->getStatePath(),
             'createAction' => $this->getAction($this->getSelectionModalCreateOptionActionName()),
             'createActionPosition' => $this->evaluate($this->createOptionActionPosition),
-            'selectionTableArguments' => $this->evaluate($this->selectionTableArguments),
         ]);
     }
 
