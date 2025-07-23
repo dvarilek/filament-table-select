@@ -36,6 +36,8 @@ trait HasSelectionTable
 
     protected ?Closure $modifySelectionConfirmationActionUsing = null;
 
+    protected ?Closure $selectionTableArguments = null;
+
     abstract public function getSelectionLimit(): ?int;
 
     abstract public function isMultiple(): bool;
@@ -70,6 +72,13 @@ trait HasSelectionTable
         $this->requiresSelectionConfirmation = $requiresSelectionConfirmation;
         $this->shouldCloseAfterSelection = $shouldCloseAfterSelection ?? $this->shouldCloseAfterSelection;
         $this->confirmationActionPosition = $confirmationActionPosition ?? $this->confirmationActionPosition;
+
+        return $this;
+    }
+
+    public function selectionTableArguments(array | Closure | null $arguments): static
+    {
+        $this->selectionTableArguments = $arguments;
 
         return $this;
     }
@@ -127,6 +136,7 @@ trait HasSelectionTable
             'statePath' => $this->getStatePath(),
             'createAction' => $this->getAction($this->getSelectionModalCreateOptionActionName()),
             'createActionPosition' => $this->evaluate($this->createOptionActionPosition),
+            'selectionTableArguments' => $this->evaluate($this->selectionTableArguments),
         ]);
     }
 

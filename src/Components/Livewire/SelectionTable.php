@@ -50,6 +50,12 @@ class SelectionTable extends TableWidget
     #[Locked]
     public ?Closure $modifySelectionTableUsing = null;
 
+    /**
+     * @var array<string, mixed> | null
+     */
+    #[Locked]
+    public ?array $arguments = [];
+    
     public function table(Table $table): Table
     {
         $tableLocation = $this->tableLocation;

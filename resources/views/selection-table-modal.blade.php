@@ -67,6 +67,7 @@
                 :relationshipName="$relationshipName"
                 :tableLocation="$tableLocation"
                 :modifySelectionTableUsing="$modifySelectionTableUsing"
+                :arguments="$selectionTableArguments"
         />
 
     @if ($canRenderCreateAction && $createActionPosition->isBottom())
