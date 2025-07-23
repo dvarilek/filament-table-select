@@ -260,7 +260,7 @@ You can configure the Selection table by passing a closure into the `selectionTa
 you can add columns, remove actions, modify the table's query etc.
 
 Configuring the table is really important, especially defining the table columns. Without explicitly defining 
-table columns, you would be presented with an empty table.
+table columns, you would be presented with an empty table. 
 
 ```php
 use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
@@ -279,18 +279,11 @@ TableSelect::make('clients')
     })
 ```
 
-Additionally, If you wish to customize the Selection Table Livewire component, you can access it as the second argument:
-```php
-use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
-use Filament\Tables\Table;
+> [!IMPORTANT]\
+> The context of this `selectionTable` callback is scoped to the Livewire component instance where it's evaluated. You cannot inject Filament utilities
+> like `Get $get` or `Set $set` here. To use outside context within this closure, [see here](#working-with-arguments-within-selection-table)
 
-->selectionTable(function (Table $table, SelectionTable $livewire) {
-    // ...
-})
-```
-<br>
-
-To use an already defined table from a Filament Resource, use the `tableLocation()` method:
+To use an already defined table from a Filament Resource, use the `tableLocation()` method, this can be done together with `selectionTable()`:
 
 ```php
 use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
@@ -302,6 +295,57 @@ TableSelect::make('clients')
 
 <br>
 
+#### Working with arguments within Selection Table
+To bring outside context into the `selectionTable` Closure, use the `selectionTableArguments` method. 
+
+Suppose we have a Project Resource and a project record that can be associated with multiple employees. This Project 
+belongs to a specific Branch. Employees also belong to branches, so we want to limit the employee selection 
+to only those in the same branch as the Project.
+
+```php
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
+use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Table;
+use Filament\Forms\Get;
+
+TableSelect::make('employees')
+    ->relationship('employees', 'name')
+    ->multiple()
+    ->selectionTableArguments(function (Get $get) {
+        return [
+            // Suppose there is a branch_id field present in the schema
+            'branch_id' => $get('branch_id'), 
+        ];
+    })
+    ->tableLocation(EmployeeResource::class)
+    ->selectionTable(fn (Table $table) => $table
+        ->modifyQueryUsing(function (Builder $query, SelectionTable $livewire) {
+            $branchId = $livewire->arguments['branch_id'] ?? null;
+            
+            if ($branchId) {
+                $query->where('branch_id', $branchId);
+            }
+            
+            return $query;
+        })
+    )
+```
+
+<br>
+
+If you want to replace the Livewire component entirely, use the `selectionTableLivewire` method and provide a subclass 
+of `SelectionTable::class`. This is useful if you rely on other external packages that require you to, 
+for example, add traits to livewire components for functionality.
+
+```php
+use Dvarilek\FilamentTableSelect\Components\Form\TableSelect;
+
+TableSelect::make('clients')
+    ->relationship('clients', 'name')
+    ->tableLocation(ClientResource::class)
+    ->selectionTableLivewire(CustomSelectionTable::class);
+```
 
 ***
 ## Selection Action
