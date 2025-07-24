@@ -1,5 +1,8 @@
 @php
     use Filament\Support\Enums\Alignment;
+    use Filament\Support\Enums\VerticalAlignment;
+    use Filament\Support\Facades\FilamentAsset;
+    use Filament\Support\Facades\FilamentView;
 
     $id = $getId();
     $isMultiple = $isMultiple();

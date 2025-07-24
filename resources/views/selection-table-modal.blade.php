@@ -31,7 +31,6 @@
         selectionLimit: @js($selectionLimit),
 
         init() {
-            ;{{-- The selection modal cache is required for storing unstaged state between different modal openings, ensuring the selected records don't get wiped before commiting. --}}
             if ($store.selectionModalCache.get(this.statePath) === null) {
                 this.cachedSelectedRecords = @js($initialState)
             }
@@ -49,7 +48,7 @@
             let cachedRecords = this.cachedSelectedRecords
 
             if (
-                !@js($isMultiple) &&
+                ! @js($isMultiple) &&
                 Array.isArray(cachedRecords) &&
                 cachedRecords.length === 0
             ) {
@@ -58,7 +57,7 @@
 
             $wire.set(this.statePath, cachedRecords)
         },
-    }'"
+    }"
 >
     @if ($canRenderCreateAction && $createActionPosition->isTop())
         <div

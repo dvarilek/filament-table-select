@@ -14,4 +14,4 @@ composer.lock       export-ignore
 pint.json           export-ignore
 .styleci.yml        export-ignore
 phpstan.neon        export-ignore
-bin/build.js        export-ignore
+/bin                export-ignore

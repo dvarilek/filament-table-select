@@ -37,7 +37,10 @@ trait HasSelectionTable
 
     protected ?Closure $modifySelectionConfirmationActionUsing = null;
 
-    protected ?Closure $selectionTableArguments = null;
+    /**
+     * @var array<string, mixed>|Closure|null
+     */
+    protected array | Closure | null $selectionTableArguments = null;
 
     /**
      * @var string<SelectionTable> | Closure | null
@@ -81,6 +84,10 @@ trait HasSelectionTable
         return $this;
     }
 
+    /**
+     * @param  array<string, mixed>|Closure|null $arguments
+     * @return $this
+     */
     public function selectionTableArguments(array | Closure | null $arguments): static
     {
         $this->selectionTableArguments = $arguments;
