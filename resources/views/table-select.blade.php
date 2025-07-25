@@ -150,7 +150,7 @@
         </div>
     </x-filament::input.wrapper>
 
-    @unless ($triggerSelectionActionOnInputClick)
+    @unless ($triggerSelectionActionOnInputClick || $selectionAction->isDisabled())
         <div
             @class([
                 'justify-self-start' => $selectionActionAlignment === Alignment::Start || $selectionActionAlignment === Alignment::Right,
