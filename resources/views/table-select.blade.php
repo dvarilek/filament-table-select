@@ -3,6 +3,7 @@
     use Filament\Support\Enums\VerticalAlignment;
     use Filament\Support\Facades\FilamentAsset;
     use Filament\Support\Facades\FilamentView;
+    use Illuminate\View\ComponentAttributeBag;
 
     $id = $getId();
     $isMultiple = $isMultiple();
