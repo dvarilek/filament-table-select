@@ -16,7 +16,7 @@
 ## Installation
 
 ```bash
-composer require dvarilek/filament-table-select:^2.0.5
+composer require dvarilek/filament-table-select:^2.0.7
 ```
 
 ***
@@ -33,10 +33,14 @@ with it like any other Filament table. The table can be fully customizable.
 
 <br>
 
+> [!IMPORTANT]\
+> This package is only compatible with Filament v3.x. Starting with Filament v4.x, a new built-in component is available that offers a more polished and native implementation of similar functionality.
+> See the [ModalTableSelect documentation](https://filamentphp.com/docs/4.x/forms/select#selecting-options-from-a-table-in-a-modal)
+
 ***
 ## Getting Started
 
-Even though TableSelect doesn't extend Select field directly, it borrows some functionality from it.
+Even though TableSelect doesn't extend the Select field directly, it borrows some functionality from it.
 
 First, configure the relationship and title attribute using the `relationship()` method, which works the same way as in
 Filament's standard Select field. This method sets up a `BelongsTo` relationship to automatically retrieve options, 
