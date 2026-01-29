@@ -19,6 +19,8 @@
 composer require dvarilek/filament-table-select:^2.0.7
 ```
 
+**Requirements:** PHP 8.2+ and Filament ^3.0 or ^5.0.
+
 ***
 ## Overview
 
@@ -34,8 +36,8 @@ with it like any other Filament table. The table can be fully customizable.
 <br>
 
 > [!IMPORTANT]\
-> This package is only compatible with Filament v3.x. Starting with Filament v4.x, a new built-in component is available that offers a more polished and native implementation of similar functionality.
-> See the [ModalTableSelect documentation](https://filamentphp.com/docs/4.x/forms/select#selecting-options-from-a-table-in-a-modal)
+> This package is compatible with Filament v3.x and v5.x. From Filament v4 onward, a built-in component is also available that offers a more polished and native implementation of similar functionality.
+> See the [ModalTableSelect documentation](https://filamentphp.com/docs/5.x/forms/select#selecting-options-from-a-table-in-a-modal)
 
 ***
 ## Getting Started
@@ -239,6 +241,9 @@ $form
             ->optionSize(ActionSize::Large)
     ])
 ```
+
+> [!NOTE]\
+> On Filament 5, you may use `Filament\Support\Enums\Size` instead of `ActionSize`.
 
 To customize the size of selected option badges, use the `optionIconSize()` method:
 
@@ -511,7 +516,7 @@ use Dvarilek\FilamentTableSelect\Enums\SelectionModalActionPosition;
 
 ### Create Option Action
 In a standard Select field, if users can’t find the record they need, they can create and associate a
-new one on using the `createOptionAction()`. - [Official Filament Documentation](https://filamentphp.com/docs/3.x/forms/fields/select#creating-a-new-option-in-a-modal)
+new one on using the `createOptionAction()`. - [Official Filament Documentation (3.x)](https://filamentphp.com/docs/3.x/forms/fields/select#creating-a-new-option-in-a-modal). For Filament 5.x, see the [5.x Forms documentation](https://filamentphp.com/docs/5.x/forms/fields/select#creating-a-new-option-in-a-modal).
 
 The TableSelect borrows this exact functionality and displays the create option action in the selection modal.
 To configure this action you can use the following methods:
