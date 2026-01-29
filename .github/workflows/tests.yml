@@ -6,13 +6,17 @@ jobs:
   run-tests:
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os: [ubuntu-latest]
         php: [8.2, 8.3, 8.4]
-        stability: [prefer-lowest, prefer-stable]
+        filament: [3, 5]
+        stability: [prefer-stable]
+        exclude:
+          - php: 8.2
+            filament: 5
 
-    name: tests P${{ matrix.php }} - ${{ matrix.os }}
+    name: tests P${{ matrix.php }} - Filament ${{ matrix.filament }} - ${{ matrix.stability }}
 
     steps:
       - name: checkout
@@ -24,9 +28,16 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: sqlite, pdo_sqlite, pdo
 
-      - name: install dependencies
+      - name: install dependencies (Filament 3)
+        if: matrix.filament == 3
         run: |
-          composer install --no-interaction --prefer-dist
+          composer require filament/filament:^3.0 --no-interaction --no-update
+          composer update --${{ matrix.stability }} --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: install dependencies (Filament 5)
+        if: matrix.filament == 5
+        run: |
+          composer require filament/filament:^5.0 --no-interaction --no-update
           composer update --${{ matrix.stability }} --no-interaction --prefer-dist --optimize-autoloader
 
       - name: execute tests

@@ -10,8 +10,14 @@ use Dvarilek\FilamentTableSelect\Tests\Models\Order;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Livewire\Component;
+
+// Support both Filament 3 (Form) and Filament 5 (Schema)
+if (class_exists(\Filament\Schemas\Schema::class)) {
+    class_alias(\Filament\Schemas\Schema::class, 'Dvarilek\FilamentTableSelect\Tests\Fixtures\FormOrSchema');
+} else {
+    class_alias(\Filament\Forms\Form::class, 'Dvarilek\FilamentTableSelect\Tests\Fixtures\FormOrSchema');
+}
 
 class TestLivewireComponent extends Component implements HasForms
 {
@@ -31,7 +37,7 @@ class TestLivewireComponent extends Component implements HasForms
         $this->form->fill();
     }
 
-    public function form(Form $form): Form
+    public function form(FormOrSchema $form): FormOrSchema
     {
         $tableSelect = TableSelect::make('products')
             ->relationship('products', 'name');

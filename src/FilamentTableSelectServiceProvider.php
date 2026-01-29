@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Dvarilek\FilamentTableSelect;
 
 use Dvarilek\FilamentTableSelect\Components\Livewire\SelectionTable;
+use Dvarilek\FilamentTableSelect\Synthesizers\ClosureSynth;
 use Dvarilek\FilamentTableSelect\Testing\TestsTableSelect;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Js;
@@ -31,6 +32,9 @@ class FilamentTableSelectServiceProvider extends PackageServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'filament-table-select');
 
         Livewire::component('filament-table-select::selection-table-component', SelectionTable::class);
+
+        // Register the closure synthesizer for Livewire (supports both Livewire 3 and 4)
+        Livewire::propertySynthesizer(ClosureSynth::class);
 
         FilamentView::registerRenderHook(
             TablesRenderHook::TOOLBAR_START,

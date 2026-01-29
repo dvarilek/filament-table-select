@@ -2,7 +2,6 @@
 
 namespace Dvarilek\FilamentTableSelect\Tests;
 
-use Dvarilek\ClosureSynthesizer\ClosureSynthesizerServiceProvider;
 use Dvarilek\FilamentTableSelect\FilamentTableSelectServiceProvider;
 use Filament\Actions\ActionsServiceProvider;
 use Filament\Forms\FormsServiceProvider;
@@ -33,8 +32,7 @@ abstract class TestCase extends OrchestraTestCase
      */
     protected function getPackageProviders($app): array
     {
-        return [
-            ClosureSynthesizerServiceProvider::class,
+        $providers = [
             FilamentTableSelectServiceProvider::class,
             LivewireServiceProvider::class,
             SupportServiceProvider::class,
@@ -43,6 +41,13 @@ abstract class TestCase extends OrchestraTestCase
             WidgetsServiceProvider::class,
             ActionsServiceProvider::class,
         ];
+
+        // Filament 5 has a separate SchemasServiceProvider
+        if (class_exists(\Filament\Schemas\SchemasServiceProvider::class)) {
+            $providers[] = \Filament\Schemas\SchemasServiceProvider::class;
+        }
+
+        return $providers;
     }
 
     public function getEnvironmentSetUp($app): void

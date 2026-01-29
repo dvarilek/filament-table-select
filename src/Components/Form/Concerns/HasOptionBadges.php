@@ -6,10 +6,16 @@ namespace Dvarilek\FilamentTableSelect\Components\Form\Concerns;
 
 use Closure;
 use Filament\Forms\Components\Field;
-use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\IconSize;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\ComponentAttributeBag;
+
+// Support both Filament 3 (ActionSize) and Filament 5 (Size)
+if (class_exists(\Filament\Support\Enums\Size::class)) {
+    class_alias(\Filament\Support\Enums\Size::class, 'Dvarilek\FilamentTableSelect\Components\Form\Concerns\BadgeSize');
+} else {
+    class_alias(\Filament\Support\Enums\ActionSize::class, 'Dvarilek\FilamentTableSelect\Components\Form\Concerns\BadgeSize');
+}
 
 /**
  * @mixin Field
@@ -23,7 +29,7 @@ trait HasOptionBadges
 
     protected ?string $optionIcon = null;
 
-    protected string | ActionSize | Closure $optionSize = ActionSize::Medium;
+    protected string | BadgeSize | Closure $optionSize = BadgeSize::Medium;
 
     protected string | IconSize | Closure $optionIconSize = IconSize::Small;
 
@@ -63,7 +69,7 @@ trait HasOptionBadges
         return $this;
     }
 
-    public function optionSize(string | ActionSize | Closure $size): static
+    public function optionSize(string | BadgeSize | Closure $size): static
     {
         $this->optionSize = $size;
 
@@ -105,7 +111,7 @@ trait HasOptionBadges
         return $this;
     }
 
-    public function getOptionSize(): string | ActionSize
+    public function getOptionSize(): string | BadgeSize
     {
         return $this->evaluate($this->optionSize);
     }
